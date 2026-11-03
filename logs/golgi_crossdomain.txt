@@ -1,0 +1,24 @@
+# 高尔基体跨域评估（生成：scripts/save_server_numbers.sh）
+# 权重 runs/seg_golgi_own/best.pt = 只用自有数据训练
+
+权重 runs/seg_golgi_own/best.pt  device=cuda  阈值 0.5
+数据源                                 tile     Dice     GT%     预测%
+------------------------------------------------------------------
+data/golgi_split/val                 281   0.2636  12.15%  19.02%
+data/asem_tiles/asem61               660   0.0779  11.05%   3.68%
+data/asem_tiles/asem64               392   0.2242  12.17%  26.45%
+
+注：这是 **tile 级** Dice，与训练日志口径一致；
+    全图像素级 Dice 更低（见 tools/predict_golgi.py 的输出）。
+
+# 权重 runs/golgi_v3/best.pt = 合并训练（ASEM 在训练集内，故其列为训练集精度）
+
+权重 runs/golgi_v3/best.pt  device=cuda  阈值 0.5
+数据源                                 tile     Dice     GT%     预测%
+------------------------------------------------------------------
+data/golgi_split/val                 281   0.2679  12.15%  15.23%
+data/asem_tiles/asem61               660   0.7956  11.05%   8.80%
+data/asem_tiles/asem64               392   0.8486  12.17%  10.51%
+
+注：这是 **tile 级** Dice，与训练日志口径一致；
+    全图像素级 Dice 更低（见 tools/predict_golgi.py 的输出）。

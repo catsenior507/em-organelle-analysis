@@ -1,0 +1,20 @@
+# 全量训练 vs 仅高覆盖度训练，在同一批高覆盖留出 tile 上评估
+# 生成：scripts/save_server_numbers.sh
+
+# 模型 A：全量训练（含稀疏标注图）
+权重 runs/seg_golgi_own/best.pt  device=cuda  阈值 0.5
+数据源                                 tile     Dice     GT%     预测%
+------------------------------------------------------------------
+data/golgi_hicov/val                 440   0.3445  22.69%  14.53%
+
+注：这是 **tile 级** Dice，与训练日志口径一致；
+    全图像素级 Dice 更低（见 tools/predict_golgi.py 的输出）。
+
+# 模型 B：仅高覆盖度图训练
+权重 runs/golgi_hicov/best.pt  device=cuda  阈值 0.5
+数据源                                 tile     Dice     GT%     预测%
+------------------------------------------------------------------
+data/golgi_hicov/val                 440   0.3210  22.69%  32.93%
+
+注：这是 **tile 级** Dice，与训练日志口径一致；
+    全图像素级 Dice 更低（见 tools/predict_golgi.py 的输出）。

@@ -1,0 +1,4113 @@
+{
+ "url": "https://janelia-cosem-datasets.s3.amazonaws.com/csc-zipped-data/matched_res_no_pad.zip",
+ "total_bytes": 42020987070,
+ "entries": 1319617,
+ "parsed": 80001,
+ "datasets": {
+  "jrc_cos7-1a": {
+   "files": 66485,
+   "bytes": 7317779011,
+   "labels": [
+    ".zattrs",
+    ".zgroup",
+    "actin",
+    "all",
+    "bm",
+    "cell",
+    "cent",
+    "cent_all",
+    "cent_dapp",
+    "cent_sdapp",
+    "chrom",
+    "cyto",
+    "echrom",
+    "ecs",
+    "endo",
+    "endo_lum",
+    "endo_mem",
+    "er",
+    "er_lum",
+    "er_mem",
+    "er_mem_all",
+    "eres",
+    "eres_lum",
+    "eres_mem",
+    "glyco",
+    "golgi",
+    "golgi_lum",
+    "golgi_mem",
+    "hchrom",
+    "isg",
+    "isg_ins",
+    "isg_lum",
+    "isg_mem",
+    "ld",
+    "ld_lum",
+    "ld_mem",
+    "lyso",
+    "lyso_lum",
+    "lyso_mem",
+    "mito",
+    "mito_lum",
+    "mito_mem",
+    "mito_ribo",
+    "mt",
+    "mt_in",
+    "mt_out",
+    "ne",
+    "ne_lum",
+    "ne_mem",
+    "ne_mem_all",
+    "nechrom",
+    "nhchrom",
+    "np",
+    "np_in",
+    "np_out",
+    "nuc",
+    "nucleo",
+    "nucpl",
+    "perox",
+    "perox_lum",
+    "perox_mem",
+    "pm",
+    "rbc",
+    "ribo",
+    "tbar",
+    "ves",
+    "ves_lum",
+    "ves_mem",
+    "vim"
+   ],
+   "has_em": true,
+   "crops": [
+    "crop234",
+    "crop236",
+    "crop237",
+    "crop239",
+    "crop243",
+    "crop247",
+    "crop248",
+    "crop252",
+    "crop254"
+   ],
+   "num_crops": 9,
+   "bytes_gb": 7.32
+  }
+ },
+ "label_sizes": {
+  "jrc_cos7-1a/crop234/.zattrs": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": ".zattrs",
+   "files": 1,
+   "bytes": 2018
+  },
+  "jrc_cos7-1a/crop234/.zgroup": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": ".zgroup",
+   "files": 1,
+   "bytes": 24
+  },
+  "jrc_cos7-1a/crop234/all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "all",
+   "files": 425,
+   "bytes": 1227452
+  },
+  "jrc_cos7-1a/crop234/bm": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "bm",
+   "files": 8,
+   "bytes": 6678
+  },
+  "jrc_cos7-1a/crop234/cell": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "cell",
+   "files": 402,
+   "bytes": 244443
+  },
+  "jrc_cos7-1a/crop234/cent": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "cent",
+   "files": 8,
+   "bytes": 6684
+  },
+  "jrc_cos7-1a/crop234/cent_all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "cent_all",
+   "files": 8,
+   "bytes": 6696
+  },
+  "jrc_cos7-1a/crop234/cent_dapp": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "cent_dapp",
+   "files": 8,
+   "bytes": 6699
+  },
+  "jrc_cos7-1a/crop234/cent_sdapp": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "cent_sdapp",
+   "files": 8,
+   "bytes": 6702
+  },
+  "jrc_cos7-1a/crop234/chrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "chrom",
+   "files": 8,
+   "bytes": 6687
+  },
+  "jrc_cos7-1a/crop234/cyto": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "cyto",
+   "files": 392,
+   "bytes": 896563
+  },
+  "jrc_cos7-1a/crop234/echrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "echrom",
+   "files": 8,
+   "bytes": 6690
+  },
+  "jrc_cos7-1a/crop234/ecs": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "ecs",
+   "files": 114,
+   "bytes": 140644
+  },
+  "jrc_cos7-1a/crop234/endo": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "endo",
+   "files": 40,
+   "bytes": 47747
+  },
+  "jrc_cos7-1a/crop234/endo_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "endo_lum",
+   "files": 38,
+   "bytes": 37430
+  },
+  "jrc_cos7-1a/crop234/endo_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "endo_mem",
+   "files": 40,
+   "bytes": 57534
+  },
+  "jrc_cos7-1a/crop234/er": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "er",
+   "files": 229,
+   "bytes": 560491
+  },
+  "jrc_cos7-1a/crop234/er_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "er_lum",
+   "files": 222,
+   "bytes": 481159
+  },
+  "jrc_cos7-1a/crop234/er_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "er_mem",
+   "files": 229,
+   "bytes": 714172
+  },
+  "jrc_cos7-1a/crop234/er_mem_all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "er_mem_all",
+   "files": 229,
+   "bytes": 714184
+  },
+  "jrc_cos7-1a/crop234/eres": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "eres",
+   "files": 8,
+   "bytes": 6684
+  },
+  "jrc_cos7-1a/crop234/eres_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "eres_lum",
+   "files": 8,
+   "bytes": 6696
+  },
+  "jrc_cos7-1a/crop234/eres_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "eres_mem",
+   "files": 8,
+   "bytes": 6696
+  },
+  "jrc_cos7-1a/crop234/glyco": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "glyco",
+   "files": 8,
+   "bytes": 6687
+  },
+  "jrc_cos7-1a/crop234/golgi": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "golgi",
+   "files": 8,
+   "bytes": 6687
+  },
+  "jrc_cos7-1a/crop234/golgi_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "golgi_lum",
+   "files": 8,
+   "bytes": 6699
+  },
+  "jrc_cos7-1a/crop234/golgi_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "golgi_mem",
+   "files": 8,
+   "bytes": 6699
+  },
+  "jrc_cos7-1a/crop234/hchrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "hchrom",
+   "files": 8,
+   "bytes": 6690
+  },
+  "jrc_cos7-1a/crop234/isg": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "isg",
+   "files": 8,
+   "bytes": 6681
+  },
+  "jrc_cos7-1a/crop234/isg_ins": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "isg_ins",
+   "files": 8,
+   "bytes": 6693
+  },
+  "jrc_cos7-1a/crop234/isg_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "isg_lum",
+   "files": 8,
+   "bytes": 6693
+  },
+  "jrc_cos7-1a/crop234/isg_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "isg_mem",
+   "files": 8,
+   "bytes": 6693
+  },
+  "jrc_cos7-1a/crop234/ld": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "ld",
+   "files": 8,
+   "bytes": 6580
+  },
+  "jrc_cos7-1a/crop234/ld_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "ld_lum",
+   "files": 8,
+   "bytes": 6690
+  },
+  "jrc_cos7-1a/crop234/ld_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "ld_mem",
+   "files": 8,
+   "bytes": 6690
+  },
+  "jrc_cos7-1a/crop234/lyso": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "lyso",
+   "files": 14,
+   "bytes": 9866
+  },
+  "jrc_cos7-1a/crop234/lyso_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "lyso_lum",
+   "files": 14,
+   "bytes": 8942
+  },
+  "jrc_cos7-1a/crop234/lyso_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "lyso_mem",
+   "files": 14,
+   "bytes": 11138
+  },
+  "jrc_cos7-1a/crop234/mito": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "mito",
+   "files": 45,
+   "bytes": 35610
+  },
+  "jrc_cos7-1a/crop234/mito_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "mito_lum",
+   "files": 39,
+   "bytes": 42267
+  },
+  "jrc_cos7-1a/crop234/mito_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "mito_mem",
+   "files": 45,
+   "bytes": 59832
+  },
+  "jrc_cos7-1a/crop234/mito_ribo": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "mito_ribo",
+   "files": 8,
+   "bytes": 6699
+  },
+  "jrc_cos7-1a/crop234/mt": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "mt",
+   "files": 63,
+   "bytes": 41466
+  },
+  "jrc_cos7-1a/crop234/mt_in": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "mt_in",
+   "files": 59,
+   "bytes": 29464
+  },
+  "jrc_cos7-1a/crop234/mt_out": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "mt_out",
+   "files": 63,
+   "bytes": 59542
+  },
+  "jrc_cos7-1a/crop234/ne": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "ne",
+   "files": 8,
+   "bytes": 6678
+  },
+  "jrc_cos7-1a/crop234/ne_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "ne_lum",
+   "files": 8,
+   "bytes": 6690
+  },
+  "jrc_cos7-1a/crop234/ne_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "ne_mem",
+   "files": 8,
+   "bytes": 6690
+  },
+  "jrc_cos7-1a/crop234/ne_mem_all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "ne_mem_all",
+   "files": 8,
+   "bytes": 6702
+  },
+  "jrc_cos7-1a/crop234/nechrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "nechrom",
+   "files": 8,
+   "bytes": 6693
+  },
+  "jrc_cos7-1a/crop234/nhchrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "nhchrom",
+   "files": 8,
+   "bytes": 6693
+  },
+  "jrc_cos7-1a/crop234/np": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "np",
+   "files": 8,
+   "bytes": 6580
+  },
+  "jrc_cos7-1a/crop234/np_in": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "np_in",
+   "files": 8,
+   "bytes": 6687
+  },
+  "jrc_cos7-1a/crop234/np_out": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "np_out",
+   "files": 8,
+   "bytes": 6690
+  },
+  "jrc_cos7-1a/crop234/nuc": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "nuc",
+   "files": 8,
+   "bytes": 6583
+  },
+  "jrc_cos7-1a/crop234/nucleo": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "nucleo",
+   "files": 8,
+   "bytes": 6690
+  },
+  "jrc_cos7-1a/crop234/nucpl": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "nucpl",
+   "files": 8,
+   "bytes": 6687
+  },
+  "jrc_cos7-1a/crop234/perox": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "perox",
+   "files": 8,
+   "bytes": 6589
+  },
+  "jrc_cos7-1a/crop234/perox_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "perox_lum",
+   "files": 8,
+   "bytes": 6699
+  },
+  "jrc_cos7-1a/crop234/perox_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "perox_mem",
+   "files": 8,
+   "bytes": 6699
+  },
+  "jrc_cos7-1a/crop234/pm": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "pm",
+   "files": 107,
+   "bytes": 209765
+  },
+  "jrc_cos7-1a/crop234/rbc": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "rbc",
+   "files": 8,
+   "bytes": 6681
+  },
+  "jrc_cos7-1a/crop234/tbar": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "tbar",
+   "files": 8,
+   "bytes": 6684
+  },
+  "jrc_cos7-1a/crop234/ves": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "ves",
+   "files": 47,
+   "bytes": 23088
+  },
+  "jrc_cos7-1a/crop234/ves_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "ves_lum",
+   "files": 39,
+   "bytes": 15329
+  },
+  "jrc_cos7-1a/crop234/ves_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop234",
+   "label": "ves_mem",
+   "files": 47,
+   "bytes": 27357
+  },
+  "jrc_cos7-1a/crop236/.zattrs": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": ".zattrs",
+   "files": 1,
+   "bytes": 2018
+  },
+  "jrc_cos7-1a/crop236/.zgroup": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": ".zgroup",
+   "files": 1,
+   "bytes": 24
+  },
+  "jrc_cos7-1a/crop236/all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "all",
+   "files": 425,
+   "bytes": 1156260
+  },
+  "jrc_cos7-1a/crop236/bm": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "bm",
+   "files": 8,
+   "bytes": 6668
+  },
+  "jrc_cos7-1a/crop236/cell": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "cell",
+   "files": 425,
+   "bytes": 197194
+  },
+  "jrc_cos7-1a/crop236/cent": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "cent",
+   "files": 8,
+   "bytes": 6674
+  },
+  "jrc_cos7-1a/crop236/cent_all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "cent_all",
+   "files": 8,
+   "bytes": 6686
+  },
+  "jrc_cos7-1a/crop236/cent_dapp": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "cent_dapp",
+   "files": 8,
+   "bytes": 6689
+  },
+  "jrc_cos7-1a/crop236/cent_sdapp": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "cent_sdapp",
+   "files": 8,
+   "bytes": 6692
+  },
+  "jrc_cos7-1a/crop236/chrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "chrom",
+   "files": 8,
+   "bytes": 6677
+  },
+  "jrc_cos7-1a/crop236/cyto": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "cyto",
+   "files": 412,
+   "bytes": 841721
+  },
+  "jrc_cos7-1a/crop236/echrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "echrom",
+   "files": 8,
+   "bytes": 6680
+  },
+  "jrc_cos7-1a/crop236/ecs": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "ecs",
+   "files": 8,
+   "bytes": 6671
+  },
+  "jrc_cos7-1a/crop236/endo": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "endo",
+   "files": 19,
+   "bytes": 10083
+  },
+  "jrc_cos7-1a/crop236/endo_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "endo_lum",
+   "files": 19,
+   "bytes": 8907
+  },
+  "jrc_cos7-1a/crop236/endo_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "endo_mem",
+   "files": 19,
+   "bytes": 10701
+  },
+  "jrc_cos7-1a/crop236/er": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "er",
+   "files": 242,
+   "bytes": 552443
+  },
+  "jrc_cos7-1a/crop236/er_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "er_lum",
+   "files": 219,
+   "bytes": 415689
+  },
+  "jrc_cos7-1a/crop236/er_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "er_mem",
+   "files": 242,
+   "bytes": 748905
+  },
+  "jrc_cos7-1a/crop236/er_mem_all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "er_mem_all",
+   "files": 242,
+   "bytes": 748917
+  },
+  "jrc_cos7-1a/crop236/eres": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "eres",
+   "files": 8,
+   "bytes": 6674
+  },
+  "jrc_cos7-1a/crop236/eres_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "eres_lum",
+   "files": 8,
+   "bytes": 6686
+  },
+  "jrc_cos7-1a/crop236/eres_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "eres_mem",
+   "files": 8,
+   "bytes": 6686
+  },
+  "jrc_cos7-1a/crop236/glyco": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "glyco",
+   "files": 8,
+   "bytes": 6677
+  },
+  "jrc_cos7-1a/crop236/golgi": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "golgi",
+   "files": 8,
+   "bytes": 6677
+  },
+  "jrc_cos7-1a/crop236/golgi_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "golgi_lum",
+   "files": 8,
+   "bytes": 6689
+  },
+  "jrc_cos7-1a/crop236/golgi_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "golgi_mem",
+   "files": 8,
+   "bytes": 6689
+  },
+  "jrc_cos7-1a/crop236/hchrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "hchrom",
+   "files": 8,
+   "bytes": 6680
+  },
+  "jrc_cos7-1a/crop236/isg": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "isg",
+   "files": 8,
+   "bytes": 6671
+  },
+  "jrc_cos7-1a/crop236/isg_ins": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "isg_ins",
+   "files": 8,
+   "bytes": 6683
+  },
+  "jrc_cos7-1a/crop236/isg_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "isg_lum",
+   "files": 8,
+   "bytes": 6683
+  },
+  "jrc_cos7-1a/crop236/isg_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "isg_mem",
+   "files": 8,
+   "bytes": 6683
+  },
+  "jrc_cos7-1a/crop236/ld": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "ld",
+   "files": 8,
+   "bytes": 6570
+  },
+  "jrc_cos7-1a/crop236/ld_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "ld_lum",
+   "files": 8,
+   "bytes": 6680
+  },
+  "jrc_cos7-1a/crop236/ld_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "ld_mem",
+   "files": 8,
+   "bytes": 6680
+  },
+  "jrc_cos7-1a/crop236/lyso": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "lyso",
+   "files": 8,
+   "bytes": 6576
+  },
+  "jrc_cos7-1a/crop236/lyso_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "lyso_lum",
+   "files": 8,
+   "bytes": 6686
+  },
+  "jrc_cos7-1a/crop236/lyso_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "lyso_mem",
+   "files": 8,
+   "bytes": 6686
+  },
+  "jrc_cos7-1a/crop236/mito": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "mito",
+   "files": 91,
+   "bytes": 203136
+  },
+  "jrc_cos7-1a/crop236/mito_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "mito_lum",
+   "files": 83,
+   "bytes": 245691
+  },
+  "jrc_cos7-1a/crop236/mito_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "mito_mem",
+   "files": 89,
+   "bytes": 291824
+  },
+  "jrc_cos7-1a/crop236/mito_ribo": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "mito_ribo",
+   "files": 15,
+   "bytes": 9206
+  },
+  "jrc_cos7-1a/crop236/mt": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "mt",
+   "files": 60,
+   "bytes": 37102
+  },
+  "jrc_cos7-1a/crop236/mt_in": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "mt_in",
+   "files": 59,
+   "bytes": 23960
+  },
+  "jrc_cos7-1a/crop236/mt_out": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "mt_out",
+   "files": 60,
+   "bytes": 45922
+  },
+  "jrc_cos7-1a/crop236/ne": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "ne",
+   "files": 8,
+   "bytes": 6668
+  },
+  "jrc_cos7-1a/crop236/ne_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "ne_lum",
+   "files": 8,
+   "bytes": 6680
+  },
+  "jrc_cos7-1a/crop236/ne_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "ne_mem",
+   "files": 8,
+   "bytes": 6680
+  },
+  "jrc_cos7-1a/crop236/ne_mem_all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "ne_mem_all",
+   "files": 8,
+   "bytes": 6692
+  },
+  "jrc_cos7-1a/crop236/nechrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "nechrom",
+   "files": 8,
+   "bytes": 6683
+  },
+  "jrc_cos7-1a/crop236/nhchrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "nhchrom",
+   "files": 8,
+   "bytes": 6683
+  },
+  "jrc_cos7-1a/crop236/np": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "np",
+   "files": 8,
+   "bytes": 6570
+  },
+  "jrc_cos7-1a/crop236/np_in": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "np_in",
+   "files": 8,
+   "bytes": 6677
+  },
+  "jrc_cos7-1a/crop236/np_out": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "np_out",
+   "files": 8,
+   "bytes": 6680
+  },
+  "jrc_cos7-1a/crop236/nuc": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "nuc",
+   "files": 8,
+   "bytes": 6573
+  },
+  "jrc_cos7-1a/crop236/nucleo": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "nucleo",
+   "files": 8,
+   "bytes": 6680
+  },
+  "jrc_cos7-1a/crop236/nucpl": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "nucpl",
+   "files": 8,
+   "bytes": 6677
+  },
+  "jrc_cos7-1a/crop236/perox": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "perox",
+   "files": 8,
+   "bytes": 6579
+  },
+  "jrc_cos7-1a/crop236/perox_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "perox_lum",
+   "files": 8,
+   "bytes": 6689
+  },
+  "jrc_cos7-1a/crop236/perox_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "perox_mem",
+   "files": 8,
+   "bytes": 6689
+  },
+  "jrc_cos7-1a/crop236/pm": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "pm",
+   "files": 8,
+   "bytes": 6668
+  },
+  "jrc_cos7-1a/crop236/rbc": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "rbc",
+   "files": 8,
+   "bytes": 6671
+  },
+  "jrc_cos7-1a/crop236/tbar": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "tbar",
+   "files": 8,
+   "bytes": 6674
+  },
+  "jrc_cos7-1a/crop236/ves": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "ves",
+   "files": 17,
+   "bytes": 10462
+  },
+  "jrc_cos7-1a/crop236/ves_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "ves_lum",
+   "files": 17,
+   "bytes": 8717
+  },
+  "jrc_cos7-1a/crop236/ves_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop236",
+   "label": "ves_mem",
+   "files": 17,
+   "bytes": 11299
+  },
+  "jrc_cos7-1a/crop237/.zattrs": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": ".zattrs",
+   "files": 1,
+   "bytes": 2018
+  },
+  "jrc_cos7-1a/crop237/.zgroup": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": ".zgroup",
+   "files": 1,
+   "bytes": 24
+  },
+  "jrc_cos7-1a/crop237/all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "all",
+   "files": 409,
+   "bytes": 1465765
+  },
+  "jrc_cos7-1a/crop237/bm": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "bm",
+   "files": 8,
+   "bytes": 6677
+  },
+  "jrc_cos7-1a/crop237/cell": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "cell",
+   "files": 358,
+   "bytes": 223083
+  },
+  "jrc_cos7-1a/crop237/cent": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "cent",
+   "files": 8,
+   "bytes": 6683
+  },
+  "jrc_cos7-1a/crop237/cent_all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "cent_all",
+   "files": 8,
+   "bytes": 6695
+  },
+  "jrc_cos7-1a/crop237/cent_dapp": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "cent_dapp",
+   "files": 8,
+   "bytes": 6698
+  },
+  "jrc_cos7-1a/crop237/cent_sdapp": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "cent_sdapp",
+   "files": 8,
+   "bytes": 6701
+  },
+  "jrc_cos7-1a/crop237/chrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "chrom",
+   "files": 8,
+   "bytes": 6686
+  },
+  "jrc_cos7-1a/crop237/cyto": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "cyto",
+   "files": 326,
+   "bytes": 985615
+  },
+  "jrc_cos7-1a/crop237/echrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "echrom",
+   "files": 8,
+   "bytes": 6689
+  },
+  "jrc_cos7-1a/crop237/ecs": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "ecs",
+   "files": 159,
+   "bytes": 181497
+  },
+  "jrc_cos7-1a/crop237/endo": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "endo",
+   "files": 73,
+   "bytes": 113188
+  },
+  "jrc_cos7-1a/crop237/endo_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "endo_lum",
+   "files": 62,
+   "bytes": 99213
+  },
+  "jrc_cos7-1a/crop237/endo_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "endo_mem",
+   "files": 73,
+   "bytes": 162921
+  },
+  "jrc_cos7-1a/crop237/er": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "er",
+   "files": 229,
+   "bytes": 631109
+  },
+  "jrc_cos7-1a/crop237/er_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "er_lum",
+   "files": 213,
+   "bytes": 523654
+  },
+  "jrc_cos7-1a/crop237/er_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "er_mem",
+   "files": 227,
+   "bytes": 804994
+  },
+  "jrc_cos7-1a/crop237/er_mem_all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "er_mem_all",
+   "files": 229,
+   "bytes": 823895
+  },
+  "jrc_cos7-1a/crop237/eres": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "eres",
+   "files": 23,
+   "bytes": 22060
+  },
+  "jrc_cos7-1a/crop237/eres_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "eres_lum",
+   "files": 23,
+   "bytes": 14071
+  },
+  "jrc_cos7-1a/crop237/eres_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "eres_mem",
+   "files": 23,
+   "bytes": 25315
+  },
+  "jrc_cos7-1a/crop237/glyco": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "glyco",
+   "files": 8,
+   "bytes": 6686
+  },
+  "jrc_cos7-1a/crop237/golgi": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "golgi",
+   "files": 15,
+   "bytes": 11906
+  },
+  "jrc_cos7-1a/crop237/golgi_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "golgi_lum",
+   "files": 14,
+   "bytes": 9468
+  },
+  "jrc_cos7-1a/crop237/golgi_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "golgi_mem",
+   "files": 15,
+   "bytes": 12503
+  },
+  "jrc_cos7-1a/crop237/hchrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "hchrom",
+   "files": 8,
+   "bytes": 6689
+  },
+  "jrc_cos7-1a/crop237/isg": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "isg",
+   "files": 8,
+   "bytes": 6680
+  },
+  "jrc_cos7-1a/crop237/isg_ins": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "isg_ins",
+   "files": 8,
+   "bytes": 6692
+  },
+  "jrc_cos7-1a/crop237/isg_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "isg_lum",
+   "files": 8,
+   "bytes": 6692
+  },
+  "jrc_cos7-1a/crop237/isg_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "isg_mem",
+   "files": 8,
+   "bytes": 6692
+  },
+  "jrc_cos7-1a/crop237/ld": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "ld",
+   "files": 8,
+   "bytes": 6579
+  },
+  "jrc_cos7-1a/crop237/ld_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "ld_lum",
+   "files": 8,
+   "bytes": 6689
+  },
+  "jrc_cos7-1a/crop237/ld_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "ld_mem",
+   "files": 8,
+   "bytes": 6689
+  },
+  "jrc_cos7-1a/crop237/lyso": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "lyso",
+   "files": 8,
+   "bytes": 6585
+  },
+  "jrc_cos7-1a/crop237/lyso_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "lyso_lum",
+   "files": 8,
+   "bytes": 6695
+  },
+  "jrc_cos7-1a/crop237/lyso_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "lyso_mem",
+   "files": 8,
+   "bytes": 6695
+  },
+  "jrc_cos7-1a/crop237/mito": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "mito",
+   "files": 67,
+   "bytes": 52138
+  },
+  "jrc_cos7-1a/crop237/mito_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "mito_lum",
+   "files": 62,
+   "bytes": 73730
+  },
+  "jrc_cos7-1a/crop237/mito_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "mito_mem",
+   "files": 66,
+   "bytes": 106577
+  },
+  "jrc_cos7-1a/crop237/mito_ribo": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "mito_ribo",
+   "files": 8,
+   "bytes": 6698
+  },
+  "jrc_cos7-1a/crop237/mt": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "mt",
+   "files": 60,
+   "bytes": 52331
+  },
+  "jrc_cos7-1a/crop237/mt_in": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "mt_in",
+   "files": 55,
+   "bytes": 26093
+  },
+  "jrc_cos7-1a/crop237/mt_out": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "mt_out",
+   "files": 60,
+   "bytes": 65873
+  },
+  "jrc_cos7-1a/crop237/ne": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "ne",
+   "files": 8,
+   "bytes": 6677
+  },
+  "jrc_cos7-1a/crop237/ne_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "ne_lum",
+   "files": 8,
+   "bytes": 6689
+  },
+  "jrc_cos7-1a/crop237/ne_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "ne_mem",
+   "files": 8,
+   "bytes": 6689
+  },
+  "jrc_cos7-1a/crop237/ne_mem_all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "ne_mem_all",
+   "files": 8,
+   "bytes": 6701
+  },
+  "jrc_cos7-1a/crop237/nechrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "nechrom",
+   "files": 8,
+   "bytes": 6692
+  },
+  "jrc_cos7-1a/crop237/nhchrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "nhchrom",
+   "files": 8,
+   "bytes": 6692
+  },
+  "jrc_cos7-1a/crop237/np": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "np",
+   "files": 8,
+   "bytes": 6579
+  },
+  "jrc_cos7-1a/crop237/np_in": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "np_in",
+   "files": 8,
+   "bytes": 6686
+  },
+  "jrc_cos7-1a/crop237/np_out": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "np_out",
+   "files": 8,
+   "bytes": 6689
+  },
+  "jrc_cos7-1a/crop237/nuc": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "nuc",
+   "files": 8,
+   "bytes": 6582
+  },
+  "jrc_cos7-1a/crop237/nucleo": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "nucleo",
+   "files": 8,
+   "bytes": 6689
+  },
+  "jrc_cos7-1a/crop237/nucpl": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "nucpl",
+   "files": 8,
+   "bytes": 6686
+  },
+  "jrc_cos7-1a/crop237/perox": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "perox",
+   "files": 8,
+   "bytes": 6588
+  },
+  "jrc_cos7-1a/crop237/perox_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "perox_lum",
+   "files": 8,
+   "bytes": 6698
+  },
+  "jrc_cos7-1a/crop237/perox_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "perox_mem",
+   "files": 8,
+   "bytes": 6698
+  },
+  "jrc_cos7-1a/crop237/pm": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "pm",
+   "files": 117,
+   "bytes": 237858
+  },
+  "jrc_cos7-1a/crop237/rbc": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "rbc",
+   "files": 8,
+   "bytes": 6680
+  },
+  "jrc_cos7-1a/crop237/tbar": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "tbar",
+   "files": 8,
+   "bytes": 6683
+  },
+  "jrc_cos7-1a/crop237/ves": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "ves",
+   "files": 19,
+   "bytes": 12282
+  },
+  "jrc_cos7-1a/crop237/ves_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "ves_lum",
+   "files": 17,
+   "bytes": 8366
+  },
+  "jrc_cos7-1a/crop237/ves_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop237",
+   "label": "ves_mem",
+   "files": 19,
+   "bytes": 12891
+  },
+  "jrc_cos7-1a/crop239/.zattrs": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": ".zattrs",
+   "files": 1,
+   "bytes": 2018
+  },
+  "jrc_cos7-1a/crop239/.zgroup": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": ".zgroup",
+   "files": 1,
+   "bytes": 24
+  },
+  "jrc_cos7-1a/crop239/all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "all",
+   "files": 311,
+   "bytes": 1378126
+  },
+  "jrc_cos7-1a/crop239/bm": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "bm",
+   "files": 8,
+   "bytes": 6672
+  },
+  "jrc_cos7-1a/crop239/cell": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "cell",
+   "files": 311,
+   "bytes": 150055
+  },
+  "jrc_cos7-1a/crop239/cent": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "cent",
+   "files": 8,
+   "bytes": 6678
+  },
+  "jrc_cos7-1a/crop239/cent_all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "cent_all",
+   "files": 8,
+   "bytes": 6690
+  },
+  "jrc_cos7-1a/crop239/cent_dapp": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "cent_dapp",
+   "files": 8,
+   "bytes": 6693
+  },
+  "jrc_cos7-1a/crop239/cent_sdapp": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "cent_sdapp",
+   "files": 8,
+   "bytes": 6696
+  },
+  "jrc_cos7-1a/crop239/chrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "chrom",
+   "files": 8,
+   "bytes": 6681
+  },
+  "jrc_cos7-1a/crop239/cyto": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "cyto",
+   "files": 309,
+   "bytes": 1043289
+  },
+  "jrc_cos7-1a/crop239/echrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "echrom",
+   "files": 8,
+   "bytes": 6684
+  },
+  "jrc_cos7-1a/crop239/ecs": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "ecs",
+   "files": 31,
+   "bytes": 35101
+  },
+  "jrc_cos7-1a/crop239/endo": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "endo",
+   "files": 38,
+   "bytes": 31108
+  },
+  "jrc_cos7-1a/crop239/endo_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "endo_lum",
+   "files": 34,
+   "bytes": 20993
+  },
+  "jrc_cos7-1a/crop239/endo_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "endo_mem",
+   "files": 38,
+   "bytes": 35313
+  },
+  "jrc_cos7-1a/crop239/er": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "er",
+   "files": 246,
+   "bytes": 812847
+  },
+  "jrc_cos7-1a/crop239/er_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "er_lum",
+   "files": 235,
+   "bytes": 633639
+  },
+  "jrc_cos7-1a/crop239/er_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "er_mem",
+   "files": 246,
+   "bytes": 1098225
+  },
+  "jrc_cos7-1a/crop239/er_mem_all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "er_mem_all",
+   "files": 246,
+   "bytes": 1098237
+  },
+  "jrc_cos7-1a/crop239/eres": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "eres",
+   "files": 8,
+   "bytes": 6678
+  },
+  "jrc_cos7-1a/crop239/eres_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "eres_lum",
+   "files": 8,
+   "bytes": 6690
+  },
+  "jrc_cos7-1a/crop239/eres_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "eres_mem",
+   "files": 8,
+   "bytes": 6690
+  },
+  "jrc_cos7-1a/crop239/glyco": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "glyco",
+   "files": 8,
+   "bytes": 6681
+  },
+  "jrc_cos7-1a/crop239/golgi": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "golgi",
+   "files": 8,
+   "bytes": 6681
+  },
+  "jrc_cos7-1a/crop239/golgi_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "golgi_lum",
+   "files": 8,
+   "bytes": 6693
+  },
+  "jrc_cos7-1a/crop239/golgi_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "golgi_mem",
+   "files": 8,
+   "bytes": 6693
+  },
+  "jrc_cos7-1a/crop239/hchrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "hchrom",
+   "files": 8,
+   "bytes": 6684
+  },
+  "jrc_cos7-1a/crop239/isg": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "isg",
+   "files": 8,
+   "bytes": 6675
+  },
+  "jrc_cos7-1a/crop239/isg_ins": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "isg_ins",
+   "files": 8,
+   "bytes": 6687
+  },
+  "jrc_cos7-1a/crop239/isg_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "isg_lum",
+   "files": 8,
+   "bytes": 6687
+  },
+  "jrc_cos7-1a/crop239/isg_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "isg_mem",
+   "files": 8,
+   "bytes": 6687
+  },
+  "jrc_cos7-1a/crop239/ld": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "ld",
+   "files": 8,
+   "bytes": 6574
+  },
+  "jrc_cos7-1a/crop239/ld_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "ld_lum",
+   "files": 8,
+   "bytes": 6684
+  },
+  "jrc_cos7-1a/crop239/ld_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "ld_mem",
+   "files": 8,
+   "bytes": 6684
+  },
+  "jrc_cos7-1a/crop239/lyso": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "lyso",
+   "files": 8,
+   "bytes": 6580
+  },
+  "jrc_cos7-1a/crop239/lyso_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "lyso_lum",
+   "files": 8,
+   "bytes": 6690
+  },
+  "jrc_cos7-1a/crop239/lyso_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "lyso_mem",
+   "files": 8,
+   "bytes": 6690
+  },
+  "jrc_cos7-1a/crop239/mito": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "mito",
+   "files": 30,
+   "bytes": 34897
+  },
+  "jrc_cos7-1a/crop239/mito_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "mito_lum",
+   "files": 26,
+   "bytes": 39946
+  },
+  "jrc_cos7-1a/crop239/mito_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "mito_mem",
+   "files": 30,
+   "bytes": 58702
+  },
+  "jrc_cos7-1a/crop239/mito_ribo": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "mito_ribo",
+   "files": 8,
+   "bytes": 6693
+  },
+  "jrc_cos7-1a/crop239/mt": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "mt",
+   "files": 82,
+   "bytes": 76576
+  },
+  "jrc_cos7-1a/crop239/mt_in": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "mt_in",
+   "files": 76,
+   "bytes": 43840
+  },
+  "jrc_cos7-1a/crop239/mt_out": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "mt_out",
+   "files": 82,
+   "bytes": 110454
+  },
+  "jrc_cos7-1a/crop239/ne": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "ne",
+   "files": 8,
+   "bytes": 6672
+  },
+  "jrc_cos7-1a/crop239/ne_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "ne_lum",
+   "files": 8,
+   "bytes": 6684
+  },
+  "jrc_cos7-1a/crop239/ne_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "ne_mem",
+   "files": 8,
+   "bytes": 6684
+  },
+  "jrc_cos7-1a/crop239/ne_mem_all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "ne_mem_all",
+   "files": 8,
+   "bytes": 6696
+  },
+  "jrc_cos7-1a/crop239/nechrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "nechrom",
+   "files": 8,
+   "bytes": 6687
+  },
+  "jrc_cos7-1a/crop239/nhchrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "nhchrom",
+   "files": 8,
+   "bytes": 6687
+  },
+  "jrc_cos7-1a/crop239/np": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "np",
+   "files": 8,
+   "bytes": 6574
+  },
+  "jrc_cos7-1a/crop239/np_in": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "np_in",
+   "files": 8,
+   "bytes": 6681
+  },
+  "jrc_cos7-1a/crop239/np_out": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "np_out",
+   "files": 8,
+   "bytes": 6684
+  },
+  "jrc_cos7-1a/crop239/nuc": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "nuc",
+   "files": 8,
+   "bytes": 6577
+  },
+  "jrc_cos7-1a/crop239/nucleo": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "nucleo",
+   "files": 8,
+   "bytes": 6684
+  },
+  "jrc_cos7-1a/crop239/nucpl": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "nucpl",
+   "files": 8,
+   "bytes": 6681
+  },
+  "jrc_cos7-1a/crop239/perox": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "perox",
+   "files": 8,
+   "bytes": 6583
+  },
+  "jrc_cos7-1a/crop239/perox_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "perox_lum",
+   "files": 8,
+   "bytes": 6693
+  },
+  "jrc_cos7-1a/crop239/perox_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "perox_mem",
+   "files": 8,
+   "bytes": 6693
+  },
+  "jrc_cos7-1a/crop239/pm": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "pm",
+   "files": 36,
+   "bytes": 49909
+  },
+  "jrc_cos7-1a/crop239/rbc": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "rbc",
+   "files": 8,
+   "bytes": 6675
+  },
+  "jrc_cos7-1a/crop239/tbar": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "tbar",
+   "files": 8,
+   "bytes": 6678
+  },
+  "jrc_cos7-1a/crop239/ves": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "ves",
+   "files": 38,
+   "bytes": 32809
+  },
+  "jrc_cos7-1a/crop239/ves_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "ves_lum",
+   "files": 32,
+   "bytes": 16188
+  },
+  "jrc_cos7-1a/crop239/ves_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop239",
+   "label": "ves_mem",
+   "files": 38,
+   "bytes": 38256
+  },
+  "jrc_cos7-1a/crop243/.zattrs": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": ".zattrs",
+   "files": 1,
+   "bytes": 2090
+  },
+  "jrc_cos7-1a/crop243/.zgroup": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": ".zgroup",
+   "files": 1,
+   "bytes": 24
+  },
+  "jrc_cos7-1a/crop243/actin": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "actin",
+   "files": 8,
+   "bytes": 6668
+  },
+  "jrc_cos7-1a/crop243/all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "all",
+   "files": 425,
+   "bytes": 196468
+  },
+  "jrc_cos7-1a/crop243/bm": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "bm",
+   "files": 8,
+   "bytes": 6659
+  },
+  "jrc_cos7-1a/crop243/cell": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "cell",
+   "files": 8,
+   "bytes": 6567
+  },
+  "jrc_cos7-1a/crop243/cent": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "cent",
+   "files": 8,
+   "bytes": 6665
+  },
+  "jrc_cos7-1a/crop243/cent_all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "cent_all",
+   "files": 8,
+   "bytes": 6677
+  },
+  "jrc_cos7-1a/crop243/cent_dapp": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "cent_dapp",
+   "files": 8,
+   "bytes": 6680
+  },
+  "jrc_cos7-1a/crop243/cent_sdapp": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "cent_sdapp",
+   "files": 8,
+   "bytes": 6683
+  },
+  "jrc_cos7-1a/crop243/chrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "chrom",
+   "files": 8,
+   "bytes": 6668
+  },
+  "jrc_cos7-1a/crop243/cyto": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "cyto",
+   "files": 8,
+   "bytes": 6665
+  },
+  "jrc_cos7-1a/crop243/echrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "echrom",
+   "files": 8,
+   "bytes": 6671
+  },
+  "jrc_cos7-1a/crop243/ecs": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "ecs",
+   "files": 425,
+   "bytes": 197287
+  },
+  "jrc_cos7-1a/crop243/endo": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "endo",
+   "files": 8,
+   "bytes": 6567
+  },
+  "jrc_cos7-1a/crop243/endo_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "endo_lum",
+   "files": 8,
+   "bytes": 6677
+  },
+  "jrc_cos7-1a/crop243/endo_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "endo_mem",
+   "files": 8,
+   "bytes": 6677
+  },
+  "jrc_cos7-1a/crop243/er": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "er",
+   "files": 8,
+   "bytes": 6659
+  },
+  "jrc_cos7-1a/crop243/er_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "er_lum",
+   "files": 8,
+   "bytes": 6671
+  },
+  "jrc_cos7-1a/crop243/er_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "er_mem",
+   "files": 8,
+   "bytes": 6671
+  },
+  "jrc_cos7-1a/crop243/er_mem_all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "er_mem_all",
+   "files": 8,
+   "bytes": 6683
+  },
+  "jrc_cos7-1a/crop243/eres": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "eres",
+   "files": 8,
+   "bytes": 6665
+  },
+  "jrc_cos7-1a/crop243/eres_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "eres_lum",
+   "files": 8,
+   "bytes": 6677
+  },
+  "jrc_cos7-1a/crop243/eres_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "eres_mem",
+   "files": 8,
+   "bytes": 6677
+  },
+  "jrc_cos7-1a/crop243/glyco": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "glyco",
+   "files": 8,
+   "bytes": 6668
+  },
+  "jrc_cos7-1a/crop243/golgi": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "golgi",
+   "files": 8,
+   "bytes": 6668
+  },
+  "jrc_cos7-1a/crop243/golgi_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "golgi_lum",
+   "files": 8,
+   "bytes": 6680
+  },
+  "jrc_cos7-1a/crop243/golgi_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "golgi_mem",
+   "files": 8,
+   "bytes": 6680
+  },
+  "jrc_cos7-1a/crop243/hchrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "hchrom",
+   "files": 8,
+   "bytes": 6671
+  },
+  "jrc_cos7-1a/crop243/isg": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "isg",
+   "files": 8,
+   "bytes": 6662
+  },
+  "jrc_cos7-1a/crop243/isg_ins": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "isg_ins",
+   "files": 8,
+   "bytes": 6674
+  },
+  "jrc_cos7-1a/crop243/isg_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "isg_lum",
+   "files": 8,
+   "bytes": 6674
+  },
+  "jrc_cos7-1a/crop243/isg_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "isg_mem",
+   "files": 8,
+   "bytes": 6674
+  },
+  "jrc_cos7-1a/crop243/ld": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "ld",
+   "files": 8,
+   "bytes": 6561
+  },
+  "jrc_cos7-1a/crop243/ld_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "ld_lum",
+   "files": 8,
+   "bytes": 6671
+  },
+  "jrc_cos7-1a/crop243/ld_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "ld_mem",
+   "files": 8,
+   "bytes": 6671
+  },
+  "jrc_cos7-1a/crop243/lyso": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "lyso",
+   "files": 8,
+   "bytes": 6567
+  },
+  "jrc_cos7-1a/crop243/lyso_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "lyso_lum",
+   "files": 8,
+   "bytes": 6677
+  },
+  "jrc_cos7-1a/crop243/lyso_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "lyso_mem",
+   "files": 8,
+   "bytes": 6677
+  },
+  "jrc_cos7-1a/crop243/mito": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "mito",
+   "files": 8,
+   "bytes": 6567
+  },
+  "jrc_cos7-1a/crop243/mito_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "mito_lum",
+   "files": 8,
+   "bytes": 6677
+  },
+  "jrc_cos7-1a/crop243/mito_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "mito_mem",
+   "files": 8,
+   "bytes": 6677
+  },
+  "jrc_cos7-1a/crop243/mito_ribo": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "mito_ribo",
+   "files": 8,
+   "bytes": 6680
+  },
+  "jrc_cos7-1a/crop243/mt": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "mt",
+   "files": 8,
+   "bytes": 6561
+  },
+  "jrc_cos7-1a/crop243/mt_in": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "mt_in",
+   "files": 8,
+   "bytes": 6668
+  },
+  "jrc_cos7-1a/crop243/mt_out": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "mt_out",
+   "files": 8,
+   "bytes": 6671
+  },
+  "jrc_cos7-1a/crop243/ne": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "ne",
+   "files": 8,
+   "bytes": 6659
+  },
+  "jrc_cos7-1a/crop243/ne_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "ne_lum",
+   "files": 8,
+   "bytes": 6671
+  },
+  "jrc_cos7-1a/crop243/ne_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "ne_mem",
+   "files": 8,
+   "bytes": 6671
+  },
+  "jrc_cos7-1a/crop243/ne_mem_all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "ne_mem_all",
+   "files": 8,
+   "bytes": 6683
+  },
+  "jrc_cos7-1a/crop243/nechrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "nechrom",
+   "files": 8,
+   "bytes": 6674
+  },
+  "jrc_cos7-1a/crop243/nhchrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "nhchrom",
+   "files": 8,
+   "bytes": 6674
+  },
+  "jrc_cos7-1a/crop243/np": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "np",
+   "files": 8,
+   "bytes": 6561
+  },
+  "jrc_cos7-1a/crop243/np_in": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "np_in",
+   "files": 8,
+   "bytes": 6668
+  },
+  "jrc_cos7-1a/crop243/np_out": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "np_out",
+   "files": 8,
+   "bytes": 6671
+  },
+  "jrc_cos7-1a/crop243/nuc": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "nuc",
+   "files": 8,
+   "bytes": 6564
+  },
+  "jrc_cos7-1a/crop243/nucleo": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "nucleo",
+   "files": 8,
+   "bytes": 6671
+  },
+  "jrc_cos7-1a/crop243/nucpl": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "nucpl",
+   "files": 8,
+   "bytes": 6668
+  },
+  "jrc_cos7-1a/crop243/perox": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "perox",
+   "files": 8,
+   "bytes": 6570
+  },
+  "jrc_cos7-1a/crop243/perox_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "perox_lum",
+   "files": 8,
+   "bytes": 6680
+  },
+  "jrc_cos7-1a/crop243/perox_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "perox_mem",
+   "files": 8,
+   "bytes": 6680
+  },
+  "jrc_cos7-1a/crop243/pm": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "pm",
+   "files": 8,
+   "bytes": 6659
+  },
+  "jrc_cos7-1a/crop243/rbc": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "rbc",
+   "files": 8,
+   "bytes": 6662
+  },
+  "jrc_cos7-1a/crop243/ribo": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "ribo",
+   "files": 8,
+   "bytes": 6665
+  },
+  "jrc_cos7-1a/crop243/tbar": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "tbar",
+   "files": 8,
+   "bytes": 6665
+  },
+  "jrc_cos7-1a/crop243/ves": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "ves",
+   "files": 8,
+   "bytes": 6564
+  },
+  "jrc_cos7-1a/crop243/ves_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "ves_lum",
+   "files": 8,
+   "bytes": 6674
+  },
+  "jrc_cos7-1a/crop243/ves_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "ves_mem",
+   "files": 8,
+   "bytes": 6674
+  },
+  "jrc_cos7-1a/crop243/vim": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop243",
+   "label": "vim",
+   "files": 8,
+   "bytes": 6564
+  },
+  "jrc_cos7-1a/crop247/.zattrs": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": ".zattrs",
+   "files": 1,
+   "bytes": 1425
+  },
+  "jrc_cos7-1a/crop247/.zgroup": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": ".zgroup",
+   "files": 1,
+   "bytes": 24
+  },
+  "jrc_cos7-1a/crop247/all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "all",
+   "files": 4773,
+   "bytes": 11804209
+  },
+  "jrc_cos7-1a/crop247/bm": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "bm",
+   "files": 10,
+   "bytes": 8753
+  },
+  "jrc_cos7-1a/crop247/cent": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "cent",
+   "files": 10,
+   "bytes": 8759
+  },
+  "jrc_cos7-1a/crop247/cent_all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "cent_all",
+   "files": 10,
+   "bytes": 8771
+  },
+  "jrc_cos7-1a/crop247/cent_dapp": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "cent_dapp",
+   "files": 10,
+   "bytes": 8774
+  },
+  "jrc_cos7-1a/crop247/cent_sdapp": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "cent_sdapp",
+   "files": 10,
+   "bytes": 8777
+  },
+  "jrc_cos7-1a/crop247/chrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "chrom",
+   "files": 10,
+   "bytes": 8762
+  },
+  "jrc_cos7-1a/crop247/echrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "echrom",
+   "files": 10,
+   "bytes": 8765
+  },
+  "jrc_cos7-1a/crop247/glyco": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "glyco",
+   "files": 10,
+   "bytes": 8762
+  },
+  "jrc_cos7-1a/crop247/golgi": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "golgi",
+   "files": 10,
+   "bytes": 8762
+  },
+  "jrc_cos7-1a/crop247/golgi_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "golgi_lum",
+   "files": 10,
+   "bytes": 8774
+  },
+  "jrc_cos7-1a/crop247/golgi_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "golgi_mem",
+   "files": 10,
+   "bytes": 8774
+  },
+  "jrc_cos7-1a/crop247/hchrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "hchrom",
+   "files": 10,
+   "bytes": 8765
+  },
+  "jrc_cos7-1a/crop247/isg": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "isg",
+   "files": 10,
+   "bytes": 8756
+  },
+  "jrc_cos7-1a/crop247/isg_ins": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "isg_ins",
+   "files": 10,
+   "bytes": 8768
+  },
+  "jrc_cos7-1a/crop247/isg_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "isg_lum",
+   "files": 10,
+   "bytes": 8768
+  },
+  "jrc_cos7-1a/crop247/isg_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "isg_mem",
+   "files": 10,
+   "bytes": 8768
+  },
+  "jrc_cos7-1a/crop247/ld": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "ld",
+   "files": 10,
+   "bytes": 8655
+  },
+  "jrc_cos7-1a/crop247/ld_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "ld_lum",
+   "files": 10,
+   "bytes": 8765
+  },
+  "jrc_cos7-1a/crop247/ld_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "ld_mem",
+   "files": 10,
+   "bytes": 8765
+  },
+  "jrc_cos7-1a/crop247/lyso": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "lyso",
+   "files": 10,
+   "bytes": 8661
+  },
+  "jrc_cos7-1a/crop247/lyso_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "lyso_lum",
+   "files": 10,
+   "bytes": 8771
+  },
+  "jrc_cos7-1a/crop247/lyso_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "lyso_mem",
+   "files": 10,
+   "bytes": 8771
+  },
+  "jrc_cos7-1a/crop247/ne": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "ne",
+   "files": 10,
+   "bytes": 8753
+  },
+  "jrc_cos7-1a/crop247/ne_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "ne_lum",
+   "files": 10,
+   "bytes": 8765
+  },
+  "jrc_cos7-1a/crop247/ne_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "ne_mem",
+   "files": 10,
+   "bytes": 8765
+  },
+  "jrc_cos7-1a/crop247/ne_mem_all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "ne_mem_all",
+   "files": 10,
+   "bytes": 8777
+  },
+  "jrc_cos7-1a/crop247/nechrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "nechrom",
+   "files": 10,
+   "bytes": 8768
+  },
+  "jrc_cos7-1a/crop247/nhchrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "nhchrom",
+   "files": 10,
+   "bytes": 8768
+  },
+  "jrc_cos7-1a/crop247/np": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "np",
+   "files": 10,
+   "bytes": 8655
+  },
+  "jrc_cos7-1a/crop247/np_in": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "np_in",
+   "files": 10,
+   "bytes": 8762
+  },
+  "jrc_cos7-1a/crop247/np_out": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "np_out",
+   "files": 10,
+   "bytes": 8765
+  },
+  "jrc_cos7-1a/crop247/nuc": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "nuc",
+   "files": 10,
+   "bytes": 8658
+  },
+  "jrc_cos7-1a/crop247/nucleo": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "nucleo",
+   "files": 10,
+   "bytes": 8765
+  },
+  "jrc_cos7-1a/crop247/nucpl": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "nucpl",
+   "files": 10,
+   "bytes": 8762
+  },
+  "jrc_cos7-1a/crop247/perox": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "perox",
+   "files": 10,
+   "bytes": 8664
+  },
+  "jrc_cos7-1a/crop247/perox_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "perox_lum",
+   "files": 10,
+   "bytes": 8774
+  },
+  "jrc_cos7-1a/crop247/perox_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "perox_mem",
+   "files": 10,
+   "bytes": 8774
+  },
+  "jrc_cos7-1a/crop247/rbc": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "rbc",
+   "files": 10,
+   "bytes": 8756
+  },
+  "jrc_cos7-1a/crop247/tbar": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "tbar",
+   "files": 10,
+   "bytes": 8759
+  },
+  "jrc_cos7-1a/crop247/vim": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop247",
+   "label": "vim",
+   "files": 27631,
+   "bytes": 8718845
+  },
+  "jrc_cos7-1a/crop248/.zattrs": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": ".zattrs",
+   "files": 1,
+   "bytes": 2018
+  },
+  "jrc_cos7-1a/crop248/.zgroup": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": ".zgroup",
+   "files": 1,
+   "bytes": 24
+  },
+  "jrc_cos7-1a/crop248/all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "all",
+   "files": 425,
+   "bytes": 1469011
+  },
+  "jrc_cos7-1a/crop248/bm": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "bm",
+   "files": 8,
+   "bytes": 6664
+  },
+  "jrc_cos7-1a/crop248/cell": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "cell",
+   "files": 392,
+   "bytes": 218132
+  },
+  "jrc_cos7-1a/crop248/cent": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "cent",
+   "files": 8,
+   "bytes": 6670
+  },
+  "jrc_cos7-1a/crop248/cent_all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "cent_all",
+   "files": 8,
+   "bytes": 6682
+  },
+  "jrc_cos7-1a/crop248/cent_dapp": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "cent_dapp",
+   "files": 8,
+   "bytes": 6685
+  },
+  "jrc_cos7-1a/crop248/cent_sdapp": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "cent_sdapp",
+   "files": 8,
+   "bytes": 6688
+  },
+  "jrc_cos7-1a/crop248/chrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "chrom",
+   "files": 8,
+   "bytes": 6673
+  },
+  "jrc_cos7-1a/crop248/cyto": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "cyto",
+   "files": 313,
+   "bytes": 876827
+  },
+  "jrc_cos7-1a/crop248/echrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "echrom",
+   "files": 8,
+   "bytes": 6676
+  },
+  "jrc_cos7-1a/crop248/ecs": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "ecs",
+   "files": 127,
+   "bytes": 147955
+  },
+  "jrc_cos7-1a/crop248/endo": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "endo",
+   "files": 108,
+   "bytes": 143717
+  },
+  "jrc_cos7-1a/crop248/endo_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "endo_lum",
+   "files": 102,
+   "bytes": 202944
+  },
+  "jrc_cos7-1a/crop248/endo_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "endo_mem",
+   "files": 108,
+   "bytes": 269321
+  },
+  "jrc_cos7-1a/crop248/er": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "er",
+   "files": 194,
+   "bytes": 455535
+  },
+  "jrc_cos7-1a/crop248/er_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "er_lum",
+   "files": 173,
+   "bytes": 405387
+  },
+  "jrc_cos7-1a/crop248/er_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "er_mem",
+   "files": 194,
+   "bytes": 558624
+  },
+  "jrc_cos7-1a/crop248/er_mem_all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "er_mem_all",
+   "files": 194,
+   "bytes": 558636
+  },
+  "jrc_cos7-1a/crop248/eres": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "eres",
+   "files": 8,
+   "bytes": 6670
+  },
+  "jrc_cos7-1a/crop248/eres_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "eres_lum",
+   "files": 8,
+   "bytes": 6682
+  },
+  "jrc_cos7-1a/crop248/eres_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "eres_mem",
+   "files": 8,
+   "bytes": 6682
+  },
+  "jrc_cos7-1a/crop248/glyco": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "glyco",
+   "files": 8,
+   "bytes": 6673
+  },
+  "jrc_cos7-1a/crop248/golgi": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "golgi",
+   "files": 8,
+   "bytes": 6673
+  },
+  "jrc_cos7-1a/crop248/golgi_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "golgi_lum",
+   "files": 8,
+   "bytes": 6685
+  },
+  "jrc_cos7-1a/crop248/golgi_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "golgi_mem",
+   "files": 8,
+   "bytes": 6685
+  },
+  "jrc_cos7-1a/crop248/hchrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "hchrom",
+   "files": 8,
+   "bytes": 6676
+  },
+  "jrc_cos7-1a/crop248/isg": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "isg",
+   "files": 8,
+   "bytes": 6667
+  },
+  "jrc_cos7-1a/crop248/isg_ins": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "isg_ins",
+   "files": 8,
+   "bytes": 6679
+  },
+  "jrc_cos7-1a/crop248/isg_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "isg_lum",
+   "files": 8,
+   "bytes": 6679
+  },
+  "jrc_cos7-1a/crop248/isg_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "isg_mem",
+   "files": 8,
+   "bytes": 6679
+  },
+  "jrc_cos7-1a/crop248/ld": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "ld",
+   "files": 8,
+   "bytes": 6566
+  },
+  "jrc_cos7-1a/crop248/ld_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "ld_lum",
+   "files": 8,
+   "bytes": 6676
+  },
+  "jrc_cos7-1a/crop248/ld_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "ld_mem",
+   "files": 8,
+   "bytes": 6676
+  },
+  "jrc_cos7-1a/crop248/lyso": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "lyso",
+   "files": 8,
+   "bytes": 6572
+  },
+  "jrc_cos7-1a/crop248/lyso_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "lyso_lum",
+   "files": 8,
+   "bytes": 6682
+  },
+  "jrc_cos7-1a/crop248/lyso_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "lyso_mem",
+   "files": 8,
+   "bytes": 6682
+  },
+  "jrc_cos7-1a/crop248/mito": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "mito",
+   "files": 181,
+   "bytes": 159623
+  },
+  "jrc_cos7-1a/crop248/mito_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "mito_lum",
+   "files": 163,
+   "bytes": 255746
+  },
+  "jrc_cos7-1a/crop248/mito_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "mito_mem",
+   "files": 156,
+   "bytes": 297410
+  },
+  "jrc_cos7-1a/crop248/mito_ribo": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "mito_ribo",
+   "files": 20,
+   "bytes": 9962
+  },
+  "jrc_cos7-1a/crop248/mt": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "mt",
+   "files": 46,
+   "bytes": 33276
+  },
+  "jrc_cos7-1a/crop248/mt_in": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "mt_in",
+   "files": 43,
+   "bytes": 16252
+  },
+  "jrc_cos7-1a/crop248/mt_out": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "mt_out",
+   "files": 46,
+   "bytes": 33525
+  },
+  "jrc_cos7-1a/crop248/ne": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "ne",
+   "files": 8,
+   "bytes": 6664
+  },
+  "jrc_cos7-1a/crop248/ne_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "ne_lum",
+   "files": 8,
+   "bytes": 6676
+  },
+  "jrc_cos7-1a/crop248/ne_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "ne_mem",
+   "files": 8,
+   "bytes": 6676
+  },
+  "jrc_cos7-1a/crop248/ne_mem_all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "ne_mem_all",
+   "files": 8,
+   "bytes": 6688
+  },
+  "jrc_cos7-1a/crop248/nechrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "nechrom",
+   "files": 8,
+   "bytes": 6679
+  },
+  "jrc_cos7-1a/crop248/nhchrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "nhchrom",
+   "files": 8,
+   "bytes": 6679
+  },
+  "jrc_cos7-1a/crop248/np": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "np",
+   "files": 8,
+   "bytes": 6566
+  },
+  "jrc_cos7-1a/crop248/np_in": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "np_in",
+   "files": 8,
+   "bytes": 6673
+  },
+  "jrc_cos7-1a/crop248/np_out": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "np_out",
+   "files": 8,
+   "bytes": 6676
+  },
+  "jrc_cos7-1a/crop248/nuc": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "nuc",
+   "files": 8,
+   "bytes": 6569
+  },
+  "jrc_cos7-1a/crop248/nucleo": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "nucleo",
+   "files": 8,
+   "bytes": 6676
+  },
+  "jrc_cos7-1a/crop248/nucpl": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "nucpl",
+   "files": 8,
+   "bytes": 6673
+  },
+  "jrc_cos7-1a/crop248/perox": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "perox",
+   "files": 8,
+   "bytes": 6575
+  },
+  "jrc_cos7-1a/crop248/perox_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "perox_lum",
+   "files": 8,
+   "bytes": 6685
+  },
+  "jrc_cos7-1a/crop248/perox_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "perox_mem",
+   "files": 8,
+   "bytes": 6685
+  },
+  "jrc_cos7-1a/crop248/pm": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "pm",
+   "files": 106,
+   "bytes": 200909
+  },
+  "jrc_cos7-1a/crop248/rbc": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "rbc",
+   "files": 8,
+   "bytes": 6667
+  },
+  "jrc_cos7-1a/crop248/tbar": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "tbar",
+   "files": 8,
+   "bytes": 6670
+  },
+  "jrc_cos7-1a/crop248/ves": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "ves",
+   "files": 16,
+   "bytes": 11751
+  },
+  "jrc_cos7-1a/crop248/ves_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "ves_lum",
+   "files": 14,
+   "bytes": 8902
+  },
+  "jrc_cos7-1a/crop248/ves_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop248",
+   "label": "ves_mem",
+   "files": 16,
+   "bytes": 13021
+  },
+  "jrc_cos7-1a/crop252/.zattrs": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": ".zattrs",
+   "files": 1,
+   "bytes": 2018
+  },
+  "jrc_cos7-1a/crop252/.zgroup": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": ".zgroup",
+   "files": 1,
+   "bytes": 24
+  },
+  "jrc_cos7-1a/crop252/all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "all",
+   "files": 425,
+   "bytes": 1425038
+  },
+  "jrc_cos7-1a/crop252/bm": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "bm",
+   "files": 8,
+   "bytes": 6668
+  },
+  "jrc_cos7-1a/crop252/cell": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "cell",
+   "files": 425,
+   "bytes": 178505
+  },
+  "jrc_cos7-1a/crop252/cent": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "cent",
+   "files": 8,
+   "bytes": 6674
+  },
+  "jrc_cos7-1a/crop252/cent_all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "cent_all",
+   "files": 8,
+   "bytes": 6686
+  },
+  "jrc_cos7-1a/crop252/cent_dapp": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "cent_dapp",
+   "files": 8,
+   "bytes": 6689
+  },
+  "jrc_cos7-1a/crop252/cent_sdapp": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "cent_sdapp",
+   "files": 8,
+   "bytes": 6692
+  },
+  "jrc_cos7-1a/crop252/chrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "chrom",
+   "files": 8,
+   "bytes": 6677
+  },
+  "jrc_cos7-1a/crop252/cyto": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "cyto",
+   "files": 369,
+   "bytes": 735301
+  },
+  "jrc_cos7-1a/crop252/echrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "echrom",
+   "files": 8,
+   "bytes": 6680
+  },
+  "jrc_cos7-1a/crop252/ecs": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "ecs",
+   "files": 22,
+   "bytes": 8973
+  },
+  "jrc_cos7-1a/crop252/endo": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "endo",
+   "files": 16,
+   "bytes": 13004
+  },
+  "jrc_cos7-1a/crop252/endo_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "endo_lum",
+   "files": 14,
+   "bytes": 10952
+  },
+  "jrc_cos7-1a/crop252/endo_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "endo_mem",
+   "files": 16,
+   "bytes": 15471
+  },
+  "jrc_cos7-1a/crop252/er": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "er",
+   "files": 207,
+   "bytes": 387771
+  },
+  "jrc_cos7-1a/crop252/er_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "er_lum",
+   "files": 186,
+   "bytes": 300798
+  },
+  "jrc_cos7-1a/crop252/er_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "er_mem",
+   "files": 206,
+   "bytes": 531747
+  },
+  "jrc_cos7-1a/crop252/er_mem_all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "er_mem_all",
+   "files": 206,
+   "bytes": 534335
+  },
+  "jrc_cos7-1a/crop252/eres": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "eres",
+   "files": 17,
+   "bytes": 9511
+  },
+  "jrc_cos7-1a/crop252/eres_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "eres_lum",
+   "files": 13,
+   "bytes": 8303
+  },
+  "jrc_cos7-1a/crop252/eres_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "eres_mem",
+   "files": 17,
+   "bytes": 10223
+  },
+  "jrc_cos7-1a/crop252/glyco": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "glyco",
+   "files": 8,
+   "bytes": 6677
+  },
+  "jrc_cos7-1a/crop252/golgi": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "golgi",
+   "files": 8,
+   "bytes": 6677
+  },
+  "jrc_cos7-1a/crop252/golgi_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "golgi_lum",
+   "files": 8,
+   "bytes": 6689
+  },
+  "jrc_cos7-1a/crop252/golgi_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "golgi_mem",
+   "files": 8,
+   "bytes": 6689
+  },
+  "jrc_cos7-1a/crop252/hchrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "hchrom",
+   "files": 8,
+   "bytes": 6680
+  },
+  "jrc_cos7-1a/crop252/isg": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "isg",
+   "files": 8,
+   "bytes": 6671
+  },
+  "jrc_cos7-1a/crop252/isg_ins": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "isg_ins",
+   "files": 8,
+   "bytes": 6683
+  },
+  "jrc_cos7-1a/crop252/isg_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "isg_lum",
+   "files": 8,
+   "bytes": 6683
+  },
+  "jrc_cos7-1a/crop252/isg_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "isg_mem",
+   "files": 8,
+   "bytes": 6683
+  },
+  "jrc_cos7-1a/crop252/ld": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "ld",
+   "files": 8,
+   "bytes": 6570
+  },
+  "jrc_cos7-1a/crop252/ld_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "ld_lum",
+   "files": 8,
+   "bytes": 6680
+  },
+  "jrc_cos7-1a/crop252/ld_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "ld_mem",
+   "files": 8,
+   "bytes": 6680
+  },
+  "jrc_cos7-1a/crop252/lyso": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "lyso",
+   "files": 20,
+   "bytes": 12829
+  },
+  "jrc_cos7-1a/crop252/lyso_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "lyso_lum",
+   "files": 15,
+   "bytes": 9446
+  },
+  "jrc_cos7-1a/crop252/lyso_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "lyso_mem",
+   "files": 20,
+   "bytes": 14491
+  },
+  "jrc_cos7-1a/crop252/mito": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "mito",
+   "files": 224,
+   "bytes": 289531
+  },
+  "jrc_cos7-1a/crop252/mito_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "mito_lum",
+   "files": 199,
+   "bytes": 644400
+  },
+  "jrc_cos7-1a/crop252/mito_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "mito_mem",
+   "files": 218,
+   "bytes": 788705
+  },
+  "jrc_cos7-1a/crop252/mito_ribo": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "mito_ribo",
+   "files": 13,
+   "bytes": 9242
+  },
+  "jrc_cos7-1a/crop252/mt": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "mt",
+   "files": 29,
+   "bytes": 23819
+  },
+  "jrc_cos7-1a/crop252/mt_in": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "mt_in",
+   "files": 28,
+   "bytes": 13956
+  },
+  "jrc_cos7-1a/crop252/mt_out": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "mt_out",
+   "files": 29,
+   "bytes": 27400
+  },
+  "jrc_cos7-1a/crop252/ne": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "ne",
+   "files": 8,
+   "bytes": 6668
+  },
+  "jrc_cos7-1a/crop252/ne_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "ne_lum",
+   "files": 8,
+   "bytes": 6680
+  },
+  "jrc_cos7-1a/crop252/ne_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "ne_mem",
+   "files": 8,
+   "bytes": 6680
+  },
+  "jrc_cos7-1a/crop252/ne_mem_all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "ne_mem_all",
+   "files": 8,
+   "bytes": 6692
+  },
+  "jrc_cos7-1a/crop252/nechrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "nechrom",
+   "files": 8,
+   "bytes": 6683
+  },
+  "jrc_cos7-1a/crop252/nhchrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "nhchrom",
+   "files": 8,
+   "bytes": 6683
+  },
+  "jrc_cos7-1a/crop252/np": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "np",
+   "files": 8,
+   "bytes": 6570
+  },
+  "jrc_cos7-1a/crop252/np_in": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "np_in",
+   "files": 8,
+   "bytes": 6677
+  },
+  "jrc_cos7-1a/crop252/np_out": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "np_out",
+   "files": 8,
+   "bytes": 6680
+  },
+  "jrc_cos7-1a/crop252/nuc": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "nuc",
+   "files": 8,
+   "bytes": 6573
+  },
+  "jrc_cos7-1a/crop252/nucleo": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "nucleo",
+   "files": 8,
+   "bytes": 6680
+  },
+  "jrc_cos7-1a/crop252/nucpl": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "nucpl",
+   "files": 8,
+   "bytes": 6677
+  },
+  "jrc_cos7-1a/crop252/perox": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "perox",
+   "files": 8,
+   "bytes": 6579
+  },
+  "jrc_cos7-1a/crop252/perox_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "perox_lum",
+   "files": 8,
+   "bytes": 6689
+  },
+  "jrc_cos7-1a/crop252/perox_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "perox_mem",
+   "files": 8,
+   "bytes": 6689
+  },
+  "jrc_cos7-1a/crop252/pm": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "pm",
+   "files": 34,
+   "bytes": 20844
+  },
+  "jrc_cos7-1a/crop252/rbc": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "rbc",
+   "files": 8,
+   "bytes": 6671
+  },
+  "jrc_cos7-1a/crop252/tbar": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "tbar",
+   "files": 8,
+   "bytes": 6674
+  },
+  "jrc_cos7-1a/crop252/ves": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "ves",
+   "files": 49,
+   "bytes": 27063
+  },
+  "jrc_cos7-1a/crop252/ves_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "ves_lum",
+   "files": 37,
+   "bytes": 14698
+  },
+  "jrc_cos7-1a/crop252/ves_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop252",
+   "label": "ves_mem",
+   "files": 49,
+   "bytes": 31915
+  },
+  "jrc_cos7-1a/crop254/.zattrs": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": ".zattrs",
+   "files": 1,
+   "bytes": 2018
+  },
+  "jrc_cos7-1a/crop254/.zgroup": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": ".zgroup",
+   "files": 1,
+   "bytes": 24
+  },
+  "jrc_cos7-1a/crop254/all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "all",
+   "files": 425,
+   "bytes": 1473557
+  },
+  "jrc_cos7-1a/crop254/bm": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "bm",
+   "files": 8,
+   "bytes": 6673
+  },
+  "jrc_cos7-1a/crop254/cell": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "cell",
+   "files": 425,
+   "bytes": 197199
+  },
+  "jrc_cos7-1a/crop254/cent": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "cent",
+   "files": 8,
+   "bytes": 6679
+  },
+  "jrc_cos7-1a/crop254/cent_all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "cent_all",
+   "files": 8,
+   "bytes": 6691
+  },
+  "jrc_cos7-1a/crop254/cent_dapp": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "cent_dapp",
+   "files": 8,
+   "bytes": 6694
+  },
+  "jrc_cos7-1a/crop254/cent_sdapp": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "cent_sdapp",
+   "files": 8,
+   "bytes": 6697
+  },
+  "jrc_cos7-1a/crop254/chrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "chrom",
+   "files": 8,
+   "bytes": 6682
+  },
+  "jrc_cos7-1a/crop254/cyto": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "cyto",
+   "files": 414,
+   "bytes": 1070049
+  },
+  "jrc_cos7-1a/crop254/echrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "echrom",
+   "files": 8,
+   "bytes": 6685
+  },
+  "jrc_cos7-1a/crop254/ecs": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "ecs",
+   "files": 8,
+   "bytes": 6676
+  },
+  "jrc_cos7-1a/crop254/endo": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "endo",
+   "files": 47,
+   "bytes": 36426
+  },
+  "jrc_cos7-1a/crop254/endo_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "endo_lum",
+   "files": 41,
+   "bytes": 24043
+  },
+  "jrc_cos7-1a/crop254/endo_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "endo_mem",
+   "files": 47,
+   "bytes": 44915
+  },
+  "jrc_cos7-1a/crop254/er": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "er",
+   "files": 287,
+   "bytes": 734101
+  },
+  "jrc_cos7-1a/crop254/er_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "er_lum",
+   "files": 244,
+   "bytes": 562751
+  },
+  "jrc_cos7-1a/crop254/er_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "er_mem",
+   "files": 278,
+   "bytes": 965826
+  },
+  "jrc_cos7-1a/crop254/er_mem_all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "er_mem_all",
+   "files": 287,
+   "bytes": 985337
+  },
+  "jrc_cos7-1a/crop254/eres": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "eres",
+   "files": 35,
+   "bytes": 22269
+  },
+  "jrc_cos7-1a/crop254/eres_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "eres_lum",
+   "files": 30,
+   "bytes": 14868
+  },
+  "jrc_cos7-1a/crop254/eres_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "eres_mem",
+   "files": 35,
+   "bytes": 26774
+  },
+  "jrc_cos7-1a/crop254/glyco": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "glyco",
+   "files": 8,
+   "bytes": 6682
+  },
+  "jrc_cos7-1a/crop254/golgi": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "golgi",
+   "files": 19,
+   "bytes": 9927
+  },
+  "jrc_cos7-1a/crop254/golgi_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "golgi_lum",
+   "files": 17,
+   "bytes": 8531
+  },
+  "jrc_cos7-1a/crop254/golgi_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "golgi_mem",
+   "files": 19,
+   "bytes": 10616
+  },
+  "jrc_cos7-1a/crop254/hchrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "hchrom",
+   "files": 8,
+   "bytes": 6685
+  },
+  "jrc_cos7-1a/crop254/isg": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "isg",
+   "files": 8,
+   "bytes": 6676
+  },
+  "jrc_cos7-1a/crop254/isg_ins": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "isg_ins",
+   "files": 8,
+   "bytes": 6688
+  },
+  "jrc_cos7-1a/crop254/isg_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "isg_lum",
+   "files": 8,
+   "bytes": 6688
+  },
+  "jrc_cos7-1a/crop254/isg_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "isg_mem",
+   "files": 8,
+   "bytes": 6688
+  },
+  "jrc_cos7-1a/crop254/ld": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "ld",
+   "files": 52,
+   "bytes": 66612
+  },
+  "jrc_cos7-1a/crop254/ld_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "ld_lum",
+   "files": 47,
+   "bytes": 60854
+  },
+  "jrc_cos7-1a/crop254/ld_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "ld_mem",
+   "files": 52,
+   "bytes": 83928
+  },
+  "jrc_cos7-1a/crop254/lyso": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "lyso",
+   "files": 17,
+   "bytes": 8061
+  },
+  "jrc_cos7-1a/crop254/lyso_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "lyso_lum",
+   "files": 12,
+   "bytes": 7007
+  },
+  "jrc_cos7-1a/crop254/lyso_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "lyso_mem",
+   "files": 17,
+   "bytes": 8230
+  },
+  "jrc_cos7-1a/crop254/mito": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "mito",
+   "files": 70,
+   "bytes": 92499
+  },
+  "jrc_cos7-1a/crop254/mito_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "mito_lum",
+   "files": 57,
+   "bytes": 138756
+  },
+  "jrc_cos7-1a/crop254/mito_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "mito_mem",
+   "files": 70,
+   "bytes": 188411
+  },
+  "jrc_cos7-1a/crop254/mito_ribo": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "mito_ribo",
+   "files": 8,
+   "bytes": 6694
+  },
+  "jrc_cos7-1a/crop254/mt": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "mt",
+   "files": 75,
+   "bytes": 64301
+  },
+  "jrc_cos7-1a/crop254/mt_in": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "mt_in",
+   "files": 72,
+   "bytes": 42485
+  },
+  "jrc_cos7-1a/crop254/mt_out": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "mt_out",
+   "files": 75,
+   "bytes": 85094
+  },
+  "jrc_cos7-1a/crop254/ne": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "ne",
+   "files": 8,
+   "bytes": 6673
+  },
+  "jrc_cos7-1a/crop254/ne_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "ne_lum",
+   "files": 8,
+   "bytes": 6685
+  },
+  "jrc_cos7-1a/crop254/ne_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "ne_mem",
+   "files": 8,
+   "bytes": 6685
+  },
+  "jrc_cos7-1a/crop254/ne_mem_all": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "ne_mem_all",
+   "files": 8,
+   "bytes": 6697
+  },
+  "jrc_cos7-1a/crop254/nechrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "nechrom",
+   "files": 8,
+   "bytes": 6688
+  },
+  "jrc_cos7-1a/crop254/nhchrom": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "nhchrom",
+   "files": 8,
+   "bytes": 6688
+  },
+  "jrc_cos7-1a/crop254/np": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "np",
+   "files": 8,
+   "bytes": 6575
+  },
+  "jrc_cos7-1a/crop254/np_in": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "np_in",
+   "files": 8,
+   "bytes": 6682
+  },
+  "jrc_cos7-1a/crop254/np_out": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "np_out",
+   "files": 8,
+   "bytes": 6685
+  },
+  "jrc_cos7-1a/crop254/nuc": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "nuc",
+   "files": 8,
+   "bytes": 6578
+  },
+  "jrc_cos7-1a/crop254/nucleo": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "nucleo",
+   "files": 8,
+   "bytes": 6685
+  },
+  "jrc_cos7-1a/crop254/nucpl": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "nucpl",
+   "files": 8,
+   "bytes": 6682
+  },
+  "jrc_cos7-1a/crop254/perox": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "perox",
+   "files": 8,
+   "bytes": 6584
+  },
+  "jrc_cos7-1a/crop254/perox_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "perox_lum",
+   "files": 8,
+   "bytes": 6694
+  },
+  "jrc_cos7-1a/crop254/perox_mem": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "perox_mem",
+   "files": 8,
+   "bytes": 6694
+  },
+  "jrc_cos7-1a/crop254/pm": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "pm",
+   "files": 8,
+   "bytes": 6673
+  },
+  "jrc_cos7-1a/crop254/rbc": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "rbc",
+   "files": 8,
+   "bytes": 6676
+  },
+  "jrc_cos7-1a/crop254/tbar": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "tbar",
+   "files": 8,
+   "bytes": 6679
+  },
+  "jrc_cos7-1a/crop254/ves": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "ves",
+   "files": 70,
+   "bytes": 46296
+  },
+  "jrc_cos7-1a/crop254/ves_lum": {
+   "dataset": "jrc_cos7-1a",
+   "crop": "crop254",
+   "label": "ves_lum",
+   "files": 49,
+   "bytes": 23886
+  }
+ },
+ "datasets_with_mito_and_er": [
+  "jrc_cos7-1a"
+ ]
+}

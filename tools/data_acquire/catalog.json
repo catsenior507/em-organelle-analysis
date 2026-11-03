@@ -1,0 +1,198 @@
+{
+  "schema_version": "1.0.0",
+  "compiled": "2026-10-18",
+  "purpose": "为本项目补上缺失的多类细胞器标注：现有数据只有单一类别 'M'（线粒体），无法支撑『细胞器互作网络』的多类分析。",
+  "verified_note": "本文件中的 size_bytes 均由实际 HTTP HEAD/Range 响应或 S3 ListObjects 核实，不是估算。",
+  "target_layout": {
+    "root": "<外接盘>:\\dachuang_public_data",
+    "per_dataset": "<root>/<id>/",
+    "manifest": "<root>/manifest.json"
+  },
+  "datasets": [
+    {
+      "id": "cellmap_challenge_matched",
+      "tier": 1,
+      "title": "CellMap Segmentation Challenge — matched-res, no padding",
+      "role": "主力数据集：把『只有线粒体一类』变成『73 类细胞器』，直接支撑 mito–ER 接触分析",
+      "modality": "eFIB-SEM（电子显微镜），体素各向同性 4 nm 或 8 nm",
+      "ground_truth": "289 个由多名标注者交叉校验的训练体（crops）",
+      "source_datasets": "22 套 eFIB-SEM 数据：9 个细胞培养样本 + 13 个组织样本；物种含小鼠、果蝇、斑马鱼、人；组织含脑、心、肝、肾",
+      "classes_count": 73,
+      "classes_key": [
+        "mito", "mito_mem", "mito_lum", "mito_ribo",
+        "er", "er_mem", "er_lum", "er_mem_all",
+        "lyso", "lyso_mem", "lyso_lum",
+        "ld", "ld_mem", "ld_lum",
+        "perox", "perox_mem", "perox_lum",
+        "golgi", "ves", "endo", "nuc", "np", "cell"
+      ],
+      "why_it_matters": "项目现有 570 个区域全部标注为 'M'，无法回答任何『两类细胞器如何互作』的问题。本数据集同时提供 mito 与 er 的实例/语义标注，是本项目唯一能立刻做 mito–ER 接触（membrane contact site）统计的公开数据。",
+      "license": "CC-BY-4.0（COSEM/CellMap 官方 registry 标注；正式引用请用集合 DOI 10.25378/janelia.c.7456966）",
+      "citation": "Heinrich et al., Nature 2021, 'Whole-cell organelle segmentation in volume electron microscopy'; CellMap Segmentation Challenge, Janelia",
+      "access": {
+        "method": "https_zip",
+        "url": "https://janelia-cosem-datasets.s3.amazonaws.com/csc-zipped-data/matched_res_no_pad.zip",
+        "s3_uri": "s3://janelia-cosem-datasets/csc-zipped-data/matched_res_no_pad.zip",
+        "anonymous": true,
+        "range_supported": true
+      },
+      "size_bytes": 42020987070,
+      "notes": [
+        "官方文档说明：默认 Zarr 全量约 36.7 GB / 1.6 小时；本 zip 为 42 GB（含 zip 开销），内容等价于 matched-res 无 padding。",
+        "解压后仍是 Zarr/多文件结构，需用 zarr 或 tifffile 读取；本项目已装 zarr 3.3.0 + tifffile。",
+        "matched-res 指标注分辨率与图像分辨率一致（已重采样对齐）；all_res 版本为 1.2–1.6 TB，不建议。"
+      ]
+    },
+    {
+      "id": "cellmap_challenge_matched_pad128",
+      "tier": 3,
+      "title": "CellMap Segmentation Challenge — matched-res, 128 voxel padding",
+      "role": "可选：仅当需要 crop 边界外的上下文（训练边界效应严重时）才下",
+      "modality": "eFIB-SEM",
+      "license": "CC-BY-4.0",
+      "access": {
+        "method": "https_zip",
+        "url": "https://janelia-cosem-datasets.s3.amazonaws.com/csc-zipped-data/matched_res_128_pad.zip",
+        "s3_uri": "s3://janelia-cosem-datasets/csc-zipped-data/matched_res_128_pad.zip",
+        "anonymous": true,
+        "range_supported": true
+      },
+      "size_bytes": 116796450110,
+      "why_it_matters": "与 tier1 内容相同但四周多 128 体素上下文。2D 训练通常不需要。",
+      "notes": ["比 tier1 大 78 GB，除非确实需要 padding，否则不必下。"]
+    },
+    {
+      "id": "empiar_12885",
+      "tier": 2,
+      "title": "EMPIAR-12885 — 线粒体接触位点（mitochondrial contact / intrusions）",
+      "role": "主题最贴合『细胞器互作』的补充数据：专门研究线粒体与其它结构的接触位点",
+      "modality": "FIB-SEM，TIFF（可直接读，无需 Zarr）",
+      "ground_truth": "含人类标注与 6 个模型的预测对比；另有 4 组 overview",
+      "license": "EMPIAR 条目许可（发布时需核对；EMPIAR 多数为 CC0/CC-BY）",
+      "citation": "EMPIAR-12885, 'Source data for AI-directed voxel extraction and volume EM identify intrusions as sites of mitochondrial contact' (2025-11-25 发布)",
+      "access": {
+        "method": "https_tree",
+        "base_url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/",
+        "api_url": "https://www.ebi.ac.uk/empiar/api/entry/EMPIAR-12885",
+        "anonymous": true,
+        "range_supported": true,
+        "directories": [
+          "data/DATASET1_TEST_ROI",
+          "data/DATASET1_TEST_ROI/Model_comparisons_-_Membrane_Segmentation",
+          "data/DATASET1_TEST_ROI/Human_Vs_Unet_-_Mito_Classification",
+          "data/Set1_-_AIVE_SOURCE_DATA",
+          "data/Set2_-_AIVE_SOURCE_DATA",
+          "data/Set3_-_AIVE_SOURCE_DATA",
+          "data/Set4_-_AIVE_OUTPUTS"
+        ]
+      },
+      "size_bytes": 23760000000,
+      "size_verified_note": "由 --list-tree --exact 逐文件 Range 探测核实：32 个文件，23.76 GB。EMPIAR API 的 dataset_size 字段写 32.8 GB，与实际文件合计不符，以本值为准。",
+      "why_it_matters": "本项目标题是『互作网络重建』，而这是少数直接标注/讨论线粒体接触位点的公开数据；且为 TIFF，格式成本最低。",
+      "notes": [
+        "32 个 TIFF，最大的单个 8.1 GB（Set2 overview 的膜预测）。",
+        "DATASET1_TEST_ROI 一组只有 1.7 GB，适合先小样验证管线。",
+        "完整清单：tools/data_acquire/tree_empiar_12885.json"
+      ]
+    },
+    {
+      "id": "biostudies_sbiad2983",
+      "tier": 2,
+      "title": "BioStudies S-BIAD2983 — 8 种细胞器的多光谱共聚焦成像（hiPSC / iNeuron）",
+      "role": "光镜多类细胞器 + 真实时间序列（day7/14/21/28），可用于对照 EM 结论",
+      "modality": "Zeiss 880 激光扫描共聚焦，32 通道多阳极光谱探测器，Z-stack",
+      "ground_truth": "8 种细胞器；3D 多光谱分割",
+      "license": "CC BY 4.0",
+      "doi": "10.6019/S-BIAD2983",
+      "access": {
+        "method": "biostudies",
+        "api_url": "https://www.ebi.ac.uk/biostudies/api/v1/studies/S-BIAD2983",
+        "portal_url": "https://www.ebi.ac.uk/biostudies/BioImages/studies/S-BIAD2983",
+        "manifest_url": "https://ftp.ebi.ac.uk/biostudies/fire/S-BIAD/983/S-BIAD2983/Files/BioImageArchive-mcz.json",
+        "file_base_url": "https://ftp.ebi.ac.uk/biostudies/fire/S-BIAD/983/S-BIAD2983/Files/",
+        "anonymous": true,
+        "subset_only": true
+      },
+      "size_bytes": 1521880000000,
+      "size_verified_note": "由 MCZ 清单逐文件累加核实：5068 个文件，共 1,521.88 GB。",
+      "groups": {
+        "iPSCs": {"files": 473, "bytes_gb": 187.91},
+        "iNeurons day 7": {"files": 1260, "bytes_gb": 326.12},
+        "iNeurons day 14": {"files": 1239, "bytes_gb": 349.87},
+        "iNeurons day 21": {"files": 1067, "bytes_gb": 333.84},
+        "iNeurons day 28": {"files": 1029, "bytes_gb": 324.14}
+      },
+      "why_it_matters": "本项目最大的方法学缺口之一是『88 张图到底是不是时间序列』。这个数据集带真实的 day7/14/21/28 分化时间点，可以作为『真正的时间序列该长什么样、能支撑什么动力学分析』的对照。",
+      "notes": [
+        "⚠ 全量 1.52 TB，外接盘装不下，只能取子集（最小单元是单张 z-stack，1–2.4 GB）。",
+        "即使单个时间点分组也要 188–350 GB；建议按 3–5 张 z-stack 取样。",
+        "清单可用 fetch.py --list-tree 查看；分组体积见 groups 字段。"
+      ]
+    },
+    {
+      "id": "empiar_12017_mito_instance",
+      "tier": 3,
+      "title": "EMPIAR-12017 — 肝脏 ER 与线粒体构架（含线粒体实例分割）",
+      "role": "可选：ER–mito 空间关系的大体量真实数据，但整体 2.9 TB",
+      "modality": "FIB-SEM，TIFF",
+      "ground_truth": "含 2 个『Mitochondria instance segmentations』imageset（6461 / 6464），以及多组 FIB-SEM + 分割",
+      "license": "CC0（EMPIAR-12017 页面标注 CC-Zero）",
+      "citation": "EMPIAR-12017, 'Spatial mapping of hepatic ER and mitochondria architecture reveals zonated remodeling in fasting and obesity'",
+      "access": {
+        "method": "https_tree_or_aspera",
+        "api_url": "https://www.ebi.ac.uk/empiar/api/entry/EMPIAR-12017",
+        "anonymous": true,
+        "recommended_subset": [
+          "6461 Lean Fed Liver Dataset - Mitochondria instance segmentations",
+          "6464 Obese Fed Liver Dataset - Mitochondria instance segmentations"
+        ]
+      },
+      "size_bytes": 2900000000000,
+      "size_is_estimate": true,
+      "why_it_matters": "肝脏切片里 ER 与线粒体的空间关系研究得很成熟，可作为『真实 ER–mito 接触统计』的参照基准。",
+      "notes": [
+        "2.9 TB 是整条目的规模，不要全下。应只取 mitochondria instance segmentation 那两个 imageset，并用 API 计算实际体积。",
+        "图像为 12000x8000 / 9112x10200，单帧很大。"
+      ]
+    },
+    {
+      "id": "3dmsl",
+      "tier": 3,
+      "title": "3DMSL — 光学显微镜用的线粒体三维形状库",
+      "role": "可选：扩充线粒体形态多样性（用于形态先验/数据增强）",
+      "modality": "由形状库模拟生成的荧光显微图像",
+      "license": "见仓库与论文（ScienceDirect 数据论文）",
+      "access": {
+        "method": "manual",
+        "portal_url": "https://github.com/bioailab/3DMSL",
+        "paper_url": "https://www.sciencedirect.com/science/article/pii/S2352340926000600",
+        "anonymous": true
+      },
+      "size_bytes": null,
+      "why_it_matters": "线粒体形态（管状/碎片/肿胀）是互作网络里节点属性的重要维度。",
+      "notes": ["仓库是代码仓库，数据可能需按论文说明单独获取；size 未核实。"]
+    }
+  ],
+  "rejected": [
+    {
+      "id": "cellmap_all_res_no_pad",
+      "reason": "1.23 TB，与 matched-res 内容重复但分辨率更高；本项目先做 2D 检测，用不到全分辨率。",
+      "url": "s3://janelia-cosem-datasets/csc-zipped-data/all_res_no_pad.zip"
+    },
+    {
+      "id": "cellmap_all_res_128_pad",
+      "reason": "1.57 TB，同上且加 padding。",
+      "url": "s3://janelia-cosem-datasets/csc-zipped-data/all_res_128_pad.zip"
+    },
+    {
+      "id": "empiar_10791",
+      "reason": "2.8 TB，与 EMPIAR-12017 高度重叠（同为肝脏 FIB-SEM），取 12017 的线粒体子集即可。"
+    }
+  ],
+  "reading_notes": {
+    "zarr": "CellMap zip 解压后为 Zarr，可用本项目已装的 zarr 3.3.0 读取；若无 s3fs，本地路径即可。",
+    "tiff": "EMPIAR 数据为 TIFF，可直接用 tifffile（已装 2026.8.23）读取。",
+    "class_list_source": "https://raw.githubusercontent.com/janelia-cellmap/cellmap-segmentation-challenge/main/src/cellmap_segmentation_challenge/utils/classes.csv",
+    "download_official": "官方推荐 `csc fetch-data`（需 pip install -e . 与 micromamba 环境）；本工具改用直连 S3，避免依赖其 conda 环境。"
+  }
+}

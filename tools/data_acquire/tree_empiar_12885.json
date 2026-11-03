@@ -1,0 +1,330 @@
+{
+ "id": "empiar_12885",
+ "status": "listed",
+ "base": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/",
+ "num_files": 32,
+ "total_bytes": 23760928134,
+ "exact": true,
+ "files": [
+  {
+   "name": "Dataset4_overview.tif",
+   "href": "Dataset4_overview.tif",
+   "is_dir": false,
+   "size_str": "74M",
+   "size_bytes": 77800474,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/Dataset4_overview.tif",
+   "rel": "data/Dataset4_overview.tif"
+  },
+  {
+   "name": "Dataset4_overview_MembranePredictions.tif",
+   "href": "Dataset4_overview_MembranePredictions.tif",
+   "is_dir": false,
+   "size_str": "297M",
+   "size_bytes": 311046797,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/Dataset4_overview_MembranePredictions.tif",
+   "rel": "data/Dataset4_overview_MembranePredictions.tif"
+  },
+  {
+   "name": "Dataset1_overview.tif",
+   "href": "Dataset1_overview.tif",
+   "is_dir": false,
+   "size_str": "1.4G",
+   "size_bytes": 1543156900,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/Set1_-_AIVE_SOURCE_DATA/Dataset1_overview.tif",
+   "rel": "data/Set1_-_AIVE_SOURCE_DATA/Dataset1_overview.tif"
+  },
+  {
+   "name": "Dataset1_overview.tif_XYZCLAHE.tif",
+   "href": "Dataset1_overview.tif_XYZCLAHE.tif",
+   "is_dir": false,
+   "size_str": "1.4G",
+   "size_bytes": 1543156900,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/Set1_-_AIVE_SOURCE_DATA/Dataset1_overview.tif_XYZCLAHE.tif",
+   "rel": "data/Set1_-_AIVE_SOURCE_DATA/Dataset1_overview.tif_XYZCLAHE.tif"
+  },
+  {
+   "name": "Dataset1_overview CLASS IDS.txt",
+   "href": "Dataset1_overview%20CLASS%20IDS.txt",
+   "is_dir": false,
+   "size_str": "72",
+   "size_bytes": 72,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/Set1_-_AIVE_SOURCE_DATA/Dataset1_overview%20CLASS%20IDS.txt",
+   "rel": "data/Set1_-_AIVE_SOURCE_DATA/Dataset1_overview%20CLASS%20IDS.txt"
+  },
+  {
+   "name": "Dataset1_overview_MembranePredictions.tif",
+   "href": "Dataset1_overview_MembranePredictions.tif",
+   "is_dir": false,
+   "size_str": "5.7G",
+   "size_bytes": 6172010573,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/Set1_-_AIVE_SOURCE_DATA/Dataset1_overview_MembranePredictions.tif",
+   "rel": "data/Set1_-_AIVE_SOURCE_DATA/Dataset1_overview_MembranePredictions.tif"
+  },
+  {
+   "name": "Dataset2_overview.tif",
+   "href": "Dataset2_overview.tif",
+   "is_dir": false,
+   "size_str": "1.9G",
+   "size_bytes": 2026398792,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/Set2_-_AIVE_SOURCE_DATA/Dataset2_overview.tif",
+   "rel": "data/Set2_-_AIVE_SOURCE_DATA/Dataset2_overview.tif"
+  },
+  {
+   "name": "Dataset2_overview.tif_XYZCLAHE.tif",
+   "href": "Dataset2_overview.tif_XYZCLAHE.tif",
+   "is_dir": false,
+   "size_str": "1.9G",
+   "size_bytes": 2026398792,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/Set2_-_AIVE_SOURCE_DATA/Dataset2_overview.tif_XYZCLAHE.tif",
+   "rel": "data/Set2_-_AIVE_SOURCE_DATA/Dataset2_overview.tif_XYZCLAHE.tif"
+  },
+  {
+   "name": "Dataset2_overview CLASS IDS.txt",
+   "href": "Dataset2_overview%20CLASS%20IDS.txt",
+   "is_dir": false,
+   "size_str": "76",
+   "size_bytes": 76,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/Set2_-_AIVE_SOURCE_DATA/Dataset2_overview%20CLASS%20IDS.txt",
+   "rel": "data/Set2_-_AIVE_SOURCE_DATA/Dataset2_overview%20CLASS%20IDS.txt"
+  },
+  {
+   "name": "Dataset2_overview_MembranePredictions.tif",
+   "href": "Dataset2_overview_MembranePredictions.tif",
+   "is_dir": false,
+   "size_str": "7.5G",
+   "size_bytes": 8105009565,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/Set2_-_AIVE_SOURCE_DATA/Dataset2_overview_MembranePredictions.tif",
+   "rel": "data/Set2_-_AIVE_SOURCE_DATA/Dataset2_overview_MembranePredictions.tif"
+  },
+  {
+   "name": "Dataset4_overview_SarcoR.tif",
+   "href": "Dataset4_overview_SarcoR.tif",
+   "is_dir": false,
+   "size_str": "74M",
+   "size_bytes": 77594624,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/Set4_-_AIVE_OUTPUTS/Dataset4_overview_SarcoR.tif",
+   "rel": "data/Set4_-_AIVE_OUTPUTS/Dataset4_overview_SarcoR.tif"
+  },
+  {
+   "name": "Dataset4_overview.tif",
+   "href": "Dataset4_overview.tif",
+   "is_dir": false,
+   "size_str": "74M",
+   "size_bytes": 77800474,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/Set4_-_AIVE_SOURCE_DATA/Dataset4_overview.tif",
+   "rel": "data/Set4_-_AIVE_SOURCE_DATA/Dataset4_overview.tif"
+  },
+  {
+   "name": "Dataset4_overview.tif_XYZCLAHE.tif",
+   "href": "Dataset4_overview.tif_XYZCLAHE.tif",
+   "is_dir": false,
+   "size_str": "74M",
+   "size_bytes": 77793049,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/Set4_-_AIVE_SOURCE_DATA/Dataset4_overview.tif_XYZCLAHE.tif",
+   "rel": "data/Set4_-_AIVE_SOURCE_DATA/Dataset4_overview.tif_XYZCLAHE.tif"
+  },
+  {
+   "name": "Mito1 - AIVE - HUMAN.tif",
+   "href": "Mito1%20-%20AIVE%20-%20HUMAN.tif",
+   "is_dir": false,
+   "size_str": "32M",
+   "size_bytes": 33149494,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/DATASET1_TEST_ROI/Human_Vs_Unet_-_Mito_Classification/Mito1%20-%20AIVE%20-%20HUMAN.tif",
+   "rel": "data/DATASET1_TEST_ROI/Human_Vs_Unet_-_Mito_Classification/Mito1%20-%20AIVE%20-%20HUMAN.tif"
+  },
+  {
+   "name": "Mito1 - Raw - HUMAN.tif",
+   "href": "Mito1%20-%20Raw%20-%20HUMAN.tif",
+   "is_dir": false,
+   "size_str": "32M",
+   "size_bytes": 33554432,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/DATASET1_TEST_ROI/Human_Vs_Unet_-_Mito_Classification/Mito1%20-%20Raw%20-%20HUMAN.tif",
+   "rel": "data/DATASET1_TEST_ROI/Human_Vs_Unet_-_Mito_Classification/Mito1%20-%20Raw%20-%20HUMAN.tif"
+  },
+  {
+   "name": "Mito2 - AIVE - HUMAN.tif",
+   "href": "Mito2%20-%20AIVE%20-%20HUMAN.tif",
+   "is_dir": false,
+   "size_str": "32M",
+   "size_bytes": 33149494,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/DATASET1_TEST_ROI/Human_Vs_Unet_-_Mito_Classification/Mito2%20-%20AIVE%20-%20HUMAN.tif",
+   "rel": "data/DATASET1_TEST_ROI/Human_Vs_Unet_-_Mito_Classification/Mito2%20-%20AIVE%20-%20HUMAN.tif"
+  },
+  {
+   "name": "Mito2 - Raw - HUMAN.tif",
+   "href": "Mito2%20-%20Raw%20-%20HUMAN.tif",
+   "is_dir": false,
+   "size_str": "32M",
+   "size_bytes": 33149865,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/DATASET1_TEST_ROI/Human_Vs_Unet_-_Mito_Classification/Mito2%20-%20Raw%20-%20HUMAN.tif",
+   "rel": "data/DATASET1_TEST_ROI/Human_Vs_Unet_-_Mito_Classification/Mito2%20-%20Raw%20-%20HUMAN.tif"
+  },
+  {
+   "name": "Mito3 - AIVE - 1337Unet.tif",
+   "href": "Mito3%20-%20AIVE%20-%201337Unet.tif",
+   "is_dir": false,
+   "size_str": "32M",
+   "size_bytes": 33149494,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/DATASET1_TEST_ROI/Human_Vs_Unet_-_Mito_Classification/Mito3%20-%20AIVE%20-%201337Unet.tif",
+   "rel": "data/DATASET1_TEST_ROI/Human_Vs_Unet_-_Mito_Classification/Mito3%20-%20AIVE%20-%201337Unet.tif"
+  },
+  {
+   "name": "Mito3 - Raw - 1337Unet.tif",
+   "href": "Mito3%20-%20Raw%20-%201337Unet.tif",
+   "is_dir": false,
+   "size_str": "32M",
+   "size_bytes": 33149494,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/DATASET1_TEST_ROI/Human_Vs_Unet_-_Mito_Classification/Mito3%20-%20Raw%20-%201337Unet.tif",
+   "rel": "data/DATASET1_TEST_ROI/Human_Vs_Unet_-_Mito_Classification/Mito3%20-%20Raw%20-%201337Unet.tif"
+  },
+  {
+   "name": "Mito4 - AIVE - 1338Unet.tif",
+   "href": "Mito4%20-%20AIVE%20-%201338Unet.tif",
+   "is_dir": false,
+   "size_str": "32M",
+   "size_bytes": 33149494,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/DATASET1_TEST_ROI/Human_Vs_Unet_-_Mito_Classification/Mito4%20-%20AIVE%20-%201338Unet.tif",
+   "rel": "data/DATASET1_TEST_ROI/Human_Vs_Unet_-_Mito_Classification/Mito4%20-%20AIVE%20-%201338Unet.tif"
+  },
+  {
+   "name": "Mito4 - Raw - 1338Unet.tif",
+   "href": "Mito4%20-%20Raw%20-%201338Unet.tif",
+   "is_dir": false,
+   "size_str": "32M",
+   "size_bytes": 33149494,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/DATASET1_TEST_ROI/Human_Vs_Unet_-_Mito_Classification/Mito4%20-%20Raw%20-%201338Unet.tif",
+   "rel": "data/DATASET1_TEST_ROI/Human_Vs_Unet_-_Mito_Classification/Mito4%20-%20Raw%20-%201338Unet.tif"
+  },
+  {
+   "name": "Model (1) - Raw - RF.tif",
+   "href": "Model%20(1)%20-%20Raw%20-%20RF.tif",
+   "is_dir": false,
+   "size_str": "126M",
+   "size_bytes": 132551437,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/DATASET1_TEST_ROI/Model_comparisons_-_Membrane_Segmentation/Model%20(1)%20-%20Raw%20-%20RF.tif",
+   "rel": "data/DATASET1_TEST_ROI/Model_comparisons_-_Membrane_Segmentation/Model%20(1)%20-%20Raw%20-%20RF.tif"
+  },
+  {
+   "name": "Model (2) - AIVE - J48.tif",
+   "href": "Model%20(2)%20-%20AIVE%20-%20J48.tif",
+   "is_dir": false,
+   "size_str": "126M",
+   "size_bytes": 132540362,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/DATASET1_TEST_ROI/Model_comparisons_-_Membrane_Segmentation/Model%20(2)%20-%20AIVE%20-%20J48.tif",
+   "rel": "data/DATASET1_TEST_ROI/Model_comparisons_-_Membrane_Segmentation/Model%20(2)%20-%20AIVE%20-%20J48.tif"
+  },
+  {
+   "name": "Model (2) - Raw - J48.tif",
+   "href": "Model%20(2)%20-%20Raw%20-%20J48.tif",
+   "is_dir": false,
+   "size_str": "126M",
+   "size_bytes": 132551437,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/DATASET1_TEST_ROI/Model_comparisons_-_Membrane_Segmentation/Model%20(2)%20-%20Raw%20-%20J48.tif",
+   "rel": "data/DATASET1_TEST_ROI/Model_comparisons_-_Membrane_Segmentation/Model%20(2)%20-%20Raw%20-%20J48.tif"
+  },
+  {
+   "name": "Model (3) - AIVE - MLP.tif",
+   "href": "Model%20(3)%20-%20AIVE%20-%20MLP.tif",
+   "is_dir": false,
+   "size_str": "126M",
+   "size_bytes": 132540362,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/DATASET1_TEST_ROI/Model_comparisons_-_Membrane_Segmentation/Model%20(3)%20-%20AIVE%20-%20MLP.tif",
+   "rel": "data/DATASET1_TEST_ROI/Model_comparisons_-_Membrane_Segmentation/Model%20(3)%20-%20AIVE%20-%20MLP.tif"
+  },
+  {
+   "name": "Model (3) - Raw - MLP.tif",
+   "href": "Model%20(3)%20-%20Raw%20-%20MLP.tif",
+   "is_dir": false,
+   "size_str": "126M",
+   "size_bytes": 132551437,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/DATASET1_TEST_ROI/Model_comparisons_-_Membrane_Segmentation/Model%20(3)%20-%20Raw%20-%20MLP.tif",
+   "rel": "data/DATASET1_TEST_ROI/Model_comparisons_-_Membrane_Segmentation/Model%20(3)%20-%20Raw%20-%20MLP.tif"
+  },
+  {
+   "name": "Model (4) - AIVE - DT.tif",
+   "href": "Model%20(4)%20-%20AIVE%20-%20DT.tif",
+   "is_dir": false,
+   "size_str": "126M",
+   "size_bytes": 132120576,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/DATASET1_TEST_ROI/Model_comparisons_-_Membrane_Segmentation/Model%20(4)%20-%20AIVE%20-%20DT.tif",
+   "rel": "data/DATASET1_TEST_ROI/Model_comparisons_-_Membrane_Segmentation/Model%20(4)%20-%20AIVE%20-%20DT.tif"
+  },
+  {
+   "name": "Model (4) - Raw - DT.tif",
+   "href": "Model%20(4)%20-%20Raw%20-%20DT.tif",
+   "is_dir": false,
+   "size_str": "126M",
+   "size_bytes": 132120576,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/DATASET1_TEST_ROI/Model_comparisons_-_Membrane_Segmentation/Model%20(4)%20-%20Raw%20-%20DT.tif",
+   "rel": "data/DATASET1_TEST_ROI/Model_comparisons_-_Membrane_Segmentation/Model%20(4)%20-%20Raw%20-%20DT.tif"
+  },
+  {
+   "name": "Model (5) - AIVE - JRIP.tif",
+   "href": "Model%20(5)%20-%20AIVE%20-%20JRIP.tif",
+   "is_dir": false,
+   "size_str": "126M",
+   "size_bytes": 132540362,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/DATASET1_TEST_ROI/Model_comparisons_-_Membrane_Segmentation/Model%20(5)%20-%20AIVE%20-%20JRIP.tif",
+   "rel": "data/DATASET1_TEST_ROI/Model_comparisons_-_Membrane_Segmentation/Model%20(5)%20-%20AIVE%20-%20JRIP.tif"
+  },
+  {
+   "name": "Model (5) - Raw - JRIP.tif",
+   "href": "Model%20(5)%20-%20Raw%20-%20JRIP.tif",
+   "is_dir": false,
+   "size_str": "126M",
+   "size_bytes": 132551437,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/DATASET1_TEST_ROI/Model_comparisons_-_Membrane_Segmentation/Model%20(5)%20-%20Raw%20-%20JRIP.tif",
+   "rel": "data/DATASET1_TEST_ROI/Model_comparisons_-_Membrane_Segmentation/Model%20(5)%20-%20Raw%20-%20JRIP.tif"
+  },
+  {
+   "name": "Model (6) - AIVE - PART.tif",
+   "href": "Model%20(6)%20-%20AIVE%20-%20PART.tif",
+   "is_dir": false,
+   "size_str": "126M",
+   "size_bytes": 132540362,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/DATASET1_TEST_ROI/Model_comparisons_-_Membrane_Segmentation/Model%20(6)%20-%20AIVE%20-%20PART.tif",
+   "rel": "data/DATASET1_TEST_ROI/Model_comparisons_-_Membrane_Segmentation/Model%20(6)%20-%20AIVE%20-%20PART.tif"
+  },
+  {
+   "name": "Model (6) - Raw - PART.tif",
+   "href": "Model%20(6)%20-%20Raw%20-%20PART.tif",
+   "is_dir": false,
+   "size_str": "126M",
+   "size_bytes": 132551437,
+   "date": "2025-11-25 13:46",
+   "url": "https://ftp.ebi.ac.uk/empiar/world_availability/12885/data/DATASET1_TEST_ROI/Model_comparisons_-_Membrane_Segmentation/Model%20(6)%20-%20Raw%20-%20PART.tif",
+   "rel": "data/DATASET1_TEST_ROI/Model_comparisons_-_Membrane_Segmentation/Model%20(6)%20-%20Raw%20-%20PART.tif"
+  }
+ ]
+}

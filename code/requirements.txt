@@ -1,0 +1,8 @@
+opencv-python
+pytesseract
+torch
+torchvision
+transformers
+pillow
+numpy
+scipy

@@ -1,0 +1,151 @@
+[06:23:16] ===== 高尔基体全图推理 + 容差分析 =====
+[06:23:16] ===== 高尔基体全图推理 + 容差分析 =====
+[06:23:16]   权重：runs/golgi_v3/best.pt
+[06:23:16]   权重：runs/golgi_v3/best.pt
+Traceback (most recent call last):
+  File "~/projects/dachuang_organelle/tools/predict_golgi.py", line 49, in <module>
+    from train_seg import UNet  # noqa: E402
+ModuleNotFoundError: No module named 'train_seg'
+[06:23:18]   rc=1
+[06:23:18]   rc=1
+[06:23:18] 产出
+[06:23:18] 产出
+  掩码 0
+  叠加图 0
+[06:23:18] ===== 结束 =====
+[06:23:18] ===== 结束 =====
+[06:23:30] ===== 高尔基体全图推理 + 容差分析 =====
+[06:23:30] ===== 高尔基体全图推理 + 容差分析 =====
+[06:23:30]   权重：runs/golgi_v3/best.pt
+[06:23:30]   权重：runs/golgi_v3/best.pt
+Traceback (most recent call last):
+  File "~/projects/dachuang_organelle/tools/predict_golgi.py", line 268, in <module>
+    raise SystemExit(main())
+  File "~/projects/dachuang_organelle/tools/predict_golgi.py", line 160, in main
+    ids = sorted({os.path.splitext(f)[0] for f in os.listdir(orig)}
+FileNotFoundError: [Errno 2] No such file or directory: '~/projects/dachuang_organelle/data/golgi/原图'
+[06:23:32]   rc=1
+[06:23:32]   rc=1
+[06:23:32] 产出
+[06:23:32] 产出
+  掩码 0
+  叠加图 0
+[06:23:32] ===== 结束 =====
+[06:23:32] ===== 结束 =====
+[06:24:20] ===== 高尔基体全图推理 + 容差分析 =====
+[06:24:20] ===== 高尔基体全图推理 + 容差分析 =====
+[06:24:20]   权重：runs/golgi_v3/best.pt
+[06:24:20]   权重：runs/golgi_v3/best.pt
+权重 runs/golgi_v3/best.pt  device=cuda  图像 53 张
+留出（val）11 张；阈值 0.5
+
+id        split    GT%  pred%   Dice      t0      t1      t2      t3      t5
+----------------------------------------------------------------------------------
+Traceback (most recent call last):
+  File "~/projects/dachuang_organelle/tools/predict_golgi.py", line 268, in <module>
+    raise SystemExit(main())
+  File "~/projects/dachuang_organelle/tools/predict_golgi.py", line 190, in main
+    prob = predict_full(model, g, args.device)
+  File "~/projects/dachuang_organelle/tools/predict_golgi.py", line 86, in predict_full
+    p = torch.sigmoid(model(t))[0, 0].cpu().numpy()
+  File "~/projects/miniforge3/envs/dachuang/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "~/projects/miniforge3/envs/dachuang/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "~/projects/dachuang_organelle/scripts/train_seg.py", line 164, in forward
+    s1 = self.d1(x)
+  File "~/projects/miniforge3/envs/dachuang/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "~/projects/miniforge3/envs/dachuang/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "~/projects/miniforge3/envs/dachuang/lib/python3.10/site-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "~/projects/miniforge3/envs/dachuang/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "~/projects/miniforge3/envs/dachuang/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "~/projects/miniforge3/envs/dachuang/lib/python3.10/site-packages/torch/nn/modules/conv.py", line 554, in forward
+    return self._conv_forward(input, self.weight, self.bias)
+  File "~/projects/miniforge3/envs/dachuang/lib/python3.10/site-packages/torch/nn/modules/conv.py", line 549, in _conv_forward
+    return F.conv2d(
+RuntimeError: Given groups=1, weight of size [32, 3, 3, 3], expected input[1, 1, 256, 256] to have 3 channels, but got 1 channels instead
+[06:24:24]   rc=1
+[06:24:24]   rc=1
+[06:24:24] 产出
+[06:24:24] 产出
+  掩码 0
+  叠加图 0
+[06:24:24] ===== 结束 =====
+[06:24:24] ===== 结束 =====
+[06:24:47] ===== 高尔基体全图推理 + 容差分析 =====
+[06:24:47] ===== 高尔基体全图推理 + 容差分析 =====
+[06:24:47]   权重：runs/golgi_v3/best.pt
+[06:24:47]   权重：runs/golgi_v3/best.pt
+11382       val   3.6%  22.6%  0.160   0.160   0.166   0.171   0.176   0.185
+11384     train  28.7%  25.0%  0.757   0.757   0.775   0.790   0.803   0.826
+11923     train   8.0%   1.5%  0.048   0.048   0.049   0.050   0.050   0.051
+24478     train   5.6%   3.7%  0.488   0.488   0.493   0.498   0.503   0.512
+24479     train   4.9%   3.4%  0.565   0.565   0.588   0.608   0.628   0.668
+24480       val   6.0%   4.7%  0.508   0.508   0.520   0.531   0.540   0.559
+24483     train   8.5%   8.5%  0.478   0.478   0.485   0.491   0.497   0.508
+24491     train   5.4%   8.6%  0.180   0.180   0.183   0.186   0.188   0.193
+24492     train   5.6%  15.1%  0.167   0.167   0.171   0.174   0.176   0.180
+24515     train   3.5%   4.8%  0.443   0.443   0.456   0.465   0.473   0.487
+24516       val   3.8%   7.6%  0.290   0.290   0.301   0.310   0.320   0.337
+24519     train   0.1%   3.3%  0.001   0.001   0.003   0.005   0.008   0.015
+24520     train   0.0%   6.8%  0.000   0.000   0.002   0.005   0.009   0.021
+24521     train   0.0%  24.0%  0.001   0.001   0.003   0.006   0.009   0.017
+24522     train   0.0%   5.1%  0.002   0.002   0.007   0.011   0.016   0.026
+24523       val   0.0%  11.2%  0.000   0.000   0.000   0.000   0.000   0.001
+24528     train  12.4%  10.0%  0.539   0.539   0.553   0.564   0.575   0.593
+24529     train   0.0%   6.1%  0.002   0.002   0.006   0.010   0.014   0.023
+24764     train   2.6%   3.2%  0.188   0.188   0.192   0.196   0.199   0.206
+24766     train   5.0%   5.8%  0.692   0.692   0.706   0.718   0.729   0.749
+24767       val   6.6%  10.1%  0.484   0.484   0.494   0.504   0.512   0.528
+24768     train   9.9%   8.2%  0.657   0.657   0.670   0.681   0.691   0.710
+24769     train  10.9%   9.6%  0.770   0.770   0.785   0.798   0.810   0.830
+24770     train  14.5%  12.9%  0.761   0.761   0.777   0.791   0.803   0.826
+24772     train  15.6%  14.7%  0.754   0.754   0.771   0.785   0.798   0.821
+24774       val  13.8%  11.2%  0.657   0.657   0.671   0.684   0.696   0.718
+24775     train  10.6%  12.1%  0.741   0.741   0.755   0.769   0.781   0.802
+24776     train   9.6%  11.7%  0.697   0.697   0.710   0.722   0.732   0.750
+24779     train   8.0%   9.0%  0.608   0.608   0.623   0.636   0.648   0.668
+24780     train   9.9%  10.7%  0.712   0.712   0.728   0.742   0.755   0.777
+27226       val   2.3%  15.3%  0.163   0.163   0.167   0.171   0.174   0.181
+27228     train   5.0%  15.9%  0.312   0.312   0.319   0.325   0.331   0.341
+35999     train   2.9%   7.5%  0.278   0.278   0.287   0.295   0.303   0.317
+36256     train   3.8%   3.7%  0.503   0.503   0.515   0.525   0.534   0.550
+36264     train   3.7%   4.3%  0.529   0.529   0.542   0.552   0.560   0.574
+37185       val   0.6%   8.4%  0.062   0.062   0.063   0.064   0.065   0.067
+37186     train   2.7%  25.4%  0.152   0.152   0.153   0.155   0.156   0.158
+37190     train   1.2%  22.7%  0.062   0.062   0.063   0.063   0.063   0.064
+39323     train   2.5%  17.0%  0.193   0.193   0.195   0.196   0.197   0.199
+39456     train   4.5%   5.7%  0.528   0.528   0.542   0.552   0.561   0.576
+7335        val   1.7%  14.6%  0.022   0.022   0.022   0.022   0.022   0.022
+7743      train  17.9%  32.0%  0.564   0.564   0.570   0.574   0.577   0.583
+7744      train   3.0%  17.0%  0.218   0.218   0.220   0.221   0.222   0.225
+
+留出集硬 Dice 均值 0.3023（11 张），中位 0.2895
+  ！这是像素级 Dice（全图），与训练日志的 tile 级 Dice 口径不同，
+    不能直接与 0.48 之类的数字比较。
+
+边界容差下的 Dice（判断误差是否主要来自边界定义模糊）：
+  容差 0 px: 0.3023  （比硬 Dice +0.0000）
+  容差 1 px: 0.3102  （比硬 Dice +0.0078）
+  容差 2 px: 0.3172  （比硬 Dice +0.0148）
+  容差 3 px: 0.3237  （比硬 Dice +0.0214）
+  容差 5 px: 0.3359  （比硬 Dice +0.0335）
+
+  判读：放宽边界容差收益有限 -> 误差不是边界模糊主导，
+        更可能是模型确实没分准（或数据量不足）。
+
+掩码 data/golgi_masks/
+叠加图 docs/figures/golgi_pred/
+[06:26:21]   rc=0
+[06:26:21]   rc=0
+[06:26:21] 产出
+[06:26:21] 产出
+  掩码 53
+  叠加图 53
+[06:26:21] ===== 结束 =====
+[06:26:21] ===== 结束 =====

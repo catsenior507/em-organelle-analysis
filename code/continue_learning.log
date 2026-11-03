@@ -1,0 +1,12 @@
+====================================
+继续表征学习 - 特征提取和训练
+====================================
+检查文件...
+找到 1254 个增强JSON文件
+
+开始提取增强图片的特征...
+未定义与 'char' 类型的输入参数相对应的函数 'extract_features_from_augmented'。
+
+出错 continue_learning (第 33 行)
+extract_features_from_augmented(change_img_path, change_feature_json_path, change_features_all_path);
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -1,0 +1,91 @@
+====================================
+从特征提取阶段开始
+====================================
+检查文件夹...
+
+开始提取增强图片的特征...
+找到 1254 个增强JSON文件
+处理增强文件 1/1254: region_analysis__11_0002_crop50_bottomleft.json
+处理增强文件 50/1254: region_analysis__11_0005_crop75_bottomleft.json
+处理增强文件 100/1254: region_analysis__11_0009_flip_ud.json
+处理增强文件 150/1254: region_analysis__11_0013_crop50_topright.json
+处理增强文件 200/1254: region_analysis__12_0002_flip_ud.json
+处理增强文件 250/1254: region_analysis__12_0006_crop50_bottomright.json
+处理增强文件 300/1254: region_analysis__12_0010_crop50_bottomright.json
+处理增强文件 350/1254: region_analysis__12_0013_crop75_topleft.json
+处理增强文件 400/1254: region_analysis__12_0018_crop50_center.json
+处理增强文件 450/1254: region_analysis__12_0021_flip_ud.json
+处理增强文件 500/1254: region_analysis__12_0025_crop75_bottomleft.json
+处理增强文件 550/1254: region_analysis__12_0028_rot270.json
+处理增强文件 600/1254: region_analysis__12_0032_crop50_topleft.json
+处理增强文件 650/1254: region_analysis__12_0035_flip_ud.json
+处理增强文件 700/1254: region_analysis__12_0039_crop50_topright.json
+处理增强文件 750/1254: region_analysis__12_0042_rot180.json
+处理增强文件 800/1254: region_analysis__12_0046_crop75_bottomright.json
+处理增强文件 850/1254: region_analysis__12_0049_rot270.json
+处理增强文件 900/1254: region_analysis__13_0001_flip_lr.json
+处理增强文件 950/1254: region_analysis__18_0002_crop50_topright.json
+处理增强文件 1000/1254: region_analysis__18_0005_flip_ud.json
+处理增强文件 1050/1254: region_analysis__18_0010_crop50_bottomleft.json
+处理增强文件 1100/1254: region_analysis__18_0013_crop75_center.json
+处理增强文件 1150/1254: region_analysis__18_0016_rot180.json
+处理增强文件 1200/1254: region_analysis__21_0000_crop50_topright.json
+处理增强文件 1250/1254: region_analysis__21_0004_flip_lr.json
+特征提取完成！
+
+开始训练模型...
+找到 1251 个JSON文件用于训练
+无法识别的字段名称 "min_axis"。
+
+出错 run_from_feature_extraction>train_model_local (第 289 行)
+            feature = [feature, axes.major_axis, axes.min_axis];
+                                                 ^^^^^^^^^^^^^
+出错 run_from_feature_extraction (第 38 行)
+train_model_local(change_features_all_path, change_features_pre_path, change_mode_path, data_path);
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+====================================
+从特征提取阶段开始
+====================================
+检查文件夹...
+
+开始提取增强图片的特征...
+找到 1254 个增强JSON文件
+处理增强文件 1/1254: region_analysis__11_0002_crop50_bottomleft.json
+处理增强文件 50/1254: region_analysis__11_0005_crop75_bottomleft.json
+处理增强文件 100/1254: region_analysis__11_0009_flip_ud.json
+处理增强文件 150/1254: region_analysis__11_0013_crop50_topright.json
+处理增强文件 200/1254: region_analysis__12_0002_flip_ud.json
+处理增强文件 250/1254: region_analysis__12_0006_crop50_bottomright.json
+处理增强文件 300/1254: region_analysis__12_0010_crop50_bottomright.json
+处理增强文件 350/1254: region_analysis__12_0013_crop75_topleft.json
+处理增强文件 400/1254: region_analysis__12_0018_crop50_center.json
+处理增强文件 450/1254: region_analysis__12_0021_flip_ud.json
+处理增强文件 500/1254: region_analysis__12_0025_crop75_bottomleft.json
+处理增强文件 550/1254: region_analysis__12_0028_rot270.json
+处理增强文件 600/1254: region_analysis__12_0032_crop50_topleft.json
+处理增强文件 650/1254: region_analysis__12_0035_flip_ud.json
+处理增强文件 700/1254: region_analysis__12_0039_crop50_topright.json
+处理增强文件 750/1254: region_analysis__12_0042_rot180.json
+处理增强文件 800/1254: region_analysis__12_0046_crop75_bottomright.json
+处理增强文件 850/1254: region_analysis__12_0049_rot270.json
+处理增强文件 900/1254: region_analysis__13_0001_flip_lr.json
+处理增强文件 950/1254: region_analysis__18_0002_crop50_topright.json
+处理增强文件 1000/1254: region_analysis__18_0005_flip_ud.json
+处理增强文件 1050/1254: region_analysis__18_0010_crop50_bottomleft.json
+处理增强文件 1100/1254: region_analysis__18_0013_crop75_center.json
+处理增强文件 1150/1254: region_analysis__18_0016_rot180.json
+处理增强文件 1200/1254: region_analysis__21_0000_crop50_topright.json
+处理增强文件 1250/1254: region_analysis__21_0004_flip_lr.json
+特征提取完成！
+
+开始训练模型...
+找到 1251 个JSON文件用于训练
+====================================
+从特征提取阶段开始
+====================================
+检查文件夹...
+
+已找到 1251 个特征文件，跳过特征提取阶段
+
+开始训练模型...
+找到 1251 个JSON文件用于训练

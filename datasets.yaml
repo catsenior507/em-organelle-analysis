@@ -1,0 +1,90 @@
+# datasets.yaml —— 数据集声明（供 tools/unified.py 使用）
+#
+# ## 为什么用声明而不是脚本
+#
+# 我们手上同时有<b>三种互不兼容</b>的输入形态（调色板 TIFF + 独立绿掩码、
+# RGB JPEG + 叠加式绿描边、已切好的 tile），过去每来一批数据就要写一个新脚本，
+# 而且每个脚本对"转灰度""填洞""怎么划分验证集"的实现略有出入，
+# 会产生不可比的结果。
+#
+# 这里把差异**声明化**：新增数据集只加一段配置，不写代码。
+#
+# ## 字段说明
+#
+#   class            细胞器类别名（等于 tile 目录里的掩码文件名，如 mito.png）
+#   images           原图目录（相对仓库根）
+#   annotations      标注目录
+#   annotation_kind  green_separated | green_overlay | binary_mask | prebuilt_tiles
+#   annotation_pattern  可选，标注文件名模板，{id} 会被替换；缺省为 <id><extension>
+#   extension        原图后缀；留空则自动探测
+#   nm_per_px        该批数据的像素尺寸；配合 --target-nm 可跨批次统一尺度
+#   tile / stride    切片参数（缺省用命令行）
+#   min_pos_frac     tile 内 GT 占比超过此值算正样本
+#   neg_ratio        每图负 tile 数 = 正 tile 数 × 此比例
+#   min_gt_px        GT 小于此像素数的图跳过（通常是空标注或标注失败）
+#   val_every        按排序隔 N 取一作为验证（确定性）
+#   val_images       外部验证名单（优先于 val_every），每行一个 id
+#
+datasets:
+
+  # 自有 EM 线粒体：调色板 TIFF + 分离的绿色描边 TIFF
+  ourdata_mito:
+    class: mito
+    images: data/原图片
+    annotations: data/分离的标注信息
+    annotation_kind: green_separated
+    annotation_pattern: "green_{id}.tif"
+    extension: .tif
+    # 三种尺度（1.004 / 2.667 / 5.291 nm/px）逐图不同，必须按图查表
+    scale_json: data/annotations_v2/dataset.json
+    target_nm: 4.0           # 与此前 build_ourdata_tiles.py 的默认值一致
+    tile: 256
+    stride: 192
+    min_pos_frac: 0.01
+    neg_ratio: 1.0
+    # 覆盖率 ≥ trust_coverage 的图保留全部背景 tile（应对部分标注），
+    # 低于阈值的图只按 neg_ratio 抽样。与 build_ourdata_tiles.py 的行为一致。
+    neg_policy: all_if_trusted
+    trust_coverage: 0.05
+    min_gt_px: 200
+    # 用既有实验固定的验证名单，保证与已发表的结果口径一致
+    val_images: models/ourdata_mito/val_images.txt
+
+  # 自有 EM 高尔基体：RGB（实为灰度）JPEG + 叠加式绿色描边
+  ourdata_golgi:
+    class: golgi
+    images: data/golgi/原图
+    annotations: data/golgi/标注
+    annotation_kind: green_overlay
+    extension: .jpg
+    nm_per_px: null
+    tile: 256
+    stride: 192
+    min_pos_frac: 0.01
+    neg_ratio: 1.0
+    # 高尔基体这批数据**不用**可信覆盖率策略：旧脚本 build_golgi_tiles.py
+    # 一律按 neg_ratio 抽样（976 正 / 820 负）。若沿用 all_if_trusted，
+    # 覆盖率高的图会保留全部背景 tile，负样本变成 1183，与正在训练的模型口径不一致。
+    neg_policy: sampled
+    min_gt_px: 200
+    val_every: 5
+
+  # 清洗版高尔基体：先去掉面积 < 500 px 的碎片（见 tools/clean_golgi_labels.py）
+  #
+  # 动机：标注里 300 个连通域中有 199 个是极小碎片，面积上只占 0.02%，
+  # 但会让模型学到"到处有小阳性"，可能压低精确率。
+  # 注意：清洗后有 5 张图为空（原本只有碎片），这些图会被 min_gt_px 跳过。
+  ourdata_golgi_clean:
+    class: golgi
+    images: data/golgi/原图
+    annotations: data/golgi/标注清洗
+    annotation_kind: binary_mask
+    extension: .jpg
+    annotation_pattern: "{id}.png"
+    tile: 256
+    stride: 192
+    min_pos_frac: 0.01
+    neg_ratio: 1.0
+    neg_policy: sampled
+    min_gt_px: 200
+    val_every: 5

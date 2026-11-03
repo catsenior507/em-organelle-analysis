@@ -1,0 +1,174 @@
+====================================
+深度学习模型训练脚本
+====================================
+当前工作目录: D:\dachuang\code
+数据目录: D:\dachuang\code\..\data
+特征文件夹: D:\dachuang\code\..\data\features_all
+预测结果文件夹: D:\dachuang\code\..\data\features_pre
+模型保存文件夹: D:\dachuang\code\..\mode
+features_pre文件夹已存在
+mode文件夹已存在
+features_all文件夹存在
+找到 88 个JSON文件
+处理测试文件: region_analysis__11_0002.json
+提取的图片名称: 11_0002
+找到图片: D:\dachuang\code\..\data\分离的标注信息\green_11_0002.tif
+找到 34 个区域
+Feature size: 14
+First few features: 1.000000, 1000.000000, 1.000000
+Feature dimension initialized to: 14
+找到有效的文本: M
+Feature size: 14
+First few features: 629.000000, 685.000000, 101.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 873.000000, 934.000000, 122.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 1799.000000, 1860.000000, 140.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 967.000000, 1014.000000, 158.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 1895.000000, 1942.000000, 174.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 693.000000, 744.000000, 215.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 897.000000, 940.000000, 259.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 1757.000000, 1809.000000, 265.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 1833.000000, 1912.000000, 281.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 1966.000000, 2020.000000, 439.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 749.000000, 808.000000, 523.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 631.000000, 697.000000, 592.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 727.000000, 791.000000, 596.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 569.000000, 625.000000, 807.000000
+Feature size: 14
+First few features: 298.000000, 387.000000, 821.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 548.000000, 620.000000, 881.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 619.000000, 678.000000, 920.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 469.000000, 539.000000, 952.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 406.000000, 460.000000, 981.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 515.000000, 588.000000, 1046.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 1358.000000, 1421.000000, 1223.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 1312.000000, 1381.000000, 1330.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 1441.000000, 1506.000000, 1396.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 1399.000000, 1441.000000, 1507.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 1227.000000, 1297.000000, 1514.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 1330.000000, 1394.000000, 1517.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 629.000000, 699.000000, 1579.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 1230.000000, 1292.000000, 1597.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 734.000000, 790.000000, 1617.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 1296.000000, 1364.000000, 1673.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 529.000000, 590.000000, 1798.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 524.000000, 579.000000, 1914.000000
+找到有效的文本: M
+Feature size: 14
+First few features: 1201.000000, 1265.000000, 1938.000000
+数据加载完成，共加载 34 个样本
+all_features size: 34 x 14
+划分训练集和测试集...
+训练集大小: 27, 测试集大小: 7
+检查深度学习函数是否存在...
+✓ trainNetwork 函数存在
+✓ featureInputLayer 函数存在
+✓ fullyConnectedLayer 函数存在
+✓ reluLayer 函数存在
+✓ regressionLayer 函数存在
+✓ trainingOptions 函数存在
+创建深度学习模型...
+输入大小: 65536, 输出大小: 14
+训练深度学习模型...
+train_images size: 27 x 65536
+train_features size: 27 x 14
+创建网络结构...
+网络结构创建成功
+设置训练选项...
+训练选项设置成功
+开始训练模型...
+在单 CPU 上训练。
+｜＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝｜
+｜　　轮　　｜　　迭代　　｜　　　　经过的时间　　　　　｜　　小批量　ＲＭＳＥ　　｜　　验证　ＲＭＳＥ　　｜　　小批量损失　　｜　　验证损失　　｜　　基础学习率　　｜
+｜　　　　　｜　　　　　　｜　　（ｈｈ：ｍｍ：ｓｓ）　　｜　　　　　　　　　　　　｜　　　　　　　　　　　｜　　　　　　　　　｜　　　　　　　　｜　　　　　　　　　｜
+｜＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝｜
+｜　　　１　｜　　　　１　｜　　　　　００：００：００　｜　　　　２９９２．２３　｜　　　２５５３．１５　｜　４．４７６７ｅ＋０６　｜　３．２５９３ｅ＋０６　｜　　０．００１０　｜
+｜　　　１　｜　　　　５　｜　　　　　００：００：００　｜　　　　２００５．２２　｜　　　２５５０．４９　｜　２．０１０５ｅ＋０６　｜　３．２５２５ｅ＋０６　｜　　０．００１０　｜
+｜　　　２　｜　　　１０　｜　　　　　００：００：００　｜　　　　３４７２．９８　｜　　　２５４４．９４　｜　６．０３０８ｅ＋０６　｜　３．２３８４ｅ＋０６　｜　　０．００１０　｜
+｜　　　３　｜　　　１５　｜　　　　　００：００：０１　｜　　　　３０６３．０３　｜　　　２５３４．７９　｜　４．６９１１ｅ＋０６　｜　３．２１２６ｅ＋０６　｜　　０．００１０　｜
+｜　　　４　｜　　　２０　｜　　　　　００：００：０１　｜　　　　２１４７．６８　｜　　　２５１７．５０　｜　２．３０６３ｅ＋０６　｜　３．１６８９ｅ＋０６　｜　　０．００１０　｜
+｜　　　５　｜　　　２５　｜　　　　　００：００：０１　｜　　　　２９３５．８６　｜　　　２４８９．８２　｜　４．３０９６ｅ＋０６　｜　３．０９９６ｅ＋０６　｜　　０．００１０　｜
+｜　　　５　｜　　　３０　｜　　　　　００：００：０１　｜　　　　２５９３．１６　｜　　　２４４８．２８　｜　３．３６２２ｅ＋０６　｜　２．９９７０ｅ＋０６　｜　　０．００１０　｜
+｜＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝｜
+训练结束: 已完成最大轮数。
+模型训练成功
+net变量类型: SeriesNetwork
+保存模型到: D:\dachuang\code\..\mode\deep_learning_model.mat
+模型保存成功
+测试模型...
+模型预测成功
+模型测试结果：
+均方误差 (MSE): 428149.4375
+均方根误差 (RMSE): 654.3313
+保存预测结果...
+保存预测结果: D:\dachuang\code\..\data\features_pre\deep_learning_prediction_1.json
+保存预测结果: D:\dachuang\code\..\data\features_pre\deep_learning_prediction_2.json
+保存预测结果: D:\dachuang\code\..\data\features_pre\deep_learning_prediction_3.json
+保存预测结果: D:\dachuang\code\..\data\features_pre\deep_learning_prediction_4.json
+保存预测结果: D:\dachuang\code\..\data\features_pre\deep_learning_prediction_5.json
+保存预测结果: D:\dachuang\code\..\data\features_pre\deep_learning_prediction_6.json
+保存预测结果: D:\dachuang\code\..\data\features_pre\deep_learning_prediction_7.json
+====================================
+训练完成！
+模型已保存到: D:\dachuang\code\..\mode\deep_learning_model.mat
+预测结果已保存到: D:\dachuang\code\..\data\features_pre
+====================================
