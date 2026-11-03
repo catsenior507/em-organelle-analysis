@@ -1,0 +1,23 @@
+# Normalise line endings: sources and docs are LF, so Windows checkouts do not
+# break the shell scripts.
+* text=auto eol=lf
+
+*.sh    text eol=lf
+*.py    text eol=lf
+*.md    text eol=lf
+*.yaml  text eol=lf
+*.yml   text eol=lf
+*.json  text eol=lf
+*.txt   text eol=lf
+*.m     text eol=lf
+
+# binary
+*.png   binary
+*.jpg   binary
+*.tif   binary
+*.tiff  binary
+*.pt    binary
+*.pth   binary
+*.npy   binary
+*.zip   binary
+*.gz    binary

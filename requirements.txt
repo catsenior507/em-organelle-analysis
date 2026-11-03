@@ -1,0 +1,30 @@
+# Core — needed for segmentation, the pipeline and the network analysis
+numpy>=1.24
+scipy>=1.10
+Pillow>=10.0
+PyYAML>=6.0
+networkx>=3.0
+
+# Deep learning. Install the build that matches your CUDA; the numbers in
+# docs/ were produced with torch 2.6.0 + cu118 on an RTX 3080.
+torch>=2.1
+torchvision>=0.16
+
+# --- Optional: only needed for specific areas ---
+
+# DETR region-detection experiments (tools/detr/)
+# transformers>=4.40
+
+# Fine-tuning MitoNet (src/finetune_mitonet.py). The empanada core is bundled
+# inside this wheel; on a headless machine replace empanada_napari/__init__.py
+# with a minimal one, because the shipped version imports Qt widgets.
+# empanada-napari==1.2.4
+
+# Reading the public 3D volumes (tools/asem_fetch.py). Chunks are fetched over
+# plain HTTPS and decompressed with the standard-library zlib, so zarr is only
+# needed if you want to open a volume through the zarr API directly.
+# zarr>=2.16
+
+# OCR of scale bars and letter labels (code/ocr*.py)
+# pytesseract>=0.3.10
+# opencv-python>=4.8

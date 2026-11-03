@@ -1,0 +1,75 @@
+# ---- Data and models: large, partly third-party, never committed ----
+data/
+models/
+runs/
+temp/
+archive/
+
+# raw images and annotations (layout described by datasets.yaml)
+*.npy
+*.npz
+*.pt
+*.pth
+*.ckpt
+*.onnx
+
+# images / archives
+*.tif
+*.tiff
+*.zip
+*.gz
+*.tar
+
+# ---- Environments ----
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+.pytest_cache/
+
+# ---- Credentials and local config: never committed ----
+.env
+.env.*
+*.key
+*.pem
+id_rsa
+id_ed25519
+secrets.json
+config.local.*
+
+# ---- Editors / OS ----
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- Logs: keep only the result files the documents cite ----
+logs/*
+!logs/GOLGI_RESULT.txt
+!logs/GOLGI_COMBINED_RESULT.txt
+!logs/GOLGI_ABLATION.txt
+!logs/GOLGI_MULTISEED.txt
+!logs/GOLGI_CV.txt
+!logs/GOLGI_CONFIG_SWEEP.txt
+!logs/GOLGI_HICOV.txt
+!logs/GOLGI_STATUS.md
+!logs/golgi_crossdomain.txt
+!logs/golgi_hicov_eval.txt
+!logs/golgi_seed_detail.txt
+!logs/golgi_cv_detail.txt
+!logs/golgi_infer.log
+!logs/golgi_dice_vs_coverage.txt
+!logs/golgi_dice_vs_coverage_summary.txt
+!logs/golgi_label_cleaning.json
+!logs/golgi_scale.json
+!logs/ourdata_coverage_strata.txt
+!logs/text_contamination.json
+!logs/text_artifact_calibration.json
+!logs/OURDATA_RESULT.txt
+!logs/MORPHO_COMPARISON.txt
+!logs/EMPANADA_HEAD2HEAD.txt
+!logs/PIPELINE_REPORT.md
+!logs/fullimage_ourdata.json
