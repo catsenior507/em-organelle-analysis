@@ -1,42 +1,44 @@
-# 多类细胞器互作分析：第一次真正可做
+# Multi-class organelle interaction analysis: the first time it is actually feasible
 
-> 课题目标是"细胞器互作网络重建与涌现特征分析"。
-> 在此之前我们**只能做同类相邻网络**，因为自有数据的标注全是单类
-> （`organelle_type` 543 个 "M" + 27 空）。本文记录第一次拿到
-> **同视野两类真值**后做的异类互作分析。
+**English** ｜ [中文](MULTICLASS-CONTACTS.zh-CN.md)
+
+> The project goal is "reconstruction of organelle interaction networks and analysis of emergent features".
+> Until now we **could only build same-class adjacency networks**, because our own annotations are all single-class
+> (`organelle_type`: 543 "M" + 27 empty). This document records the cross-class interaction analysis done after
+> obtaining **two classes of ground truth in the same field of view** for the first time.
 
 ---
 
-## 1. 数据条件
+## 1. Data conditions
 
-ASEM 数据集 64 的 `labels/er` 与 `labels/mito` 落在**同一 ROI**：
+In ASEM dataset 64, `labels/er` and `labels/mito` fall on the **same ROI**:
 
-| 项 | 值 |
+| Item | Value |
 |---|---|
-| 体积 | 241 × 476 × 528 |
-| 体素 | 5 nm 各向同性 |
-| 对齐偏移（相对 raw） | [400, 326, 2212]（两者相同） |
-| mito 前景 | 9.16% |
-| er 前景 | 20.03% |
-| 样品 | BSC-1 细胞，化学固定（CF） |
+| Volume | 241 × 476 × 528 |
+| Voxel | 5 nm isotropic |
+| Alignment offset (relative to raw) | [400, 326, 2212] (identical for both) |
+| mito foreground | 9.16% |
+| er foreground | 20.03% |
+| Sample | BSC-1 cells, chemical fixation (CF) |
 
-**这是本项目第一次拥有"同一视野、已配准"的两类标注。**
-此前的替代方案（在同一个视野里分别标注两类）需要额外的人工标注，
-而这里可以直接用公开数据验证方法与工具链。
+**This is the first time the project has two classes of annotation that are in the same field of view and already registered.**
+The previous alternative (annotating the two classes separately in the same field of view) required extra manual annotation,
+whereas here public data can be used directly to validate the method and toolchain.
 
-> 必须标明：这是**外部数据**，不是我们自己的样品。
-> 它证明工具可用，不构成我们样品的生物学结论。
+> This must be stated: this is **external data**, not our own sample.
+> It shows the tools work; it is not a biological conclusion about our sample.
 
 ---
 
-## 2. 一个把结论完全颠倒的阈值问题
+## 2. A threshold problem that completely inverted the conclusion
 
-第一次跑接触分析，判定条件设为"膨胀 2 体素 = 10 nm"，结果是 **0 个接触**。
-看起来像数据有问题（两类都占了 9–20% 的体积，怎么完全不接触？）。
+The first time we ran the contact analysis, the criterion was "dilate by 2 voxels = 10 nm", and the result was **0 contacts**.
+It looked like the data were broken (both classes occupy 9–20% of the volume — how can they not touch at all?).
 
-诊断后真相是**阈值设错**：
+After diagnosis, the truth was that **the threshold was wrong**:
 
-| 判定距离 | 接触重叠体素 | 占 mito 表面 |
+| Decision distance | Contact overlap voxels | Share of mito surface |
 |---|---|---|
 | 0 nm | 0 | 0.00% |
 | 5 nm | 0 | 0.00% |
@@ -47,87 +49,87 @@ ASEM 数据集 64 的 `labels/er` 与 `labels/mito` 落在**同一 ROI**：
 | 30 nm | 29 156 | 7.34% |
 | 40 nm | 70 366 | 12.92% |
 
-两类的最近距离在 **15–25 nm** 之间——而文献里
-**内质网–线粒体接触位点（MCS）的经典定义就是两膜间距 10–30 nm**。
-用 10 nm 正好落在窗口下沿之外，于是判为 0。
+The closest distance between the two classes lies between **15–25 nm** — and in the literature
+**the classic definition of an endoplasmic reticulum–mitochondria contact site (MCS) is a membrane spacing of 10–30 nm**.
+Using 10 nm lands just outside the lower edge of that window, so the count came out as 0.
 
-**教训**：接触类分析的距离阈值不能凭直觉取，必须
-①按生物学定义定 ②把扫描结果列出来让人能核对。
-现在的脚本默认 25 nm，并把 0–40 nm 的扫描一并输出。
+**Lesson**: the distance threshold in contact analysis cannot be chosen by intuition; it must
+① be set from the biological definition and ② come with the full scan listed so a reader can check it.
+The current script defaults to 25 nm and also outputs the 0–40 nm scan.
 
 ---
 
-## 3. 结果（25 nm 判定）
+## 3. Results (25 nm criterion)
 
-| 指标 | 值 |
+| Metric | Value |
 |---|---|
-| 接触重叠体素 | 15 058 |
-| 接触体积 | 0.0019 µm³ |
-| mito 表面体素 | 224 964 |
-| **接触处 mito 表面** | **10 349（4.60%）** |
-| mito 表面积（估） | 5.6241 µm² |
-| 接触面积（估） | 0.2587 µm² |
+| Contact overlap voxels | 15 058 |
+| Contact volume | 0.0019 µm³ |
+| mito surface voxels | 224 964 |
+| **mito surface in contact** | **10 349 (4.60%)** |
+| mito surface area (est.) | 5.6241 µm² |
+| Contact area (est.) | 0.2587 µm² |
 
-**mito 表面有 4.60% 处于与 ER 的接触中（25 nm 内）。**
-这是一个可报告的量级——文献中 ER–线粒体接触通常占线粒体表面的个位数百分比。
+**4.60% of the mito surface is in contact with ER (within 25 nm).**
+That is a reportable magnitude — in the literature, ER–mitochondria contact typically covers a single-digit percentage of the mitochondrial surface.
 
-> 面积是**估算**：按"每个接触表面体素贡献 1 体素面"折算（5 nm × 5 nm）。
-> 这是常用的近似，但没有做真正的表面网格化，因此只能当作量级参考。
+> The areas are **estimates**: computed as "each contact surface voxel contributes 1 voxel face" (5 nm × 5 nm).
+> This is a common approximation, but no true surface meshing was done, so it can only serve as an order-of-magnitude reference.
 
 ---
 
-## 4. 必须说清的两个限制
+## 4. Two limitations that must be stated clearly
 
-### 4.1 标签是二值语义，不是实例
+### 4.1 The labels are binary semantics, not instances
 
-两类标签的取值都是 `{0, 1}`。因此"实例"只能用**连通域**近似：
+Both label sets take values in `{0, 1}`. "Instances" can therefore only be approximated by **connected components**:
 
-| 类别 | 连通域数 | 最大连通域 |
+| Class | Connected components | Largest component |
 |---|---|---|
-| mito | 3 | 3.53 M 体素 |
-| er | 15 | 11.60 M 体素 |
+| mito | 3 | 3.53 M voxels |
+| er | 15 | 11.60 M voxels |
 
-线粒体本就是**网络状**结构，所以"3 个连通域"不等于"3 个线粒体"。
-报告里不能说"每个线粒体平均接触几个 ER"——那需要真正的实例分割。
+Mitochondria are inherently **network-like** structures, so "3 connected components" does not mean "3 mitochondria".
+The report cannot say "each mitochondrion contacts N ER objects on average" — that requires true instance segmentation.
 
-### 4.2 两类标注互斥
+### 4.2 The two classes are mutually exclusive
 
-重叠体素为 **0**，说明标注时同一体素只能属于一类。
-这本身合理，但意味着**接触区域的归属被强制二分了**：
-真实接触处两类膜是紧贴的，标注时必然有一侧被划给其中一类。
-因此 4.60% 这个数会随标注习惯略有出入，不能当作精确的物理量。
+The overlap voxels are **0**, which means a voxel can belong to only one class when annotating.
+That is reasonable in itself, but it means **the contact region is forced into a binary assignment**:
+at a real contact the two membranes are apposed, so one side must necessarily be assigned to one of the classes.
+The 4.60% figure will therefore vary slightly with annotation habits and cannot be treated as a precise physical quantity.
 
 ---
 
-## 5. 对我们自己数据意味着什么
+## 5. What it means for our own data
 
-### 5.1 现在能做的
+### 5.1 What can be done now
 
-* 用同一套工具分析任何**已配准的多类标注**（自有或公开）
-* 得到"某类表面有多少比例与另一类接触"这一核心互作指标
+* analyse any **registered multi-class annotation** (our own or public) with the same toolchain
+* obtain the core interaction metric "what fraction of one class's surface is in contact with the other class"
 
-### 5.2 还缺的
+### 5.2 What is still missing
 
-| 缺口 | 说明 |
+| Gap | Explanation |
 |---|---|
-| 自有样品的多类标注 | 目前只有线粒体和高尔基体，且不在同一视野 |
-| 真正的实例分割 | 现用连通域近似，网络状结构会合并 |
-| 高尔基体参与的三类互作 | 需要 golgi + mito + er 同视野，ASEM ds64 的 golgi 在**另一个 ROI** |
+| Multi-class annotation of our own sample | currently only mitochondria and Golgi, and not in the same field of view |
+| True instance segmentation | a connected-component approximation is used, so network-like structures merge |
+| Three-class interactions involving Golgi | requires golgi + mito + er in the same field of view; the golgi of ASEM ds64 is in **another ROI** |
 
-**最后一条值得注意**：ds64 的 golgi ROI 是 [777, 291, 954]，
-而 er/mito 是 [400, 326, 2212]——**两者不重叠**。
-所以目前无法用这份数据做 golgi–mito–er 三类同视野分析。
-若要三类互作，需要在自有数据上补标注，或另找数据集。
+**The last one is worth noting**: the golgi ROI of ds64 is [777, 291, 954],
+while er/mito is [400, 326, 2212] — **the two do not overlap**.
+So this dataset cannot currently be used for a same-field-of-view golgi–mito–er analysis.
+Three-class interactions would require annotating more of our own data, or finding another dataset.
 
 ---
 
-## 6. 复现
+## 6. Reproduction
 
 ```bash
-# 在服务器上
+# on the server
 bash scripts/run_multiclass_contacts.sh
 ```
 
-输出：`data/network_multiclass/ds64.json`（含扫描表与所选阈值的结果）。
+Output: `data/network_multiclass/ds64.json` (contains the scan table and the results at the chosen threshold).
 
-脚本：`tools/network/multiclass_contacts.py`
+Script: `tools/network/multiclass_contacts.py`

@@ -1,123 +1,137 @@
-# 细胞器检测（DETR）首次训练与评估结果
+# First Training and Evaluation Results for Organelle Detection (DETR)
 
-> 数据：CellMap / COSEM `jrc_mus-kidney`（小鼠肾，FIB-SEM）
-> 服务器：`youruser@your-server-host:22`，环境 `dachuang`，单卡 RTX 3080
-> 日期：2026-10-31
-> 代码：`tools/server/scripts/{train_detr_slices,eval_detr}.py`
+**English** ｜ [中文](ORGANELLE-DETECTION-RESULTS.zh-CN.md)
 
----
-
-## 1. 一句话结论
-
-**线粒体（mito）检测可用但框不精，内质网（er）检测基本失败；后者不是训练问题，
-而是"用轴对齐包围盒表示内质网"这个建模选择本身有问题。**
+> Data: CellMap / COSEM `jrc_mus-kidney` (mouse kidney, FIB-SEM)
+> Server: `youruser@your-server-host:22`, environment `dachuang`, single RTX 3080
+> Date: 2026-10-31
+> Code: `tools/server/scripts/{train_detr_slices,eval_detr}.py`
 
 ---
 
-## 2. 训练配置与实耗
+## 1. One-sentence conclusion
 
-| 项 | 值 |
+**Mitochondria (mito) detection is usable but the boxes are imprecise; ER (er) detection essentially
+fails. The latter is not a training problem — the modeling choice of "representing the ER with
+axis-aligned bounding boxes" is itself problematic.**
+
+---
+
+## 2. Training configuration and actual cost
+
+| Item | Value |
 |---|---|
-| 数据 | 250 个切片（14 个 crop），其中 240 个含实例 |
-| 按 crop 分组划分 | 11 个训练 crop（197 切片）/ 3 个验证 crop（43 切片） |
-| 模型 | DETR-R50，41.5 M 参数，分类头由 COCO 92 类重建为 3 |
-| 输入 | 短边 480 px，batch 8 |
-| 优化 | AdamW，头 lr=1e-4，主干 lr=1e-5，余弦调度，warmup 187 步，梯度裁剪 0.1 |
-| epoch / 步数 | 150 epoch × 25 步 = **3750 步** |
-| 耗时 | **约 18 分钟**（epoch 约 7 s） |
-| 显存 | batch 8 @480px 峰值约 4.4 GB / 10 GB |
-| 最优 | **epoch 85，val_loss 2.406**；此后 val 回升至 2.53 → 过拟合 |
+| Data | 250 slices (14 crops), of which 240 contain instances |
+| Grouped split by crop | 11 training crops (197 slices) / 3 validation crops (43 slices) |
+| Model | DETR-R50, 41.5 M parameters, classification head rebuilt from COCO 92 classes to 3 |
+| Input | short side 480 px, batch 8 |
+| Optimization | AdamW, head lr=1e-4, backbone lr=1e-5, cosine schedule, warmup 187 steps, gradient clipping 0.1 |
+| epoch / steps | 150 epochs × 25 steps = **3750 steps** |
+| Wall time | **about 18 minutes** (about 7 s per epoch) |
+| GPU memory | batch 8 @480px peaks at about 4.4 GB / 10 GB |
+| Best | **epoch 85, val_loss 2.406**; afterwards val climbs back to 2.53 → overfitting |
 
-训练 loss 从 5.6 降到 1.73，但 val 在 epoch 85 后不再改善。**这是 197 张训练图
-必然的结果**，不是调参问题。
+Training loss drops from 5.6 to 1.73, but val stops improving after epoch 85. **This is the inevitable
+outcome of 197 training images**, not a tuning problem.
 
 ---
 
-## 3. 检测指标（验证集 3 个 crop、43 个切片）
+## 3. Detection metrics (validation set: 3 crops, 43 slices)
 
-| IoU 阈值 | mito AP | er AP | mAP |
+| IoU threshold | mito AP | er AP | mAP |
 |---|---|---|---|
 | 0.3 | **0.7411** | 0.0635 | 0.4023 |
 | 0.5 | 0.2654 | 0.0221 | 0.1438 |
 | 0.75 | 0.0258 | 0.0039 | 0.0149 |
 
-固定置信度 0.5、IoU 0.5 时的操作点：
+Operating point at fixed confidence 0.5 and IoU 0.5:
 
-| 类别 | 真值框 | AP@0.5 | Precision | Recall | TP | FP | FN |
+| Class | Ground-truth boxes | AP@0.5 | Precision | Recall | TP | FP | FN |
 |---|---|---|---|---|---|---|---|
 | mito | 55 | 0.2654 | 0.4211 | **0.6667** | 24 | 33 | 12 |
 | er | 120 | 0.0221 | 0.0805 | 0.0875 | 7 | 80 | 73 |
 
 ---
 
-## 4. 怎么读这些数字
+## 4. How to read these numbers
 
-### 4.1 线粒体：找得到，框不准
+### 4.1 Mitochondria: found, but the boxes are inaccurate
 
-IoU 放宽到 0.3 时 mito AP = **0.74**、召回 **0.975**（55 个真值里只漏 1 个）。
-但 IoU 提到 0.5 就掉到 0.27，0.75 时几乎归零。
+When IoU is relaxed to 0.3, mito AP = **0.74** with recall **0.975** (only 1 of 55 ground truths is
+missed). But raising IoU to 0.5 drops it to 0.27, and at 0.75 it is almost zero.
 
-这是**"定位精度不足"**的典型特征，原因有二：
+This is the typical signature of **"insufficient localization precision"**, and there are two causes:
 
-1. **训练步数太少**。3750 步对 DETR 微调来说非常少（文献里通常 2–5 万步起步）。
-   分类头学会了"哪里有线粒体"，但框回归还没收敛。
-2. **标注分辨率与 EM 分辨率不匹配**。16/17 个 crop 的标签是 4 nm，
-   而可用 EM 只有 8 nm，标签被 2× 降采样。框的边界本来就存在 ±2 像素的
-   系统误差，在 IoU 0.5 这个严格阈值下会被放大。
+1. **Too few training steps**. 3750 steps is very few for DETR fine-tuning (the literature usually
+   starts at 20 000–50 000 steps). The classification head has learned "where there are mitochondria",
+   but box regression has not converged.
+2. **Annotation resolution does not match EM resolution**. Labels for 16/17 crops are at 4 nm, while
+   the available EM is only 8 nm, so the labels were downsampled 2×. Box boundaries already carry a
+   systematic error of ±2 pixels, and this is amplified under the strict IoU 0.5 threshold.
 
-### 4.2 内质网：不是训练问题，是**建模选择错了**
+### 4.2 ER: not a training problem — **the modeling choice is wrong**
 
-我最初的假设是"ER 的框太大、太细长，框内全是背景"。**这个假设被数据否定了**：
+My initial hypothesis was that "ER boxes are too large and too elongated, and the inside of the box is
+all background". **The data refuted this hypothesis**:
 
-| 类别 | 框数 | 框面积占比(中位) | 长宽比(中位) | 框内填充率(中位) | 填充率<0.3 比例 |
+| Class | Boxes | Box area fraction (median) | Aspect ratio (median) | In-box fill rate (median) | Fraction with fill rate <0.3 |
 |---|---|---|---|---|---|
 | mito | 487 | 0.071 | 1.54 | **0.740** | 0.0% |
 | er | 1562 | 0.008 | 1.50 | **0.608** | 14.6% |
 
-ER 的框其实**很小**（中位只占图像 0.8%），填充率 0.61 也不算差。所以框本身没毛病。
+ER boxes are in fact **very small** (median only 0.8% of the image), and a fill rate of 0.61 is not bad
+either. So the boxes themselves are fine.
 
-真正的问题是：
+The real problems are:
 
-1. **实例数差 3 倍**：ER 有 **1562** 个连通域，mito 只有 487 个。
-2. **"实例"对 ER 没有意义**。内质网是一张连续的管网，用 8-连通把它切碎，
-   切出来的碎片数量取决于标注的细微连通性，**同一个网络换个阈值就变几个实例**。
-   这种真值本身不稳定，模型无法学，AP 自然接近 0。
-3. 14.6% 的 ER 框填充率 < 0.3 —— 这些是分支结构的包围盒，框内一半以上是背景。
+1. **A 3× difference in instance count**: ER has **1562** connected components, mito only 487.
+2. **"Instance" is meaningless for the ER**. The ER is one continuous tubular network; chopping it up
+   with 8-connectivity produces a number of fragments that depends on fine details of annotation
+   connectivity — **the same network becomes a different number of instances under a different
+   threshold**. Such ground truth is itself unstable, the model cannot learn it, and AP naturally
+   approaches 0.
+3. 14.6% of ER boxes have a fill rate < 0.3 — these are bounding boxes of branching structures, with
+   more than half of the box being background.
 
-**结论：ER 应该做语义/实例分割，不应该做目标检测。**
-把 ER 塞进 DETR 的"每类若干个框"框架里，是在用错误的表示做任务。
-
----
-
-## 5. 这批数字的边界（不能过度解读）
-
-1. **250 个切片、14 个 crop、1 只小鼠的肾**。DETR 从 COCO 微调通常需要
-   数千张图。这里的指标只能说明**管线可用**，不能说明"我们的检测器达到了什么水平"。
-2. **验证集只有 3 个 crop / 43 个切片**，mAP 的方差极大。
-   换成另外 3 个 crop，数字可能差一倍。
-3. **验证 crop 与训练 crop 是不同区域**（按 crop 分组划分），这比同 crop 内插值难得多。
-   若按切片随机划分，指标会明显更高，但那是**泄漏**，不能用。
-4. **mito 的实例 ID 在预处理中丢失了**。CellMap 的 mito 标签带实例编号（0–5），
-   但 `fetch_em_slices.py` 为了与 2× 降采样兼容，把它二值化了。
-   因此训练目标是"mito 前景区域的连通域"，而不是原始实例。
-   若两个原属不同编号的线粒体在降采样后粘连，会被当成一个实例。
-   这一点在需要精确实例计数的分析里必须记得。
+**Conclusion: the ER should be handled with semantic/instance segmentation, not object detection.**
+Stuffing the ER into DETR's "a handful of boxes per class" framework means doing the task with the wrong
+representation.
 
 ---
 
-## 6. 下一步（按性价比排序）
+## 5. The boundaries of these numbers (do not over-interpret)
 
-| 优先级 | 动作 | 预期收益 |
+1. **250 slices, 14 crops, one mouse kidney**. Fine-tuning DETR from COCO usually needs thousands of
+   images. The metrics here can only show that **the pipeline works**; they cannot show "what level our
+   detector has reached".
+2. **The validation set has only 3 crops / 43 slices**, so the variance of mAP is very large.
+   With another 3 crops the numbers could differ by a factor of two.
+3. **Validation crops and training crops are different regions** (grouped split by crop), which is much
+   harder than interpolating inside the same crop. A random split by slice would give clearly higher
+   metrics, but that is **leakage** and cannot be used.
+4. **The mito instance ID was lost during preprocessing**. CellMap's mito labels carry instance numbers
+   (0–5), but `fetch_em_slices.py` binarized them to stay compatible with the 2× downsampling.
+   The training target is therefore "the connected components of the mito foreground region", not the
+   original instances.
+   If two mitochondria that originally had different numbers stick together after downsampling, they are
+   treated as one instance.
+   This must be kept in mind in any analysis that needs accurate instance counts.
+
+---
+
+## 6. Next steps (ranked by cost-effectiveness)
+
+| Priority | Action | Expected benefit |
 |---|---|---|
-| 1 | **提高训练步数**：250 切片 × 600 epoch（=15k 步），约 70 分钟 | 直接改善框回归精度，最可能把 mito AP@0.5 从 0.27 拉上去 |
-| 2 | **扩到 500–1000 切片**（更多 crop / 更多数据集） | 减少过拟合，让 val 不再在 epoch 85 就见顶 |
-| 3 | **ER 改用分割而非检测** | 这是唯一能让 ER 结果有意义的路 |
-| 4 | **保留 mito 实例 ID** | 让"实例计数"类分析可用 |
-| 5 | 只在 8 nm crop 上训练 | 消除标签/EM 分辨率不匹配带来的框边界误差 |
+| 1 | **Increase the number of training steps**: 250 slices × 600 epochs (=15k steps), about 70 minutes | Directly improves box regression precision; the most likely way to pull mito AP@0.5 up from 0.27 |
+| 2 | **Scale to 500–1000 slices** (more crops / more datasets) | Reduces overfitting, so that val no longer peaks as early as epoch 85 |
+| 3 | **Switch the ER from detection to segmentation** | The only path that can make the ER results meaningful |
+| 4 | **Preserve the mito instance ID** | Makes "instance counting" style analyses usable |
+| 5 | Train only on 8 nm crops | Removes the box-boundary error caused by the label/EM resolution mismatch |
 
 ---
 
-## 7. 复现命令
+## 7. Reproduction commands
 
 ```bash
 conda activate dachuang
@@ -125,12 +139,12 @@ cd ~/dachuang_organelle
 export HF_HOME=~/dachuang_organelle/models/hf
 export HF_ENDPOINT=https://hf-mirror.com
 
-# 训练
+# train
 python scripts/train_detr_slices.py --slices data/slices --classes mito,er \
     --out runs/detr_kidney --epochs 150 --batch 8 --size 480 \
     --lr 1e-4 --backbone-lr 1e-5 --clip 0.1 --val-frac 0.2 --resume auto
 
-# 评估（真实检测指标，不是 loss）
+# evaluate (real detection metrics, not loss)
 python scripts/eval_detr.py --slices data/slices \
     --ckpt runs/detr_kidney/best.pt --classes mito,er \
     --size 480 --iou 0.5 --conf 0.5 --out runs/detr_kidney/eval.json
@@ -138,28 +152,29 @@ python scripts/eval_detr.py --slices data/slices \
 
 ---
 
-## 8. 第二轮：600 epoch 长训练（15 000 步）
+## 8. Second round: long training for 600 epochs (15 000 steps)
 
-### 8.1 训练曲线：严重过拟合
+### 8.1 Training curves: severe overfitting
 
-| 项 | 值 |
+| Item | Value |
 |---|---|
-| epoch / 步数 | 600 × 25 = **15 000 步** |
-| 耗时 | 71.5 分钟（7.28 秒/epoch） |
+| epoch / steps | 600 × 25 = **15 000 steps** |
+| Wall time | 71.5 minutes (7.28 s/epoch) |
 | train_loss | 5.176 → **0.538** |
-| val_loss 最优 | **epoch 57 → 2.411** |
-| 最终 val_loss | epoch 600 → **4.499** |
+| Best val_loss | **epoch 57 → 2.411** |
+| Final val_loss | epoch 600 → **4.499** |
 
-train 一路降到 0.54，val 却在 epoch 57 见顶后升到 4.50。
-**197 张训练图撑不住 15 000 步**——这是数据量的上限，不是调参问题。
+train falls all the way to 0.54, while val peaks at epoch 57 and then climbs to 4.50.
+**197 training images cannot sustain 15 000 steps** — this is the ceiling of the data volume, not a
+tuning problem.
 
-### 8.2 三个 IoU 阈值下的完整扫描（14 个检查点）
+### 8.2 Full sweep at three IoU thresholds (14 checkpoints)
 
-**IoU = 0.3（只要"圈得住"就算命中）**
+**IoU = 0.3 (a hit as long as the box "encloses" the object)**
 
-| 检查点 | epoch | mAP | mito AP | mito P | mito R | er AP | er P | er R |
+| Checkpoint | epoch | mAP | mito AP | mito P | mito R | er AP | er P | er R |
 |---|---|---|---|---|---|---|---|---|
-| **150 epoch 单次运行的 best** | — | **0.4023** | **0.7411** | 0.68 | 0.98 | 0.0635 | 0.16 | 0.30 |
+| **best of the single 150-epoch run** | — | **0.4023** | **0.7411** | 0.68 | 0.98 | 0.0635 | 0.16 | 0.30 |
 | epoch0050 | 50 | 0.3665 | 0.6324 | 0.87 | 0.96 | 0.1007 | 0.29 | 0.28 |
 | epoch0100 | 100 | 0.4002 | 0.6928 | 0.60 | 0.97 | 0.1075 | 0.21 | 0.31 |
 | epoch0200 | 200 | 0.3536 | 0.6343 | 0.58 | 0.92 | 0.0730 | 0.11 | 0.37 |
@@ -170,200 +185,220 @@ train 一路降到 0.54，val 却在 epoch 57 见顶后升到 4.50。
 
 **IoU = 0.5**
 
-| 检查点 | epoch | mAP | mito AP | er AP | er P |
+| Checkpoint | epoch | mAP | mito AP | er AP | er P |
 |---|---|---|---|---|---|
-| 150 epoch 单次运行的 best | — | 0.1438 | 0.2654 | 0.0221 | 0.08 |
+| best of the single 150-epoch run | — | 0.1438 | 0.2654 | 0.0221 | 0.08 |
 | epoch0050 | 50 | 0.1958 | 0.3477 | 0.0440 | 0.18 |
 | epoch0200 | 200 | 0.2333 | 0.4242 | 0.0425 | 0.06 |
 | **epoch0400** | 400 | **0.2408** | 0.4300 | 0.0517 | 0.20 |
 | epoch0500 | 500 | 0.2315 | 0.4099 | **0.0531** | 0.17 |
 | epoch0600 | 600 | 0.2344 | 0.4169 | 0.0518 | 0.20 |
 
-**IoU = 0.75（框要贴得很准）**
+**IoU = 0.75 (the box must fit very tightly)**
 
-| 检查点 | epoch | mAP | mito AP |
+| Checkpoint | epoch | mAP | mito AP |
 |---|---|---|---|
 | **epoch0050** | 50 | **0.0726** | 0.1406 |
-| best.pt（val_loss 最优） | 57 | 0.0684 | 0.1317 |
+| best.pt (best val_loss) | 57 | 0.0684 | 0.1317 |
 | epoch0200 | 200 | 0.0252 | 0.0439 |
 | epoch0400 | 400 | 0.0218 | 0.0387 |
 | epoch0600 | 600 | 0.0173 | 0.0303 |
 
-### 8.3 关键结论：验证集太小，**检查点排名不可信**
+### 8.3 Key conclusion: the validation set is too small, **checkpoint rankings are not trustworthy**
 
-三个验证 crop 上"最好的检查点"各不相同：
+The "best checkpoint" differs across the three validation crops:
 
-| IoU | crop140 赢家 | crop162 赢家 | crop163 赢家 | 不同赢家数 |
+| IoU | crop140 winner | crop162 winner | crop163 winner | Distinct winners |
 |---|---|---|---|---|
 | 0.3 | epoch0200 (0.437) | epoch0150 (0.463) | epoch0100 (0.080) | **3 / 3** |
 | 0.5 | epoch0400 (0.436) | epoch0150 (0.463) | epoch0100 (0.080) | **3 / 3** |
 | 0.75 | epoch0050 (0.112) | epoch0350 (0.048) | epoch0100 (0.008) | **3 / 3** |
 
-**所以不能声称"epoch 400 最好"**——mAP 在 0.20–0.24 之间的波动完全落在采样噪声内。
-要判断哪个检查点真的更好，至少需要 10–20 个验证 crop。
+**So it cannot be claimed that "epoch 400 is best"** — the fluctuation of mAP between 0.20–0.24 falls
+entirely within sampling noise. At least 10–20 validation crops are needed to decide which checkpoint is
+really better.
 
-### 8.4 哪些结论是稳的（跨检查点、跨 IoU 都成立）
+### 8.4 Which conclusions are robust (they hold across checkpoints and across IoU)
 
-1. **粗定位（IoU 0.3）早就饱和**。mito 召回从 epoch 50 起就在 0.82–0.97，
-   AP 在 0.44–0.69 之间波动，**没有随训练单调上升**。
-   150 epoch 的单次运行甚至拿到最好的粗定位（mAP 0.4023、mito AP 0.7411）。
+1. **Coarse localization (IoU 0.3) saturates early**. mito recall has stayed in 0.82–0.97 since epoch 50,
+   AP fluctuates between 0.44–0.69, and **does not rise monotonically with training**.
+   The single 150-epoch run even attains the best coarse localization (mAP 0.4023, mito AP 0.7411).
 
-2. **精定位（IoU 0.75）普遍很差且不随训练改善**。全部检查点 mAP ≤ 0.073，
-   最好的还是 epoch 50（训练早期）。epoch 600 反而退化到 0.017。
-   这说明长时间训练让框变"死板"，泛化到精确位置的 ability 下降——过拟合的另一种表现。
+2. **Fine localization (IoU 0.75) is uniformly poor and does not improve with training**. mAP ≤ 0.073
+   for every checkpoint, and the best is still epoch 50 (early training). epoch 600 instead degrades to
+   0.017.
+   This shows that prolonged training makes the boxes "rigid" and reduces the ability to generalize to
+   precise positions — another manifestation of overfitting.
 
-3. **er 在所有阈值下都弱**。即使用最宽松的 IoU 0.3，er AP 最高也只有 0.13
-   （epoch 500），精度 P=0.32。IoU 0.75 时 er AP ≈ 0.004。
-   训练量翻 4 倍没能救回它，**支持"包围盒不是内质网的合适表示"这一诊断**。
+3. **er is weak at every threshold**. Even with the loosest IoU 0.3, er AP reaches at most 0.13
+   (epoch 500), with precision P=0.32. At IoU 0.75, er AP ≈ 0.004.
+   Quadrupling the training did not rescue it, **which supports the diagnosis that "bounding boxes are
+   not a suitable representation for the ER"**.
 
-4. **crop163 是离群样本**。它 mito 覆盖率只有 0.37%（前文数据审计），
-   在 IoU 0.5/0.75 下 AP 接近 0，把整体均值拖低。它不应与其它 crop 等权平均。
+4. **crop163 is an outlier**. Its mito coverage is only 0.37% (the earlier data audit),
+   and its AP under IoU 0.5/0.75 is close to 0, dragging the overall mean down. It should not be
+   averaged with equal weight alongside the other crops.
 
-5. **按 val_loss 选权重仍然是错的**。val_loss 最优在 epoch 57，
-   但它的 mAP@0.5 是 0.2106，而 epoch 400/600 是 0.2408/0.2344。
-   loss 与 AP 不同步——这一点在三个 IoU 阈值上都成立。
+5. **Selecting weights by val_loss is still wrong**. The best val_loss is at epoch 57,
+   but its mAP@0.5 is 0.2106, whereas epoch 400/600 give 0.2408/0.2344.
+   loss and AP are not synchronized — this holds at all three IoU thresholds.
 
-### 8.5 实践建议
+### 8.5 Practical recommendations
 
-* **不要再加 epoch**。150–200 epoch 之后没有任何可测收益，只有过拟合。
-* **瓶颈是数据**：197 张训练图 / 11 个 crop。要提升必须扩数据
-  （更多 crop、更多数据集），而不是拉长训练。
-* **需要更多验证 crop** 才能做检查点选择。当前 3 个 crop 下，
-  任何"最佳 epoch"的说法都不成立。
-* **er 走分割**，不要继续在检测框架里调。
-
----
-
-## 9. 一次服务器故障（记录，便于复现时理解缺失数据）
-
-**第一次**：2026-10-31 23:5x–2026-11-01 00:10，服务器 SSH 不可用：
-主机能 ping（62 ms），但 **22 与 22 端口都拒绝 TCP**，属服务器侧问题。
-影响：第一次检查点扫描在前台运行，扫到第 9 个检查点被断连杀掉
-（`Socket exception 10054`）。恢复后改为 **tmux 后台 + 日志**重跑，14 个检查点全部完成。
-
-**第二次**：2026-11-01 05:24 起，同一症状（ping 通 60 ms、端口拒绝），
-到 05:40 仍未恢复。此时夜间流水线都在 tmux 里，任务本身不受影响。
-
-**教训：任何超过几分钟的远端任务都必须走 tmux，不要用前台 `push_run`。**
+* **Do not add more epochs**. Beyond 150–200 epochs there is no measurable gain, only overfitting.
+* **The bottleneck is data**: 197 training images / 11 crops. To improve, the data must be expanded
+  (more crops, more datasets), not the training lengthened.
+* **More validation crops are needed** in order to do checkpoint selection. With the current 3 crops,
+  no statement about a "best epoch" holds.
+* **Handle the er by segmentation**; stop tuning it inside the detection framework.
 
 ---
 
-## 10. 跨器官验证（kidney 训练 → liver 验证）
+## 9. A server outage (recorded so that missing data is understood during reproduction)
 
-### 10.1 为什么要换器官
+**First occurrence**: 2026-10-31 23:5x–2026-11-01 00:10, server SSH unavailable:
+the host answers ping (62 ms), but **both port 22 and port 22 refuse TCP**, a server-side problem.
+Impact: the first checkpoint sweep was running in the foreground and was killed by the disconnect at the
+9th checkpoint (`Socket exception 10054`). After recovery it was rerun as a **tmux background job +
+log**, and all 14 checkpoints completed.
 
-第 8 节暴露的问题不是"AP 低"，而是**验证集太小导致结论不可靠**：
-3 个验证 crop 上，三个 IoU 阈值下都有 **3 个不同的"最佳检查点"**，
-说明 0.20–0.24 的 mAP 差异完全落在采样噪声内，连"哪个权重更好"都判断不了。
+**Second occurrence**: from 2026-11-01 05:24, the same symptoms (ping OK at 60 ms, ports refusing),
+still not recovered by 05:40. By then the overnight pipeline was all inside tmux, so the jobs themselves
+were unaffected.
 
-改用整个肝作为留出集后：
+**Lesson: any remote task longer than a few minutes must go through tmux; do not use foreground
+`push_run`.**
 
-| | 旧（同器官） | 新（跨器官） |
+---
+
+## 10. Cross-organ validation (kidney training → liver validation)
+
+### 10.1 Why switch organ
+
+The problem exposed in Section 8 is not "low AP" but **a validation set too small to support reliable
+conclusions**: across the 3 validation crops, at all three IoU thresholds there are **3 different "best
+checkpoints"**, showing that the mAP differences in 0.20–0.24 fall entirely within sampling noise, and
+even "which weight is better" cannot be judged.
+
+After switching to a whole liver as the held-out set:
+
+| | Old (same organ) | New (cross-organ) |
 |---|---|---|
-| 训练 crop | 11（kidney） | 14（kidney） |
-| 验证 crop | 3（kidney） | **15（liver）** |
-| 验证切片 | 43 | **263** |
+| Training crops | 11 (kidney) | 14 (kidney) |
+| Validation crops | 3 (kidney) | **15 (liver)** |
+| Validation slices | 43 | **263** |
 
-这不仅能做检查点选择，检验的还是**跨器官泛化**——比同分布内插值强得多的主张。
+This not only makes checkpoint selection possible, it also tests **cross-organ generalization** — a much
+stronger claim than interpolation within the same distribution.
 
-### 10.2 数据构建中的两个 bug（都曾给出错误结论）
+### 10.2 Two bugs in data construction (both once produced wrong conclusions)
 
-1. **`has_data` 用了 `delimiter="/"`**：Zarr chunk（`s0/0/0/0`）被折叠进
-   `CommonPrefixes`，`Contents` 里只剩 `.zarray`/`.zattrs`，于是**满数据的数组被判成空**。
-   后果：一度认为 `jrc_mus-liver`、`jrc_mus-liver-zon-1`、`jrc_hela-2`
-   都没有 mito+er。修正后 `jrc_mus-liver` 有 **15 个可用 crop**。
-2. **EM 体素尺寸硬编码 8 nm**：kidney 的 s0 是 8 nm，但不同数据集可能不同。
-   尺度算错会让 crop 的物理范围整体错位，而**取出的图像看起来仍然"正常"**，
-   极难发现。已改为从 `.zattrs` 的 `multiscales` 读取。
+1. **`has_data` used `delimiter="/"`**: Zarr chunks (`s0/0/0/0`) were folded into `CommonPrefixes`,
+   leaving only `.zarray`/`.zattrs` in `Contents`, so **a fully populated array was judged empty**.
+   Consequence: for a while `jrc_mus-liver`, `jrc_mus-liver-zon-1`, and `jrc_hela-2` were all believed
+   to have no mito+er. After the fix, `jrc_mus-liver` has **15 usable crops**.
+2. **EM voxel size hard-coded to 8 nm**: kidney's s0 is 8 nm, but different datasets may differ.
+   A wrong scale shifts the physical extent of the crop as a whole, while **the extracted image still
+   looks "normal"**, making this extremely hard to spot. Changed to read from `multiscales` in
+   `.zattrs`.
 
-### 10.3 结果：跨器官性能大幅下降
+### 10.3 Result: cross-organ performance drops substantially
 
-训练 150 epoch（4500 步），val_loss 最优在 **epoch 40（3.087）**，最终升到 3.476。
-train 从 5.2 降到 1.58——**跨器官设置下过拟合更早、更严重**。
+Training for 150 epochs (4500 steps), best val_loss at **epoch 40 (3.087)**, finally rising to 3.476.
+train drops from 5.2 to 1.58 — **under the cross-organ setting, overfitting is earlier and more
+severe**.
 
-| 设定 | mito | er |
+| Setting | mito | er |
 |---|---|---|
-| 检测 同器官（kidney→kidney） | **AP@0.5 = 0.4292** | AP@0.5 = 0.0495 |
-| 检测 跨器官（kidney→liver） | **AP@0.5 = 0.2754** | AP@0.5 = 0.0170 |
+| Detection, same organ (kidney→kidney) | **AP@0.5 = 0.4292** | AP@0.5 = 0.0495 |
+| Detection, cross-organ (kidney→liver) | **AP@0.5 = 0.2754** | AP@0.5 = 0.0170 |
 
-> 以上为**AP 算法修复后**重算的数值（COCO 面积法）。
-> 修复前（`np.interp` 101 点插值）为 0.4300 / 0.0531 / 0.2797 / 0.0275，
-> 差异在 10% 以内——说明该 bug 在真实分布上影响有限，但边界情形（如完美检测
-> 应得 1.0 却给 0.9901）是明确的错误。**排序结论在修复前后一致。**
+> The above are values recomputed **after fixing the AP algorithm** (COCO area method).
+> Before the fix (`np.interp` 101-point interpolation) they were 0.4300 / 0.0531 / 0.2797 / 0.0275,
+> a difference within 10% — showing that the bug had limited impact on the real distribution, but the
+> boundary case (e.g. a perfect detection should score 1.0 yet is given 0.9901) is a clear error.
+> **The ranking conclusions are the same before and after the fix.**
 
-mito 保留约 64%（0.4292 → 0.2754），er 降到约 1/3（0.0495 → 0.0170）。
+mito retains about 64% (0.4292 → 0.2754), er drops to about 1/3 (0.0495 → 0.0170).
 
 ---
 
-## 11. ER 分割对照：换表示方式**没有**救回 ER
+## 11. ER segmentation control: changing the representation did **not** rescue the ER
 
-### 11.1 这个实验要检验什么
+### 11.1 What this experiment tests
 
-第 8 节的结论之一是"内质网是连续管网，用轴对齐包围盒表示它本身不合适"。
-这是个**诊断**，需要证据。对照实验：同一批标注、同一切分，只把输出从
-"每类若干个框"换成"逐像素掩码"，看 er 是否变好。
+One of the conclusions of Section 8 is that "the ER is a continuous tubular network, and representing it
+with axis-aligned bounding boxes is itself unsuitable". This is a **diagnosis** that needs evidence.
+The control experiment: the same batch of annotations, the same split, with only the output changed
+from "a handful of boxes per class" to "per-pixel masks", to see whether er improves.
 
-### 11.2 实现
+### 11.2 Implementation
 
-`train_seg.py`：2.29 M 参数 U-Net，输入 256×256，输出每类一个 sigmoid 通道，
-损失 = BCE + Dice（Dice 对细结构比纯 BCE 敏感得多），
-指标为逐类 Dice/IoU/P/R 与逐 crop Dice。
+`train_seg.py`: a 2.29 M-parameter U-Net, input 256×256, one sigmoid channel per class as output,
+loss = BCE + Dice (Dice is far more sensitive to thin structures than plain BCE),
+with metrics being per-class Dice/IoU/P/R and per-crop Dice.
 
-### 11.3 结果：与检测同样失败
+### 11.3 Result: fails exactly like detection
 
-跨器官分割（kidney 训练 → liver 验证，60 epoch，最优 **epoch 20**）：
+Cross-organ segmentation (kidney training → liver validation, 60 epochs, best at **epoch 20**):
 
-| 类别 | Dice | IoU | Precision | Recall |
+| Class | Dice | IoU | Precision | Recall |
 |---|---|---|---|---|
 | mito | **0.2587** | 0.1486 | 0.462 | 0.180 |
 | er | **0.0662** | 0.0343 | 0.399 | 0.036 |
 
-**er 的 Dice 0.066 与检测 AP 0.013–0.053 是同一量级——换成逐像素预测并没有改善。**
-mito 也从同器官的 AP 0.43 掉到 Dice 0.26。
+**er's Dice 0.066 is on the same order as detection AP 0.013–0.053 — switching to per-pixel prediction
+brought no improvement.**
+mito also drops from the same-organ AP 0.43 to Dice 0.26.
 
-**所以"包围盒是 ER 的错误表示"这个诊断得不到支持。** 我原来的判断下得太快了。
+**So the diagnosis "bounding boxes are the wrong representation for the ER" is not supported.** My
+original judgment was made too quickly.
 
-### 11.4 关键：**同器官分割也失败**，所以不是域偏移
+### 11.4 Key point: **same-organ segmentation fails too**, so it is not domain shift
 
-补做了同器官对照（kidney 训练 / kidney 验证，按 crop 分组，60 epoch）：
+A same-organ control was added (kidney training / kidney validation, grouped by crop, 60 epochs):
 
-| 设定 | mito Dice | **er Dice** | mDice | 验证 crop |
+| Setting | mito Dice | **er Dice** | mDice | Validation crops |
 |---|---|---|---|---|
-| **同器官** | 0.3451 | **0.0772** | 0.2112 | 4 |
-| 跨器官 | 0.2587 | **0.0662** | 0.1625 | 15 |
+| **Same organ** | 0.3451 | **0.0772** | 0.2112 | 4 |
+| Cross-organ | 0.2587 | **0.0662** | 0.1625 | 15 |
 
-mito 从 0.345 掉到 0.259（-25%，符合域偏移预期）；
-但 **er 从 0.0772 到 0.0662，几乎没有差别**。
+mito drops from 0.345 to 0.259 (-25%, as expected from domain shift);
+but **er goes from 0.0772 to 0.0662, essentially no difference**.
 
-三个解释被逐一排除：
+Three explanations are ruled out one by one:
 
-| 解释 | 判定 | 依据 |
+| Explanation | Verdict | Evidence |
 |---|---|---|
-| 表示方式（框 vs 像素） | ❌ 排除 | 两种表示下 er 都在 0.02–0.08 |
-| 跨器官域偏移 | ❌ 排除 | 同器官下 er 同样差 |
-| 标注不完整 | ❌ 排除 | ER 的 z 覆盖率 **100%**、体积占比 0.75–22%、3D 连通分量仅 5–72 个 |
+| Representation (boxes vs pixels) | ❌ ruled out | er stays in 0.02–0.08 under both representations |
+| Cross-organ domain shift | ❌ ruled out | er is equally poor under the same organ |
+| Incomplete annotation | ❌ ruled out | ER z coverage is **100%**, volume fraction 0.75–22%, only 5–72 3D connected components |
 
-（注：早先"ER 有 1562 个连通域"的说法是**逐 2D 切片**统计的；
-3D 下只有 5–72 个，所以"实例定义不稳定"这个理由也不成立。）
+(Note: the earlier statement that "the ER has 1562 connected components" was counted **per 2D slice**;
+in 3D there are only 5–72, so the reason of "unstable instance definition" does not hold either.)
 
-### 11.5 真正的线索：er 的 Dice **低于平凡基线**
+### 11.5 The real clue: er's Dice is **below the trivial baseline**
 
-这是本节最重要的发现。若把整幅图都判为前景，Dice = `2p/(1+p)`，
-其中 p 是前景占比。ER 占比约 7% 时该基线约 **0.118**。
+This is the most important finding of this section. If the entire image is labeled foreground,
+Dice = `2p/(1+p)`, where p is the foreground fraction. At an ER fraction of about 7% this baseline is
+about **0.118**.
 
-**实测 er Dice = 0.0772，低于 0.118。**
+**Measured er Dice = 0.0772, below 0.118.**
 
-也就是说：**模型的表现比"全部猜前景"这个傻瓜策略还差。**
-问题不是"ER 太难学"，而是模型几乎不预测 ER（Recall 仅 0.05）。
+In other words: **the model performs worse than the dumb strategy of "guess foreground everywhere".**
+The problem is not "the ER is too hard to learn", but that the model hardly predicts the ER at all
+(Recall only 0.05).
 
-机理指向**损失设计**：两类别联合训练时，像素平均的 BCE 被多数类主导
-（mito 占 17–54%，er 只占 4–22%），模型为压低 BCE 会把 ER 判成背景。
+The mechanism points to **loss design**: when the two classes are trained jointly, the pixel-averaged
+BCE is dominated by the majority class (mito occupies 17–54%, er only 4–22%), and to push BCE down the
+model classifies the ER as background.
 
-已加 `--class-balance`（按类前景比例反比加权 BCE），
-并把平凡基线写进评估输出（`dice_all_foreground` / `beats_trivial`），
-这样以后任何低 Dice 都会立刻显示是否优于平凡策略。
+Added `--class-balance` (BCE weighted inversely to the per-class foreground fraction),
+and the trivial baseline is now written into the evaluation output
+(`dice_all_foreground` / `beats_trivial`), so that from now on any low Dice immediately shows whether it
+beats the trivial strategy.
 
-### 11.6 逐 crop Dice 呈**断崖式**分布（跨器官，且只影响 mito）
+### 11.6 Per-crop Dice shows a **cliff-like** distribution (cross-organ, and only mito is affected)
 
 ```
 crop145  mito 0.5565  er 0.2269   ← 迁移得不错
@@ -375,9 +410,6 @@ crop143  mito 0.0000  er 0.0006
 crop150  mito 0.0000  er 0.0000
 ```
 
-15 个 crop 里 6 个彻底的 0，成功的能到 0.4–0.56。这部分确实反映域偏移，
-但**只影响 mito**——er 的失败在同器官下同样存在，与域偏移无关。
-
-
-
-
+6 of the 15 crops are a complete 0, while the successful ones reach 0.4–0.56. This part does reflect
+domain shift, but **it only affects mito** — er's failure exists under the same organ as well and is
+unrelated to domain shift.

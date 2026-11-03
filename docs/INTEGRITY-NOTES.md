@@ -1,17 +1,19 @@
-# 科研诚信问题说明
+# Research Integrity Issues
 
-> 本文只讨论**不属于"代码 bug"范畴**的问题：那些即使代码写得完全正确，
-> 也会让结论站不住脚的事项。
-> 完整的代码问题清单见 [`AUDIT-REPORT.md`](AUDIT-REPORT.md)。
+**English** ｜ [中文](INTEGRITY-NOTES.zh-CN.md)
+
+> This document discusses only **issues outside the scope of "code bugs"**: matters that
+> would make the conclusions untenable even if the code were written entirely correctly.
+> The complete list of code issues is in [`AUDIT-REPORT.md`](AUDIT-REPORT.md).
 
 ---
 
-## 一、模拟生成的实验元数据被标注为"用于发表"
+## 1. Simulated experimental metadata was labeled "for publication"
 
-### 事实
+### The facts
 
-`code/simulate_structure_data.py` 生成 `data/structure/structure_metadata.json`。
-脚本自己的注释与字段名如下：
+`code/simulate_structure_data.py` generates `data/structure/structure_metadata.json`.
+The script's own comments and field names are as follows:
 
 ```python
 def generate_realistic_time_series(sample_prefix, num_regions, num_time_points):
@@ -20,7 +22,7 @@ def generate_realistic_time_series(sample_prefix, num_regions, num_time_points):
     time_interval = timedelta(minutes=random.randint(5, 30))
 ```
 
-产物中的 `metadata` 字段：
+The `metadata` field in the artifact:
 
 ```json
 {
@@ -31,77 +33,78 @@ def generate_realistic_time_series(sample_prefix, num_regions, num_time_points):
 }
 ```
 
-即：**脚本声明这是 simulation，同时把 `purpose` 标注为用于发表。**
+That is: **the script declares this to be a simulation, and at the same time marks `purpose` as for publication.**
 
-### 具体哪些字段不是实测值
+### Which fields are not measured values
 
-| 字段 | 生成方式 | 是否实测 |
+| Field | How it is generated | Measured? |
 |---|---|---|
 | `actual_date` | `datetime(2024,1,1,9,0,0) + i * timedelta(minutes=random.randint(5,30))` | ❌ |
-| `timestamp` | `i + 1`（文件序号） | ❌ |
-| `perturbation_level` | `random` / 线性插值到 1–7 后 `round()` | ❌ |
-| `experiment_conditions_detail` | `25 + level*5 + random.gauss(0,1)`（temperature）等 | ❌ |
-| `sequence_length` | 文件计数 | ❌ |
-| `region_info.sampling_rate` | 同上随机的时间间隔 | ❌ |
+| `timestamp` | `i + 1` (file index) | ❌ |
+| `perturbation_level` | `random` / linear interpolation to 1–7 then `round()` | ❌ |
+| `experiment_conditions_detail` | `25 + level*5 + random.gauss(0,1)` (temperature), etc. | ❌ |
+| `sequence_length` | file count | ❌ |
+| `region_info.sampling_rate` | the same random time interval as above | ❌ |
 
-### 这些字段如何进入分析
+### How these fields enter the analysis
 
-`code/analyze_emergent_entropy.m` 读取该文件（`:28-37`），取出
-`timestamps` 与 `perturbation_levels`，然后：
+`code/analyze_emergent_entropy.m` reads this file (`:28-37`), extracts
+`timestamps` and `perturbation_levels`, and then:
 
-- `:387-388` 用 `timestamps` 排序"时间序列"；
-- `:483-484` 用 `perturbation_levels` 排序"扰动响应"；
-- `:410` 的置信度公式 `min(1, num_time_points/30)` 直接由文件数决定。
+- `:387-388` sorts the "time series" by `timestamps`;
+- `:483-484` sorts the "perturbation response" by `perturbation_levels`;
+- the confidence formula at `:410`, `min(1, num_time_points/30)`, is determined directly by the file count.
 
-因此**合成的时间戳与扰动等级参与了"李雅普诺夫指数""扰动敏感性"的计算**，
-并出现在 `data/emerg_inf_advanced/*/comprehensive_report.txt` 中。
+Therefore **synthetic timestamps and perturbation levels take part in the computation of the "Lyapunov exponent" and the "perturbation sensitivity"**,
+and appear in `data/emerg_inf_advanced/*/comprehensive_report.txt`.
 
-### 进度文档中的自述
+### The authors' own statement in the progress document
 
-`进度4.pdf` 第 3 页：
+`进度4.pdf`, page 3:
 
-> 由于样本量有限，需要合理排布**以模拟数据**在时间序列与分类模式下不同的表征，
-> 再运行脚本检验是否符合预期。
+> Because the sample size is limited, it is necessary to reasonably arrange, **with simulated data**, the different
+> representations under the time-series and classification modes, and then run the scripts to check whether they meet expectations.
 
-作者知道这是模拟。问题不在于"用了模拟数据做方法验证"——这在方法学上完全正当——
-而在于**模拟产物与真实产物的边界在文件系统里消失了**：
-同一个目录、同一套文件名、元数据里写着 purpose 是发表，
-而下游脚本无法区分哪个数字来自实验、哪个来自随机数生成器。
+The author knew this was a simulation. The problem is not "using simulated data to validate a method" — that is entirely legitimate methodologically —
+but that **the boundary between simulated artifacts and real artifacts disappeared from the filesystem**:
+the same directory, the same set of filenames, metadata saying the purpose is publication,
+while downstream scripts cannot distinguish which number came from an experiment and which came from a random number generator.
 
-### 处理建议（三选一，请明确选一个）
+### Suggested handling (three options — please pick one explicitly)
 
-**选项 A —— 删除，只保留真实数据（推荐，如果这批图确实不是时间序列）**
+**Option A — delete it and keep only real data (recommended, if this batch of images really is not a time series)**
 
 ```bash
 python tools/data_integrity/quarantine_simulated_metadata.py --apply
 ```
-文件被移入 `data/_QUARANTINE_simulated_metadata/` 并附 `DO_NOT_USE.md`。
-然后放弃"时间序列/混沌"框架，改为跨样本统计（见第二节）。
+The files are moved into `data/_QUARANTINE_simulated_metadata/` with a `DO_NOT_USE.md`.
+Then abandon the "time series / chaos" framework and switch to cross-sample statistics (see Section 2).
 
-**选项 B —— 保留，但全局改名并加显式标记**
+**Option B — keep it, but rename globally and add explicit markers**
 
-若确实要用模拟数据验证方法（例如证明"样本量不足时李雅普诺夫指数不可估计"），
-则必须：
-1. 所有文件名加前缀 `SIMULATED_`；
-2. 所有输出目录加 `_simulated`；
-3. 所有图表标题注明"模拟数据"；
-4. 论文/记录中明确写"本图基于合成数据，用于方法验证，不代表实验结果"。
+If simulated data really is to be used to validate the method (for example, to show that "the Lyapunov exponent is not
+estimable when the sample size is insufficient"), then you must:
+1. prefix every filename with `SIMULATED_`;
+2. add `_simulated` to every output directory;
+3. annotate every figure title with "simulated data";
+4. state explicitly in the paper/records: "this figure is based on synthetic data, is used for method validation,
+   and does not represent experimental results".
 
-**选项 C —— 换成真实元数据**
+**Option C — replace it with real metadata**
 
-从 TIFF 的 `DateTime` 标签或仪器导出的 acquisition log 读取真实采集时间与条件。
-本工作区**没有**这类文件；需要向做实验的同学索取。
+Read the real acquisition times and conditions from the TIFF `DateTime` tag or from an acquisition log exported by the instrument.
+This workspace has **no** such files; they need to be requested from the colleagues who ran the experiments.
 
 ---
 
-## 二、"时间序列 / 混沌"框架缺少真实数据支撑
+## 2. The "time series / chaos" framework lacks support from real data
 
-### 事实
+### The facts
 
-`data/normalized_features/` 有 88 个 CSV。`analyze_emergent_entropy.m:53-65`
-按文件名前缀（`_` 前的数字）分组，得到：
+`data/normalized_features/` contains 88 CSVs. `analyze_emergent_entropy.m:53-65`
+groups them by filename prefix (the number before `_`), giving:
 
-| 组 | CSV 数（= "时间点"数） |
+| Group | Number of CSVs (= number of "time points") |
 |---|---|
 | `11` | 13 |
 | `12` | 49 |
@@ -109,92 +112,93 @@ python tools/data_integrity/quarantine_simulated_metadata.py --apply
 | `18` | 20 |
 | `21` | **4** |
 
-除 11 和 12 外，各组只有 2–4 个点。而脚本自己的置信度公式
-（`:410`）就写着 `min(1, num_time_points/30)` —— 即认为 30 个点才算充分。
-**两组不足以做任何动力学分析**，却仍在最终排名中位列第一
-（因为它们的 λ 走了 `infer_lyapunov_from_powerlaw` 的查表路径，数值偏高）。
+Apart from 11 and 12, each group has only 2–4 points. Yet the script's own confidence formula
+(`:410`) says `min(1, num_time_points/30)` — that is, it considers 30 points the threshold for sufficiency.
+**The two groups are insufficient for any dynamical analysis**, yet they still rank first in the final ranking
+(because their λ went through the lookup-table path of `infer_lyapunov_from_powerlaw`, which gives inflated values).
 
-分组依据来自文件名：
+The grouping is based on filenames:
 
 ```
 normalized_region_analysis__11_0002.csv
                           ^^ ^^^^
-                          批  序号
+                          batch  index
 ```
 
-`进度4.pdf` 第 3 页说「"_"前数字编号相同代表同一批次，于是可利用这一点**辅助添加
-扰动模式**」——即"时间点"这个概念本身就是按文件名构造的，不是实验设计的时间序列。
+`进度4.pdf` page 3 says "the same numeric prefix before '_' represents the same batch, so this can be used
+to **assist in adding perturbation patterns**" — that is, the very concept of a "time point" was constructed from filenames,
+not from an experimental time-series design.
 
-### 影响
+### Impact
 
-- "李雅普诺夫指数随时间的收敛"这类结论没有对象；
-- 熵的计算把同一批次的 13–49 张图的行合并成一个矩阵（`:157-160`），
-  样本量差异直接决定了熵值大小；
-- 报告的排名主要由**文件数量**和**查表函数**决定，而不是生物学差异。
+- conclusions such as "convergence of the Lyapunov exponent over time" have no subject;
+- the entropy computation merges the rows of the 13–49 images of the same batch into one matrix (`:157-160`),
+  so the difference in sample size directly determines the magnitude of the entropy;
+- the reported ranking is decided mainly by **file counts** and the **lookup function**, not by biological differences.
 
-### 处理建议
+### Suggested handling
 
-**必须先回答一个问题**：这 88 张图是不是同一实验、按时间顺序采集的？
+**One question must be answered first**: were these 88 images acquired in the same experiment, in temporal order?
 
-- **如果是**：请提供每个文件对应的真实采集时间（或扰动条件），
-  并确认时间点数量；只有 2–4 个点的组必须从动力学分析中剔除。
-- **如果不是**（看起来更可能）：删掉时间序列框架，改为
-  **跨样本的横截面统计**——例如比较不同批次/条件下的网络拓扑指标分布。
-  这不需要李雅普诺夫指数，`tools/network/` 已经按这个方向实现。
-
----
-
-## 三、被引用的数字无法由现存源码复现
-
-`data/emerg_inf_advanced/` 下有 8 次运行，其中：
-
-- `2026-05-18_01-37-35`、`2026-05-18_01-39-03` 的报告含
-  `SECTION 4: POWER-LAW ANALYSIS`、`SECTION 6: INTERPRETATION`
-  以及 `Method: insufficient_levels` 等字符串，
-  **现存 `analyze_emergent_entropy.m` 无法生成这些内容**；
-- `2026-05-18_01-51-18` 按完整前缀分组得到 **88 个"样本"**（每张图一个），
-  与同目录其他运行（5 个样本）的结论不可比；
-- `data/emerg_inf/`（2026-04-15，7 次）的报告表头与单一 `unknown` 样本，
-  在整个工作区里**没有任何 .m/.py 会产生它**。
-
-也就是说，同一个分析在磁盘上留下了**三代互不兼容的结果**，
-而其中的排名结论互相矛盾（01-52-49 与 01-55-53 里 s_13/s_21 都排第一，
-但这两组只有 2 和 4 个时间点）。
-
-### 处理建议
-
-在最终报告/论文中引用任何涌现分析结果之前：
-1. 明确使用哪一次运行，并在该目录写入 `PROVENANCE.md`
-   （源码 commit、参数、输入文件清单）；
-2. 用当前源码重跑一次，确认数字可复现；
-3. 无法复现的旧输出移入 `archive/` 并从结论中剔除。
+- **If yes**: provide the true acquisition time (or perturbation condition) for each file,
+  and confirm the number of time points; groups with only 2–4 points must be excluded from the dynamical analysis.
+- **If no** (which looks more likely): delete the time-series framework and switch to
+  **cross-sectional statistics across samples** — for example, comparing the distributions of network topology metrics
+  across batches/conditions. This needs no Lyapunov exponent; `tools/network/` is already implemented in this direction.
 
 ---
 
-## 四、其它需要在记录中说明的事项
+## 3. Cited numbers cannot be reproduced from the existing source code
 
-1. **OCR 从未成功识别过标注文字**。历史结果统计：504 个空字符串、
-   237 个 `"M"`、36 个 `"S"`、20 个 `"co"`。
-   原因是 `code/ocr.py` 未做黑底白字的极性反转。
-   本次审计已确认黄色标注**全部是字形 "M"（线粒体）**——
-   也就是说，**这批数据只有单一细胞器类型**，任何"多类型互作"的表述都缺少依据。
-2. **`data/features_json` 中 91/94 个文件是非法 JSON**（含字面量 `...`），
-   805 个区域**全部**被截断到 1000 个坐标点。
-   若论文中描述的特征计算流程与实际代码不符，需要更正。
-3. **比例尺标定中有 4 张图是不可信的兜底值**（0.1 µm/px，比正确值大 20–100 倍），
-   另有 1 张（`12_0002`）把某个数字当成比例尺条。
-   任何以 µm 为单位的结论都需要先人工核对这 5 张图。
-4. **`进度3.pdf` 描述的方案与代码不一致**：文档写"匈牙利算法 + GIoU + 加权交叉熵"，
-   代码里是 `torch.topk` 贪心 + MSE。记录中若描述了 DETR 的实现细节，需要与代码对齐。
+`data/emerg_inf_advanced/` contains 8 runs, of which:
+
+- the reports of `2026-05-18_01-37-35` and `2026-05-18_01-39-03` contain
+  `SECTION 4: POWER-LAW ANALYSIS`, `SECTION 6: INTERPRETATION`
+  and strings such as `Method: insufficient_levels`,
+  **which the existing `analyze_emergent_entropy.m` cannot generate**;
+- `2026-05-18_01-51-18` groups by the full prefix and obtains **88 "samples"** (one per image),
+  which is not comparable with the other runs in the same directory (5 samples);
+- the report headers of `data/emerg_inf/` (2026-04-15, 7 runs) together with a single `unknown` sample —
+  **no .m/.py in the whole workspace produces it**.
+
+In other words, the same analysis has left **three mutually incompatible generations of results** on disk,
+and their ranking conclusions contradict each other (s_13/s_21 rank first in both 01-52-49 and 01-55-53,
+yet these two groups have only 2 and 4 time points).
+
+### Suggested handling
+
+Before citing any emergence-analysis result in the final report/paper:
+1. decide explicitly which run is used, and write a `PROVENANCE.md` into that directory
+   (source commit, parameters, input file list);
+2. rerun once with the current source code and confirm the numbers are reproducible;
+3. move irreproducible old outputs into `archive/` and remove them from the conclusions.
 
 ---
 
-## 五、建议的处理顺序
+## 4. Other matters that need to be stated in the records
 
-1. **先回答"是不是时间序列"**（第二节）——这决定第三阶段推倒还是修改；
-2. **再决定模拟元数据的去留**（第一节，选项 A/B/C）；
-3. 隔离工具已就绪：
+1. **OCR has never once successfully recognized annotation text**. Statistics of the historical results: 504 empty strings,
+   237 `"M"`, 36 `"S"`, 20 `"co"`.
+   The cause is that `code/ocr.py` does not do the polarity inversion for white text on a black background.
+   This audit has confirmed that the yellow annotations are **all the glyph "M" (mitochondria)** —
+   that is, **this batch of data has only a single organelle type**, so any statement about "interaction of multiple types" lacks support.
+2. **91/94 files in `data/features_json` are invalid JSON** (containing the literal `...`),
+   and **all** 805 regions are truncated to 1000 coordinate points.
+   If the paper describes a feature computation pipeline that differs from the actual code, it must be corrected.
+3. **In the scale-bar calibration, 4 images carry untrustworthy fallback values** (0.1 µm/px, 20–100× larger than the correct value),
+   and one more (`12_0002`) treats some number as a scale bar.
+   Any conclusion expressed in µm requires manual verification of these 5 images first.
+4. **The scheme described in `进度3.pdf` does not match the code**: the document says "Hungarian algorithm + GIoU + weighted cross-entropy",
+   while the code uses `torch.topk` greedy matching + MSE. If the records describe DETR implementation details, they need to be aligned with the code.
+
+---
+
+## 5. Suggested order of handling
+
+1. **First answer "is it a time series?"** (Section 2) — this decides whether stage three is torn down or amended;
+2. **then decide the fate of the simulated metadata** (Section 1, Option A/B/C);
+3. the quarantine tool is ready:
    `python tools/data_integrity/quarantine_simulated_metadata.py --apply`
-4. 归档 `data/emerg_inf/` 与三代混装的 `emerg_inf_advanced/`（保留但移出主目录）；
-5. 用 `tools/morpho/` + `tools/network/` 重跑一条**可复现**的链路，
-   并在输出目录里一起保存 `config.json` 与 git commit hash。
+4. archive `data/emerg_inf/` and the three-generation `emerg_inf_advanced/` (keep them but move them out of the main directory);
+5. rerun a **reproducible** pipeline with `tools/morpho/` + `tools/network/`,
+   and save `config.json` together with the git commit hash in the output directory.

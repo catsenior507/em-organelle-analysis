@@ -1,19 +1,21 @@
-# MATLAB 校验状态
+# MATLAB Verification Status
 
-> 结论：**已完成**。`code/` 下 8 个（曾修补过的）文件全部通过
-> **`mtree` 语法解析**，**语法失败数 = 0**；同时 `project_paths()` 的运行时
-> 解析与 `analyze_emergent_entropy.m` 的端到端运行都已实测通过。
+**English** ｜ [中文](MATLAB-VERIFICATION-STATUS.zh-CN.md)
+
+> Conclusion: **done**. All 8 (previously patched) files under `code/` pass
+> **`mtree` syntax parsing**, **number of syntax failures = 0**; at the same time the runtime
+> resolution of `project_paths()` and the end-to-end run of `analyze_emergent_entropy.m` have both been verified in practice.
 
 ---
 
-## 0. 前置：MATLAB 曾经起不来（已修复）
+## 0. Prerequisite: MATLAB used to fail to start (fixed)
 
-审计期间本机 MATLAB 完全无法启动，报
-`无法与所需的 MathWorks 服务通信(错误 5201)`。这**与项目代码无关**，
-是 MathWorks Service Host 锁目录的权限损坏（两个串联故障）。
-根因与修复过程见 [`../tools/README-MATLAB-5201.md`](../tools/README-MATLAB-5201.md)。
+During the audit, MATLAB on this machine could not start at all, reporting
+`Unable to communicate with the required MathWorks services (error 5201)`. This is **unrelated to the project code**;
+it is permission corruption of the lock directory of the MathWorks Service Host (two cascading faults).
+The root cause and the repair process are in [`../tools/README-MATLAB-5201.md`](../tools/README-MATLAB-5201.md).
 
-修复后（普通权限、未提权令牌下）：
+After the fix (normal privileges, non-elevated token):
 
 ```
 User: CAT_SISTER\user   IsAdmin: False
@@ -23,13 +25,13 @@ matlab -batch "disp(version)"
 
 ---
 
-## 1. 语法校验结果
+## 1. Syntax verification results
 
-`checkcode(file,'-m0')` 在 **R2025b 上仍会返回风格/性能提示**，
-所以"消息数为 0"**不是**语法是否有效的判据。真正的语法判据是
-`mtree(file)`——构造语法树时会**解析**文件，语法错误直接抛异常。
+`checkcode(file,'-m0')` **still returns style/performance advisories on R2025b**,
+so "message count is 0" is **not** a criterion for syntactic validity. The real syntax criterion is
+`mtree(file)` — building the syntax tree **parses** the file, and a syntax error throws an exception directly.
 
-`tools/check_all.m` 同时给出这两项，并把它们明确分开：
+`tools/check_all.m` reports both and keeps them explicitly separate:
 
 ```
 ==== syntax validity (mtree parse) + advisory message counts ====
@@ -45,31 +47,31 @@ analyze_annotated_regions    syntax=OK     advisory_messages=5
 SYNTAX FAILURES = 0
 ```
 
-**8/8 语法有效，0 失败。**
+**8/8 syntactically valid, 0 failures.**
 
-### 那 38/3/1/5 条 "advisory" 是什么
+### What those 38/3/1/5 "advisory" messages are
 
-全部是**风格与性能建议**，不影响运行，其中多数正是审计报告已指出的问题——
-它们现在有了 MATLAB 自己的官方确认：
+All of them are **style and performance suggestions** that do not affect execution, and most are exactly the problems
+the audit report already pointed out — they now have official confirmation from MATLAB itself:
 
-| 类型 | 例子 | 对应审计结论 |
+| Type | Example | Corresponding audit conclusion |
 |---|---|---|
-| 未使用的参数/返回值 | `analyze_emergent_entropy.m` L477、L523（`estimate_lyapunov_discrete` 从未被调用）、L579、L1034 | §2.3 B5 / B8 死代码 |
-| `nanmean` 建议改用 `mean` | L435、L495 | — |
-| 数组在循环中增长 | L914、L933-935；`simple_region_features.m` L165/L226/L273 | 性能问题 |
-| 函数已过时 | L850 `caxis`→`clim`；L1041 `datestr`/`now`→`datetime` | 兼容性 |
-| 索引方式 | `analyze_annotated_regions.m` L197 | — |
+| Unused parameters/return values | `analyze_emergent_entropy.m` L477, L523 (`estimate_lyapunov_discrete` is never called), L579, L1034 | §2.3 B5 / B8 dead code |
+| `nanmean` suggested to be replaced by `mean` | L435, L495 | — |
+| Array growing inside a loop | L914, L933-935; `simple_region_features.m` L165/L226/L273 | performance issue |
+| Deprecated function | L850 `caxis`→`clim`; L1041 `datestr`/`now`→`datetime` | compatibility |
+| Indexing style | `analyze_annotated_regions.m` L197 | — |
 
-**这些 advisory 我刻意没有逐条清理**：该脚本已被 `tools/network/` 取代，
-它的核心问题（伪造的李雅普诺夫指数、log₂(样本数) 冒充互信息、硬编码 α→λ 查表）
-不是靠消除警告能解决的，必须重写方法本身。清理警告只会让一份不该继续使用的
-代码看起来更"健康"。
+**I deliberately did not clean up these advisories one by one**: that script has been superseded by `tools/network/`,
+and its core problems (a fabricated Lyapunov exponent, log₂(sample count) passed off as mutual information, a hard-coded α→λ lookup table)
+cannot be solved by silencing warnings — the method itself has to be rewritten. Cleaning up the warnings would only make
+a piece of code that should no longer be used look "healthier".
 
 ---
 
-## 2. 运行时验证（不只是静态检查）
+## 2. Runtime verification (not just static checking)
 
-`tools/check_all.m` 同时验证 `project_paths()` 在**真实运行时**的解析结果：
+`tools/check_all.m` also verifies the resolution result of `project_paths()` at **actual runtime**:
 
 ```
 ==== project_paths() runtime resolution ====
@@ -84,120 +86,119 @@ python (OCR-capable): .venv\Scripts\python.exe
 python probe        : status=0 out=ocr deps ok
 ```
 
-### 端到端验证：路径修好后旧数字确实可复现
+### End-to-end verification: after the path fix the old numbers really are reproducible
 
 ```bash
 matlab -batch "addpath('tools'); probe_emergence"
 ```
 
-`analyze_emergent_entropy.m` **首次成功运行**（生成 4 张图并写入
-`data/emerg_inf_advanced/2026-10-15_20-06-21`），且数字与 2026-05-18 的旧报告
-**逐项吻合**：
+`analyze_emergent_entropy.m` **ran successfully for the first time** (it generated 4 figures and wrote them to
+`data/emerg_inf_advanced/2026-10-15_20-06-21`), and the numbers **agree item by item** with the old report of 2026-05-18:
 
-| 指标 | 旧报告 `2026-05-18_01-55-53` | 本次复现 |
+| Metric | Old report `2026-05-18_01-55-53` | This reproduction |
 |---|---|---|
-| s_11 熵 / λ / 置信度 | 3.5368 / −0.0079 / 0.43 | **完全相同** |
-| s_12 熵 / λ / 置信度 | 3.6284 / −0.0056 / 1.00 | 完全相同 |
-| s_13 熵 / α / 推断 λ | 3.7502 / 0.8274 / **0.5000** | 完全相同 |
-| s_18 熵 / λ / 置信度 | 3.4461 / −0.0074 / 0.67 | 完全相同 |
-| s_21 熵 / α / 推断 λ | 3.5264 / 1.0657 / **0.4803** | 完全相同 |
+| s_11 entropy / λ / confidence | 3.5368 / −0.0079 / 0.43 | **exactly the same** |
+| s_12 entropy / λ / confidence | 3.6284 / −0.0056 / 1.00 | exactly the same |
+| s_13 entropy / α / inferred λ | 3.7502 / 0.8274 / **0.5000** | exactly the same |
+| s_18 entropy / λ / confidence | 3.4461 / −0.0074 / 0.67 | exactly the same |
+| s_21 entropy / α / inferred λ | 3.5264 / 1.0657 / **0.4803** | exactly the same |
 
-这同时**更正了审计初版的一条错误判断**：此前写"旧输出无法由现存源码复现"，
-实际原因是脚本写死了已不存在的 `d:\dachuang` 而**根本跑不起来**，
-不是"跑起来了但产物对不上"。详见 [`AUDIT-REPORT.md`](AUDIT-REPORT.md) §2.3 末节。
+This also **corrects an erroneous judgment in the first version of the audit**: it previously said "the old outputs cannot be reproduced
+from the existing source code", while the actual cause was that the script hard-coded the no-longer-existing `d:\dachuang` and therefore
+**could not run at all** — not "it ran but the artifacts did not agree". See [`AUDIT-REPORT.md`](AUDIT-REPORT.md) §2.3, last subsection.
 
-复现也再次确认了核心问题：s_13 / s_21 的 λ 来自脚本自己打印的
-`Insufficient time points for Lyapunov, using power-law...` 分支的**硬编码查表**，
-而真正算出来的三个 λ 全为**负值**（按脚本自身标准即"稳定"）。
+The reproduction also confirmed the core problem once more: the λ of s_13 / s_21 comes from the **hard-coded lookup table**
+of the branch that the script itself prints as `Insufficient time points for Lyapunov, using power-law...`,
+while the three λ values that are actually computed are all **negative** (which by the script's own standard means "stable").
 
 ---
 
-## 3. 结构化检查（MATLAB 不可用时的替代手段，保留作交叉验证）
+## 3. Structural checks (the substitute when MATLAB is unavailable, kept for cross-validation)
 
 ```bash
 python tools/check_matlab_syntax.py
 ```
 
-`code/` 下 22 个 `.m` 的块关键字配对 / 跨行括号平衡 / 引号解析状态：
+Block-keyword pairing / cross-line bracket balance / quote-parsing status of the 22 `.m` files under `code/`:
 
 ```
-19/22 结构检查通过；3 个无法判定；0 个失败
+19/22 structural checks passed; 3 undeterminable; 0 failed
 ```
 
-3 个"无法判定"是 `analyze_annotated_regions.m`、`extract_region_features.m`、
-`separate_annotation_colors.m`——纯文本解析无法区分 MATLAB 的单引号是
-**转置运算符**还是**字符串起始**（如 `fieldnames(colors)'`）。
-这 3 个在**改动前**的原始版本上同样"无法判定"，与本次修改无关；
-现已由上面的 `mtree` 解析给出确定结论（syntax=OK）。
+The 3 "undeterminable" ones are `analyze_annotated_regions.m`, `extract_region_features.m`,
+`separate_annotation_colors.m` — pure text parsing cannot tell whether a MATLAB single quote is a
+**transpose operator** or the **start of a string** (e.g. `fieldnames(colors)'`).
+These 3 were equally "undeterminable" in their original versions **before the change**, so this has nothing to do with the current modification;
+the `mtree` parsing above now gives a definite conclusion (syntax=OK).
 
 ---
 
-## 4. 可复现的校验命令
+## 4. Reproducible verification commands
 
 ```bash
-# 一次跑完：语法校验 + 运行时解析 + OCR 依赖探测
+# all at once: syntax check + runtime resolution + OCR dependency probe
 matlab -batch "addpath('tools'); check_all"
 
-# 端到端：真正运行 analyze_emergent_entropy.m
-# （会往 data/emerg_inf_advanced/ 写一份新的带时间戳输出）
+# end-to-end: actually run analyze_emergent_entropy.m
+# (writes a new timestamped output into data/emerg_inf_advanced/)
 matlab -batch "addpath('tools'); probe_emergence"
 ```
 
-期望：`SYNTAX FAILURES = 0`，且 `python probe : status=0 out=ocr deps ok`。
+Expected: `SYNTAX FAILURES = 0`, and `python probe : status=0 out=ocr deps ok`.
 
 ---
 
-## 5. 本次对 `code/` 的修改（已全部通过校验）
+## 5. Changes to `code/` in this round (all have passed verification)
 
-| 文件 | 改动 |
+| File | Change |
 |---|---|
-| `project_paths.m` | 🆕 按 `mfilename('fullpath')` 推算全部绝对路径，取代写死的 `D:\dachuang` 与 pwd 相对路径；附带 Python 解释器**实际 import 探测**（见下） |
-| `project_assert_cwd.m` | 🆕 工作目录不符时显式报错，不再静默读错目录 |
-| `analyze_emergent_entropy.m` | 路径改为 `project_paths()`（原写死 `d:\dachuang`，脚本**完全无法运行**） |
-| `find_scale_bar.m` | 移除 OCR 失败后静默代入 `0.1 µm/px` 的兜底 → 改 `NaN` + `scale_ok=false` + 告警；修 `strrep(filename,'red','')` 的全局替换 |
-| `normalize_features_um.m` | 每图独立 min-max → **全数据集**统计量；CSV 保留 µm 原值 |
-| `simple_region_features.m` | 顶部加"数据源已废弃"守卫；`errordlg`（模态对话框，批处理下会卡死）→ `warning` |
-| `extract_region_features.m` | 同上 |
-| `analyze_annotated_regions.m` | 顶部加弃用说明；Python 路径改用 `project_paths()` |
-| `detr_region_feature.py` | ⛔ 标注为已废弃（三条"必崩"级缺陷），指向 `tools/detr/` |
+| `project_paths.m` | 🆕 derives all absolute paths from `mfilename('fullpath')`, replacing the hard-coded `D:\dachuang` and pwd-relative paths; includes an **actual import probe** of the Python interpreter (see below) |
+| `project_assert_cwd.m` | 🆕 raises an explicit error when the working directory does not match, no longer silently reading the wrong directory |
+| `analyze_emergent_entropy.m` | paths changed to `project_paths()` (the original hard-coded `d:\dachuang` meant the script **could not run at all**) |
+| `find_scale_bar.m` | removed the silent fallback to `0.1 µm/px` after an OCR failure → `NaN` + `scale_ok=false` + warning; fixed the global replacement in `strrep(filename,'red','')` |
+| `normalize_features_um.m` | per-image min-max → **whole-dataset** statistics; the CSV keeps the original µm values |
+| `simple_region_features.m` | added a "data source deprecated" guard at the top; `errordlg` (a modal dialog that hangs under batch processing) → `warning` |
+| `extract_region_features.m` | same as above |
+| `analyze_annotated_regions.m` | added a deprecation note at the top; the Python path now uses `project_paths()` |
+| `detr_region_feature.py` | ⛔ marked as deprecated (three "guaranteed to crash"-level defects), pointing to `tools/detr/` |
 
-### 关于 `project_paths.m` 里的 Python 探测
+### About the Python probe in `project_paths.m`
 
-本项目有**两个** Python，能力不同：
+This project has **two** Pythons with different capabilities:
 
-| 解释器 | 含 | 缺 |
+| Interpreter | Has | Missing |
 |---|---|---|
-| `.venv\Scripts\python.exe` | numpy / cv2 / PIL / pytesseract | **scipy、torch、transformers** |
-| 系统 Python（PATH） | numpy / cv2 / PIL / pytesseract / **scipy** / torch / transformers | — |
+| `.venv\Scripts\python.exe` | numpy / cv2 / PIL / pytesseract | **scipy, torch, transformers** |
+| System Python (PATH) | numpy / cv2 / PIL / pytesseract / **scipy** / torch / transformers | — |
 
-`P.python` 只用于 `code\ocr.py` 与 `code\ocr_scale_bar.py`，因此探测条件是
-"能 `import PIL, pytesseract`"，并**实际执行**该命令而不只是判断文件存在——
-否则会出现"脚本找到了、但 import 失败"这种难查故障。
-`tools\` 下的脚本（`extract_regions.py` 需要 scipy）请直接用命令行 `python`。
-
----
-
-## 6. 两个写 .m 文件时的编码陷阱（本次踩到）
-
-1. **`.m` 文件必须用系统代码页（本机 GBK）编码，或只含 ASCII。**
-   我新建的调试脚本用 UTF-8 存了中文注释，MATLAB 直接报
-   `文本字符无效。请检查不受支持的符号、不可见的字符或非 ASCII 字符的粘贴`
-   而无法加载。项目原有的 `.m` 编码正确，所以不受影响——
-   本次新增的 `tools\check_all.m`、`tools\probe_emergence.m` 因此刻意写成**纯英文**。
-2. **`.bat` 文件同理**，而且更危险：cmd.exe 会把乱码**当作命令执行**。
-   见 [`../tools/README-MATLAB-5201.md`](../tools/README-MATLAB-5201.md) §3。
+`P.python` is used only for `code\ocr.py` and `code\ocr_scale_bar.py`, so the probe condition is
+"can `import PIL, pytesseract`", and it **actually executes** that command instead of merely checking that the files exist —
+otherwise you get the hard-to-diagnose failure "the script was found but the import fails".
+For scripts under `tools\` (`extract_regions.py` needs scipy), please use the command-line `python` directly.
 
 ---
 
-## 7. 仍需注意
+## 6. Two encoding traps when writing .m files (hit this time)
 
-语法校验只证明**能被 MATLAB 解析**，不证明这些脚本**结果正确**。
-`code/` 中下列文件的问题属于方法层面，已由 `tools/` 下的实现取代：
+1. **`.m` files must be encoded with the system code page (GBK on this machine), or contain ASCII only.**
+   A debug script I created stored Chinese comments as UTF-8, and MATLAB reported
+   `Invalid text character. Check for unsupported symbol, invisible character, or pasting of non-ASCII characters`
+   and could not load it. The project's existing `.m` files are encoded correctly, so they are unaffected —
+   the newly added `tools\check_all.m` and `tools\probe_emergence.m` were therefore deliberately written in **pure English**.
+2. **The same applies to `.bat` files, and it is more dangerous**: cmd.exe will **execute the garbled bytes as a command**.
+   See [`../tools/README-MATLAB-5201.md`](../tools/README-MATLAB-5201.md) §3.
 
-- `analyze_annotated_regions.m`：分割取的是**背景**（`~green_mask`），坐标 `[row,col]` 被当 `(x,y)` 读；
-- `simple_region_features.m` / `extract_region_features.m`：解析的是**非法 JSON**（91/94 个文件含字面量 `...`）；
-- `representation_learning.m` / `neural_network_training.m`：数据泄漏 + 任务病态；
-- `analyze_emergent_entropy.m`：无网络重建、李雅普诺夫指数是伪造的（现已可复现，见 §2）。
+---
 
-请勿用这些脚本重新生成训练数据——唯一正确的数据源是
-`data/annotations_v2/`（由 `tools/morpho/extract_regions.py` 生成）。
+## 7. Still to be noted
+
+Syntax verification only proves that the files **can be parsed by MATLAB**; it does not prove that these scripts **give correct results**.
+The problems of the following files in `code/` are at the method level and have been superseded by the implementations under `tools/`:
+
+- `analyze_annotated_regions.m`: the segmentation takes the **background** (`~green_mask`), and the coordinates `[row,col]` are read as `(x,y)`;
+- `simple_region_features.m` / `extract_region_features.m`: they parse **invalid JSON** (91/94 files contain the literal `...`);
+- `representation_learning.m` / `neural_network_training.m`: data leakage + an ill-posed task;
+- `analyze_emergent_entropy.m`: no network reconstruction, and the Lyapunov exponent is fabricated (now reproducible, see §2).
+
+Do not use these scripts to regenerate training data — the only correct data source is
+`data/annotations_v2/` (generated by `tools/morpho/extract_regions.py`).

@@ -1,132 +1,134 @@
-# 其他细胞器：可行性评估
+# Other organelles: feasibility assessment
 
-> 问题：除了线粒体，能不能识别其他细胞器？
->
-> **结论：用现有数据做不到，但原因和补救路径都很清楚。**
+**English** ｜ [中文](OTHER-ORGANELLES-FEASIBILITY.zh-CN.md)
 
-> ## ⚠ 本文档已被部分修正，请先读 `docs/EMPANADA-TRANSFER-RESULTS.md`
+> Question: besides mitochondria, can other organelles be identified?
 >
-> 后续测试找到了 empanada 的通用 EM 模型（MitoNet / DropNet / NucleoNet），
-> 结果推翻了两处判断：
+> **Conclusion: it cannot be done with the existing data, but both the reasons and the remedy are clear.**
+
+> ## ⚠ This document has been partially corrected — read `docs/EMPANADA-TRANSFER-RESULTS.md` first
 >
-> 1. **"迁移不可行"是错的。** 那只对 CellMap 单一模态模型成立；
->    MitoNet 零样本在本数据上 Dice **0.72–0.80**（9/9 超过平凡基线）。
-> 2. **"建议从脂滴开始"是错的。** DropNet 在本数据上**没有任何输出**
->    （反相后也没有），说明这些视野里根本没有脂滴。
+> Later testing found empanada's generalist EM models (MitoNet / DropNet / NucleoNet),
+> and the results overturned two judgements:
 >
-> 下面第 3 节里"路线 A：从脂滴开始"已被证伪，**不要按那条做**。
-> 其余关于"标注只有线粒体""CellMap 有 73 类"的事实陈述仍然有效。
+> 1. **"Transfer is infeasible" is wrong.** That held only for the single-modality CellMap model;
+>    zero-shot MitoNet achieves Dice **0.72–0.80** on this data (9/9 above the trivial baseline).
+> 2. **"Start with lipid droplets" is wrong.** DropNet produces **no output at all** on this data
+>    (and none after inversion either), which means there are simply no lipid droplets in these fields of view.
+>
+> In Section 3 below, "Route A: start with lipid droplets" has been refuted — **do not follow it**.
+> The remaining factual statements — "the annotations contain only mitochondria" and "CellMap has 73 classes" — are still valid.
 
 ---
 
-## 1. 已确认的事实
+## 1. Established facts
 
-### 1.1 你们的标注里只有线粒体
+### 1.1 Your annotations contain only mitochondria
 
-对标注图做颜色分离后逐一核实（以 `11_0004` 为例）：
+Colour separation was performed on the annotation images and each colour verified individually (taking `11_0004` as the example):
 
-| 颜色 | 像素数 | 连通域 | 位置 | 判定 |
+| Colour | Pixel count | Connected components | Location | Verdict |
 |---|---|---|---|---|
-| **绿** `(0,180,75)` | 36550 | 15 个，最大 4496 px | 分布于全图 | **线粒体轮廓** |
-| **红** `(237,28,36)` | 4749 | 4 个 | **100% 在底部 60 行** | **比例尺**（横条+刻度+文字） |
-| **黄** `(255,242,0)` | 1350 | 15 个，各约 90 px | 分布于全图 | **文字字母**（OCR 用） |
+| **Green** `(0,180,75)` | 36550 | 15, largest 4496 px | Distributed across the whole image | **Mitochondrial contours** |
+| **Red** `(237,28,36)` | 4749 | 4 | **100% in the bottom 60 rows** | **Scale bar** (bar + ticks + text) |
+| **Yellow** `(255,242,0)` | 1350 | 15, about 90 px each | Distributed across the whole image | **Text letters** (for OCR) |
 
-`organelle_type` 字段的分布是 **543 个 "M" + 27 个空**，没有第二类。
+The distribution of the `organelle_type` field is **543 "M" + 27 empty**, with no second class.
 
-**所以"识别其他细胞器"没有监督信号可用。**
+**So there is no supervision signal available for "identifying other organelles".**
 
-### 1.2 CellMap 那边有 73 类可以训练
+### 1.2 CellMap has 73 classes that could be trained
 
-`tools/data_acquire/catalog.json` 记录 CellMap Segmentation Challenge 提供
-73 类标注，包括：
+`tools/data_acquire/catalog.json` records that the CellMap Segmentation Challenge provides
+73 annotated classes, including:
 
 `mito / mito_mem / mito_lum / er / er_mem / er_lum / lyso / lyso_mem /
-ld（脂滴）/ perox / golgi / ves / endo / nuc / np / cell` 等。
+ld (lipid droplet) / perox / golgi / ves / endo / nuc / np / cell` and so on.
 
-**技术上可以训练这些类。** 但——
+**Technically these classes can be trained.** But —
 
-### 1.3 迁移已被证明失败
+### 1.3 Transfer has been shown to fail
 
-线粒体是 CellMap 与我们数据**最相似**的一类，而它的零样本迁移结果：
+Mitochondria are the class in CellMap **most similar** to our data, and its zero-shot transfer result is:
 
-| 方案 | Dice |
+| Approach | Dice |
 |---|---|
-| CellMap 模型直接应用 | **0.1516**（0/6 超过平凡基线） |
-| 反相后应用 | 0.0486 |
+| CellMap model applied directly | **0.1516** (0/6 above the trivial baseline) |
+| Applied after inversion | 0.0486 |
 
-对更不相似的目标（溶酶体、高尔基、核）做同样的迁移，**只会更差**。
-在没有新证据之前，不应把"训练 CellMap 的其它类再迁移"当作可行路线。
+Applying the same transfer to even less similar targets (lysosomes, Golgi, nucleus) **can only be worse**.
+Until new evidence appears, "train other CellMap classes and then transfer them" should not be treated as a viable route.
 
 ---
 
-## 2. 图像里到底有没有别的可分辨结构？
+## 2. Are there any other distinguishable structures in the images at all?
 
-在花几小时训练之前，先回答这个更基础的问题。
-用 `tools/explore_other_structures.py` 在**排除线粒体后的区域**里，
-按外观找候选（局部显著高于/低于中位灰度，面积限 0.05–2 µm²）：
+Before spending hours on training, answer this more basic question first.
+Using `tools/explore_other_structures.py` in the **regions left after excluding mitochondria**,
+candidates were sought by appearance (locally significantly brighter/darker than the median grey level, area limited to 0.05–2 µm²):
 
-| 候选类型 | 图均 | 中位 | 最多 |
+| Candidate type | Mean per image | Median | Maximum |
 |---|---|---|---|
-| 亮而均匀（潜在脂滴/空泡） | 8.1 | 4 | 45 |
-| 暗而封闭（潜在膜包被腔室） | 4.1 | 2 | 38 |
+| Bright and uniform (possible lipid droplets / vacuoles) | 8.1 | 4 | 45 |
+| Dark and enclosed (possible membrane-bound compartments) | 4.1 | 2 | 38 |
 
-**但这个数字不能当作"找到 8 个其他细胞器"。**
-把候选裁片拼成查看表（`logs/other_candidates_sheet.png`）人工看后：
+**But this number must not be read as "8 other organelles found".**
+After assembling the candidate crops into a contact sheet (`logs/other_candidates_sheet.png`) and inspecting it by eye:
 
-* **大部分是细胞质纹理**（颗粒状、无明确边界）
-* 一部分是**膜状边缘**（暗的曲线，属于膜系统而非独立细胞器）
-* 少数是弥散的亮区，形状不规则，不像离散细胞器
+* **Most are cytoplasmic texture** (granular, with no clear boundary)
+* Some are **membranous edges** (dark curves belonging to the membrane system rather than to discrete organelles)
+* A few are diffuse bright regions with irregular shapes, unlike discrete organelles
 
-**判读：这张图里，除线粒体外没有形态上清晰可分辨、可独立计数的细胞器。**
+**Reading: in this image, apart from mitochondria, there are no organelles that are morphologically clearly distinguishable and can be counted independently.**
 
-这与图像本身的信噪比有关：`11_0004` 是 2.667 nm/px、视野 5.5×5.6 µm，
-放大到 1.9 µm 宽的裁片时颗粒噪声已经很明显。
-
----
-
-## 3. 可行的三条路（按成本排序）
-
-### 路线 A：给自己数据加标注（最可靠）
-
-针对某个具体目标（例如脂滴——它通常"亮而均匀"，最容易标），
-人工圈 20–30 个实例即可。
-
-依据：本项目已证明**目标域从零训练的效果远超迁移**
-（检测：目标域 0.5288 vs 源域微调 0.3075；分割：目标域训练 Dice 0.79）。
-所以少量目标域标注的性价比很高。
-
-**建议从脂滴开始**：它的外观（亮、均匀、无内部纹理）与线粒体（亮、有嵴纹理）
-差异明显，标注一致性容易保证。
-
-### 路线 B：提高成像质量后再谈多类
-
-当前图噪声限制了可分辨性。若同一批样品能拿到更高倍/更低噪声的图像，
-脂滴、囊泡这类结构会更清晰。这属于实验侧决定。
-
-### 路线 C：无监督/自监督分割（探索性，不建议作为主线）
-
-可以尝试基于纹理的分区（如超像素聚类 + 人工命名），但：
-* 没有真值，无法量化"识别得对不对"
-* 结果不可复现地依赖超参数
-* 对课题结论的帮助有限
+This is related to the signal-to-noise ratio of the images themselves: `11_0004` is 2.667 nm/px with a field of view of 5.5×5.6 µm,
+and when a crop 1.9 µm wide is magnified, the granular noise is already pronounced.
 
 ---
 
-## 4. 现在能立刻做的一件有用的事
+## 3. Three viable routes (ordered by cost)
 
-`tools/explore_other_structures.py` 已能导出候选位置（`data/other_candidates/candidates.csv`）
-与裁片汇总图。**它可以作为"预标注"的起点**：先按外观筛出候选，
-人只需要确认"是/不是脂滴"，比从零圈画快得多。
+### Route A: annotate our own data (most reliable)
 
-但要说清楚：它给的是**位置提议**，不是类别识别。
-脚本本身不声称任何候选是哪种细胞器。
+For one specific target (for example lipid droplets — usually "bright and uniform", hence the easiest to annotate),
+manually circling 20–30 instances is enough.
+
+Basis: this project has already shown that **training from scratch in the target domain far outperforms transfer**
+(detection: 0.5288 in the target domain vs 0.3075 for source-domain fine-tuning; segmentation: Dice 0.79 when trained on the target domain).
+So a small amount of target-domain annotation is highly cost-effective.
+
+**Recommendation to start with lipid droplets**: its appearance (bright, uniform, no internal texture) differs clearly
+from that of mitochondria (bright, with cristae texture), so annotation consistency is easy to guarantee.
+
+### Route B: improve imaging quality before discussing multiple classes
+
+Current image noise limits distinguishability. If higher-magnification / lower-noise images of the same samples can be obtained,
+structures such as lipid droplets and vesicles will be clearer. This is a decision on the experimental side.
+
+### Route C: unsupervised / self-supervised segmentation (exploratory; not recommended as the main line)
+
+Texture-based partitioning could be attempted (e.g. superpixel clustering + manual naming), but:
+* there is no ground truth, so "whether the identification is right" cannot be quantified
+* the results depend on hyperparameters in a way that is not reproducible
+* the help it gives to the project's conclusions is limited
 
 ---
 
-## 5. 一句话总结
+## 4. One useful thing that can be done right now
 
-> 你们的标注只有线粒体（已核实：绿=线粒体、红=比例尺、黄=文字），
-> CellMap 虽有 73 类但迁移已证明失败，
-> 而你们自己的图里除线粒体外**没有形态上清晰可分辨的其它细胞器**。
-> 因此"识别其他细胞器"目前不可行；
-> 最省的路径是**针对单一目标（建议脂滴）人工标 20–30 个实例，然后在自有数据上训练**。
+`tools/explore_other_structures.py` can already export candidate positions (`data/other_candidates/candidates.csv`)
+and a crop summary image. **It can serve as a starting point for "pre-annotation"**: first filter candidates by appearance,
+and a human only has to confirm "is / is not a lipid droplet", which is much faster than drawing from scratch.
+
+But to be clear: what it provides is a **location proposal**, not class identification.
+The script itself makes no claim about which organelle any candidate is.
+
+---
+
+## 5. Summary in one sentence
+
+> Your annotations contain only mitochondria (verified: green = mitochondria, red = scale bar, yellow = text),
+> CellMap does have 73 classes but transfer has been shown to fail,
+> and in your own images, apart from mitochondria, **there are no other morphologically clearly distinguishable organelles**.
+> "Identifying other organelles" is therefore currently infeasible;
+> the cheapest path is **manual annotation of 20–30 instances of a single target (lipid droplets suggested), then training on our own data**.

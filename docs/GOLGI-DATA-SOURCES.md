@@ -1,139 +1,141 @@
-# 高尔基体标注数据：网上现有资源
+# Golgi annotation data: what already exists online
 
-> 背景：自己标注没时间，需要在公开数据里找高尔基体的 EM 标注。
-> 检索日期 2026-11-02。**所有 URL 均已实测可达（2026-11-02）。**
+**English** ｜ [中文](GOLGI-DATA-SOURCES.zh-CN.md)
+
+> Background: there is no time to annotate it ourselves, so we need to find Golgi EM annotations in public data.
+> Search date 2026-11-02. **All URLs were verified reachable (2026-11-02).**
 
 ---
 
-## 1. 首选：ASEM（哈佛 Kirchhausen 实验室）
+## 1. First choice: ASEM (the Kirchhausen lab at Harvard)
 
-**这是目前最匹配的资源**——它同时提供**训练好的高尔基体模型**和
-**高尔基体真值体数据**，且是 EM（FIB-SEM）。
+**This is currently the best-matching resource** — it provides both a **trained Golgi model** and
+**Golgi ground-truth volumes**, and it is EM (FIB-SEM).
 
-| 项 | 内容 |
+| Item | Content |
 |---|---|
-| 全称 | Automated Segmentation of Intracellular Substructures in EM |
-| 机构 | Kirchhausen Lab, Harvard Medical School |
-| 论文 | Gallusser et al., *J Cell Biol* 222(2):e202208005 (2023) |
-| 许可 | **CC BY-SA 4.0**（可商用，需署名 + 相同方式共享） |
-| 访问 | S3 公开桶，**无需 AWS 账号** |
-| 注册页 | https://registry.opendata.aws/asem-project/ |
-| 代码 | https://github.com/kirchhausenlab/incasem（**不在 PyPI 上**） |
+| Full name | Automated Segmentation of Intracellular Substructures in EM |
+| Institution | Kirchhausen Lab, Harvard Medical School |
+| Paper | Gallusser et al., *J Cell Biol* 222(2):e202208005 (2023) |
+| License | **CC BY-SA 4.0** (commercial use allowed; requires attribution + share-alike) |
+| Access | public S3 bucket, **no AWS account needed** |
+| Registry page | https://registry.opendata.aws/asem-project/ |
+| Code | https://github.com/kirchhausenlab/incasem (**not on PyPI**) |
 
-### 1.1 预训练模型（各 70 MB，已下载到 `models/asem/`）
+### 1.1 Pretrained models (70 MB each, already downloaded to `models/asem/`)
 
 ```
-models/pretrained_checkpoints/model_checkpoint_1837_golgi_CF.pt    ← 高尔基体
+models/pretrained_checkpoints/model_checkpoint_1837_golgi_CF.pt    ← Golgi
 models/pretrained_checkpoints/model_checkpoint_1841_er_CF.pt
 models/pretrained_checkpoints/model_checkpoint_1847_mito_CF.pt
 models/pretrained_checkpoints/model_checkpoint_1675_mito_HPF.pt
-models/pretrained_checkpoints/model_checkpoint_2000_np_HPF.pt      核孔
-models/pretrained_checkpoints/model_checkpoint_1986_ccp_HPF.pt     网格蛋白
+models/pretrained_checkpoints/model_checkpoint_2000_np_HPF.pt      nuclear pore
+models/pretrained_checkpoints/model_checkpoint_1986_ccp_HPF.pt     clathrin
 models/pretrained_checkpoints/model_checkpoint_2661_clathrin.pt
 models/pretrained_checkpoints/model_checkpoint_2632_eres_cop.pt
 ```
 
-**CF = 化学固定，HPF = 高压冷冻+冷冻置换。** 两种制样方式各有一套模型。
-我们自己的图像属于哪种需要判断——这是选择模型的前提。
+**CF = chemical fixation, HPF = high-pressure freezing + freeze substitution.** There is one set of models per preparation method.
+Which one our own images belong to has to be determined — that is the precondition for choosing a model.
 
-### 1.2 高尔基体真值数据（关键）
+### 1.2 Golgi ground-truth data (the key part)
 
-26 个数据集中，**只有 4 个带 `labels/golgi`**：
+Of the 26 datasets, **only 4 come with `labels/golgi`**:
 
-| 数据集 | 标注卷 | golgi 体形状 | chunk 数 | 估算大小 |
+| Dataset | Annotated volumes | golgi volume shape | Chunks | Estimated size |
 |---|---|---|---|---|
-| 46 | er / golgi / mito | [1921, 1100, 4600] | ~5184 | **约 40 GB** |
-| 58 | er / golgi / mito | [1982, 1000, 4752] | ~4864 | **约 40 GB** |
-| **61** | er / golgi / mito | [210, 283, 371] | **18** | **约 150 MB** |
-| **64** | er / golgi / mito | [284, 204, 424] | **24** | **约 200 MB** |
+| 46 | er / golgi / mito | [1921, 1100, 4600] | ~5184 | **about 40 GB** |
+| 58 | er / golgi / mito | [1982, 1000, 4752] | ~4864 | **about 40 GB** |
+| **61** | er / golgi / mito | [210, 283, 371] | **18** | **about 150 MB** |
+| **64** | er / golgi / mito | [284, 204, 424] | **24** | **about 200 MB** |
 
-> **61 与 64 的 golgi 标注只是原始体数据的一个子区域**（raw 是 1805×1400×4800），
-> 所以体积很小，实用。46/58 是全卷标注，太大。
+> **The golgi annotations in 61 and 64 are only a subregion of the raw volume** (raw is 1805×1400×4800),
+> so they are small and practical. 46/58 are whole-volume annotations and far too large.
 
-**这三个类别同时标注（er + golgi + mito），意味着这套数据可以用来做
-真正的多类互作分析**——这正是我们自己数据缺的那一块。
+**These three classes are annotated together (er + golgi + mito), which means this data can be used for a
+real multi-class interaction analysis** — exactly the piece our own data lacks.
 
-### 1.3 一个必须注意的架构问题
+### 1.3 An architectural issue that must be noted
 
-ASEM 模型是 **3D U-Net**（5.84 M 参数，3D 卷积），
-而我们的图像是**单张 2D 切片**。直接把一张切片喂 3D 模型效果会很差。
+The ASEM models are **3D U-Nets** (5.84 M parameters, 3D convolutions),
+whereas our images are **single 2D sections**. Feeding one section straight into a 3D model works badly.
 
-两条路：
+Two routes:
 
-* **A（推荐）**：把 ASEM 的 golgi 真值体**切成 2D 切片**，
-  用我们已有的 `train_seg.py` 训练一个 2D 模型。管线现成，风险最低。
-* **B**：如果我们的编号图像（如 11_0002、11_0003…）确实是**连续 z 层**，
-  可以堆 3–5 层成小体数据跑 3D 模型。需先确认它们是否连续。
+* **A (recommended)**: **cut the ASEM golgi ground-truth volume into 2D sections**
+  and train a 2D model with our existing `train_seg.py`. The pipeline already exists; lowest risk.
+* **B**: if our numbered images (e.g. 11_0002, 11_0003…) really are **consecutive z slices**,
+  3–5 of them can be stacked into a small volume to run a 3D model. This requires first confirming that they are consecutive.
 
-### 1.4 检查点架构（已解析，可自行重建）
+### 1.4 Checkpoint architecture (decoded; can be rebuilt offline)
 
-`model_checkpoint_1837_golgi_CF.pt` 是**普通 state_dict**（非 TorchScript），
-键名是经典 `pytorch-3dunet` 风格：
+`model_checkpoint_1837_golgi_CF.pt` is a **plain state_dict** (not TorchScript),
+with key names in the classic `pytorch-3dunet` style:
 
 ```
-unet.l_conv.0..3   编码器  32→64→128→256，每块 2×(Conv3d3³+ReLU)，块间 MaxPool3d(2)
-unet.r_conv.0.2    解码   up(256)→256 ++ skip(l_conv.2=128) = 384 → conv → 128
-unet.r_conv.0.1    解码   up(128)→128 ++ skip(l_conv.1= 64) = 192 → conv →  64
-unet.r_conv.0.0    解码   up( 64)→ 64 ++ skip(l_conv.0= 32) =  96 → conv →  32
+unet.l_conv.0..3   encoder  32→64→128→256, 2×(Conv3d3³+ReLU) per block, MaxPool3d(2) between blocks
+unet.r_conv.0.2    decoder  up(256)→256 ++ skip(l_conv.2=128) = 384 → conv → 128
+unet.r_conv.0.1    decoder  up(128)→128 ++ skip(l_conv.1= 64) = 192 → conv →  64
+unet.r_conv.0.0    decoder  up( 64)→ 64 ++ skip(l_conv.0= 32) =  96 → conv →  32
 final_conv_pass.conv_pass.0   32 → 2
 ```
 
-**单个张量形状已全部核对，可以离线重建，不需要 `incasem` 包**
-（该包不在 PyPI，只能从 GitHub 装，而 GitHub 在本机与服务器均不可直连）。
+**Every individual tensor shape has been checked, so it can be rebuilt offline without the `incasem` package**
+(that package is not on PyPI and can only be installed from GitHub, and GitHub is not directly reachable from either the local machine or the server).
 
-> 注：state_dict 里只有 conv 的 weight/bias，**没有 BatchNorm 参数**，
-> 说明这一版用的是无 BN 的 3D U-Net。
-
----
-
-## 2. 次选：CellMap / OpenOrganelle（我们已在用）
-
-CellMap 的 73 类里包含 `golgi`。但：
-
-* 它的形态是**逐 crop 的 figshare 条目**（如 `jrc_mus-kidney` crop164），
-  要按 crop 逐个拉取，比较零碎
-* 我们的经验是**CellMap 单模态模型迁移很差**（mito 零样本 Dice 0.1516），
-  所以即使训出 golgi 模型，迁移到我们数据大概率也不理想
-
-**结论**：CellMap 的 golgi 可以作为补充训练数据，但不应作为首选。
+> Note: the state_dict holds only conv weights/biases, **no BatchNorm parameters**,
+> which means this version is a 3D U-Net without BN.
 
 ---
 
-## 3. 排除掉的选项
+## 2. Second choice: CellMap / OpenOrganelle (already in use)
 
-| 资源 | 为何不合适 |
+CellMap's 73 classes include `golgi`. But:
+
+* its form is **per-crop figshare entries** (e.g. `jrc_mus-kidney` crop164),
+  so it has to be pulled crop by crop, which is fragmented
+* our experience is that **CellMap single-modality models transfer poorly** (mito zero-shot Dice 0.1516),
+  so even if a golgi model were trained, transferring it to our data would most likely be unsatisfactory
+
+**Conclusion**: CellMap's golgi can serve as supplementary training data, but should not be the first choice.
+
+---
+
+## 3. Options ruled out
+
+| Resource | Why it does not fit |
 |---|---|
-| MitoEM 2.0 | 只有线粒体 |
-| EMPIAR-11695 | 有 Golgi 标注，但 434 GB，且是 Cal51 细胞系 FIB-SEM |
-| nanotomy | 2D 大视野 EM，有标注但以病理为主，Golgi 覆盖不确定 |
-| 各类荧光高尔基体数据集 | 模态不符（我们是 EM） |
+| MitoEM 2.0 | mitochondria only |
+| EMPIAR-11695 | has Golgi annotations, but 434 GB, and it is Cal51 cell line FIB-SEM |
+| nanotomy | 2D large-field EM, annotated but mostly pathology; Golgi coverage uncertain |
+| various fluorescence Golgi datasets | wrong modality (we are EM) |
 
 ---
 
-## 4. 实测的访问性能
+## 4. Measured access performance
 
-| 路径 | 速度 | 备注 |
+| Path | Speed | Note |
 |---|---|---|
-| 本机 → ASEM S3 | **约 47 kB/s** | 70 MB 模型花了 **25 分钟** |
-| 服务器 → S3 | 0.12–0.37 MB/s | 此前 CellMap 实测 |
+| Local machine → ASEM S3 | **about 47 kB/s** | a 70 MB model took **25 minutes** |
+| Server → S3 | 0.12–0.37 MB/s | measured earlier on CellMap |
 
-**结论：从 S3 拉大文件很慢。** 61/64 的 golgi 标注（各约 150–200 MB）
-按 47 kB/s 计算需要 1–1.5 小时，**建议放到服务器上拉**（快 3–8 倍），
-或只拉需要的子区域 chunk。
+**Conclusion: pulling large files from S3 is slow.** The golgi annotations of 61/64 (about 150–200 MB each)
+would take 1–1.5 hours at 47 kB/s, so **pulling them on the server is recommended** (3–8× faster),
+or pull only the needed subregion chunks.
 
 ---
 
-## 5. 建议的下一步
+## 5. Suggested next steps
 
-按价值排序：
+In order of value:
 
-| 优先级 | 动作 | 理由 |
+| Priority | Action | Rationale |
 |---|---|---|
-| **1** | **等你传完自己的高尔基体标注**，先用现有管线训一个 2D 模型 | 同一批成像条件，迁移问题最小 |
-| **2** | 若自己的标注太少：从 **61/64** 拉 golgi 真值，切成 2D 补充训练 | 同一模态（FIB-SEM），类别正确 |
-| 3 | 用 ASEM golgi 模型做**对照基线**（需先重建 3D U-Net） | 提供一个"通用模型零样本"的参照，类似 MitoNet 之于线粒体 |
-| 4 | 若确认我们图像是连续 z 层，再考虑直接用 3D 模型 | 需先验证连续性 |
+| **1** | **wait until your own Golgi annotations are uploaded**, then train a 2D model with the existing pipeline | same imaging conditions, so the transfer problem is minimal |
+| **2** | if our own annotations are too few: pull golgi ground truth from **61/64** and cut it into 2D for supplementary training | same modality (FIB-SEM), correct class |
+| 3 | use the ASEM golgi model as a **control baseline** (requires rebuilding the 3D U-Net first) | gives a "general model, zero-shot" reference, analogous to MitoNet for mitochondria |
+| 4 | if our images are confirmed to be consecutive z slices, then consider using a 3D model directly | continuity must be verified first |
 
-**关键提醒**：先确认我们自己的图像是 **CF 还是 HPF 制样**。
-ASEM 的 golgi 模型只有 CF 版本（`1837_golgi_CF`），
-若我们是 HPF，直接套用的效果会打折。
+**Key reminder**: first determine whether our own images are **CF or HPF** preparations.
+The ASEM golgi model exists only in a CF version (`1837_golgi_CF`),
+so if we are HPF, applying it directly will be less effective.

@@ -1,5 +1,7 @@
 # EM Organelle Analysis
 
+**English** ｜ [中文](README.zh-CN.md)
+
 Electron-microscopy organelle segmentation, and — the part that motivated the
 project — reconstruction of **inter-organelle interaction** from segmentation.
 
@@ -164,10 +166,17 @@ transcription error where a run's mid-training value had been recorded as final.
 src/          trainer, dataset readers, unit tests
 tools/        pipeline, unified data layer, network analysis, DETR, morphology
 code/         MATLAB chaos/entropy analysis, OCR of scale bars, feature extraction
-docs/         per-topic result documents
+docs/         per-topic result documents — English, with the Chinese original
+              alongside as *.zh-CN.md
 logs/         result artifacts the documents cite
 datasets.yaml dataset declarations
 ```
+
+Documents are bilingual. Each one opens with an English/中文 switch; the `.md`
+file is English and its `.zh-CN.md` sibling is the Chinese original the English
+was translated from. Numbers, tables and code blocks are identical in both — a
+script checks that the numeric tokens in the two versions are the same set, so a
+translation cannot quietly drift from the evidence.
 
 ## Data
 

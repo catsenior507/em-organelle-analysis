@@ -1,78 +1,80 @@
-# 高尔基体：三步改进的记录
+# Golgi: a record of three improvement steps
 
-> 目标：把高尔基体从"自有 51 张插图、Dice 0.48"做得更可用。
-> 三步分别是：① 处理文字伪影 ② 引入 ASEM 公开数据 ③ 选可大规模应用的路线。
+**English** ｜ [中文](GOLGI-IMPROVEMENTS.zh-CN.md)
+
+> Goal: take the Golgi from "51 in-house figure panels, Dice 0.48" to something more usable.
+> The three steps are: ① handle the text artifacts ② bring in the public ASEM data ③ choose a route that can be applied at scale.
 >
-> **本文档记录每一步的实际结果，包括失败与放弃的决定。**
+> **This document records the actual result of each step, including the failures and the decisions to abandon a direction.**
 
 ---
 
-## 1. 文字伪影：查了、量化了、决定不屏蔽
+## 1. Text artifacts: investigated, quantified, and deliberately not masked
 
-### 1.1 问题
+### 1.1 The problem
 
-这批高尔基体原图是**已发表论文的插图**，上面烘进了黑色说明文字
-（"Golgi Cisternae"、"Mitochondria"）与箭头。文字覆盖了真实组织，
-该处 GT 不可信。
+These original Golgi images are **figure panels from published papers**, and they have black annotation text burned into them
+("Golgi Cisternae", "Mitochondria") plus arrows. The text sits on top of real tissue, so the GT
+there is not trustworthy.
 
-### 1.2 五种检测尝试，全部失败
+### 1.2 Five detection attempts, all of them failed
 
-| 判据 | 结果 | 失败原因 |
+| Criterion | Result | Why it failed |
 |---|---|---|
-| 灰度 < 阈值 | 阈值 20 时前景 1.15%，但中位连通域仅 **2 像素** | JPEG 把笔画打碎成散点，连不起来 |
-| 黑帽变换（细暗结构） | **屏蔽 44%** | EM 里全是细暗的**膜**，与文字在"细暗"这一维不可分 |
-| 暗 + 局部方差**低** | 只 0.04–0.5% | 方向反了：**线粒体内部又暗又平**，反而被选中 |
-| 暗 + 局部方差**高** + 黑帽 | **47–58%** | 膜同样满足 |
-| 暗 + 小连通域 + **空间成串** | 20% | 暗细胞质纹理也成串 |
-| 上者收紧参数（amin=20, radius=30, nbr=6） | 2.3% | 可视化确认：**标在暗组织团块上，没标到文字** |
+| Gray value < threshold | At a threshold of 20 the foreground is 1.15%, but the median connected component is only **2 pixels** | JPEG breaks the strokes into scattered dots that never connect |
+| Black-hat transform (thin dark structures) | **masks 44%** | EM is full of thin dark **membranes**, and text cannot be separated from them along the "thin and dark" dimension |
+| Dark + **low** local variance | only 0.04–0.5% | the sign is reversed: **the inside of a mitochondrion is dark and flat**, so it gets picked out instead |
+| Dark + **high** local variance + black hat | **47–58%** | membranes satisfy this too |
+| Dark + small component + **spatial clustering** | 20% | dark cytoplasm texture clusters too |
+| The above with tighter parameters (amin=20, radius=30, nbr=6) | 2.3% | visual inspection confirmed it: **it marks dark tissue blobs, not the text** |
 
-**结论：单靠图像统计无法区分"画上去的文字"与"拍摄到的膜"。**
-根因是这批图文字是**暗底上的暗字**，而 TEM 组织本身充满暗结构。
+**Conclusion: image statistics alone cannot separate "text that was drawn on" from "membrane that was photographed".**
+The root cause is that the text in these images is **dark lettering on a dark background**, while TEM tissue is itself full of dark structures.
 
-### 1.3 换一个更有决定性做法：量化污染程度
+### 1.3 A more decisive move: quantify how much contamination there is
 
-与其猜"该不该屏蔽"，不如量"文字到底污染了多少 GT"：
+Instead of guessing whether to mask, measure how much GT the text actually contaminates:
 
-| 指标 | 均值 | 中位 |
+| Metric | Mean | Median |
 |---|---|---|
-| GT 区域内暗像素占比 | 6.1% | **1.8%** |
-| **暗像素中属于 GT 的比例** | 8.4% | **2.6%** |
+| Share of dark pixels inside the GT region | 6.1% | **1.8%** |
+| **Share of dark pixels that belong to GT** | 8.4% | **2.6%** |
 
-关键在第二行：**暗像素（含文字）中只有约 2.6% 落在 Golgi 上**，
-其余全在背景。而背景处 GT 本来就是 0，文字被模型学成背景，
-**与真值一致，不构成污染**。
+The second row is the key one: **only about 2.6% of the dark pixels (text included) fall on the Golgi**,
+and all the rest are in the background. But GT in the background is 0 to begin with, so the text being learned as background
+**agrees with the ground truth, and therefore is not contamination**.
 
-再加上高尔基体池层在 TEM 里本身就是深色的，那 1.8% 里还有一部分是真 Golgi。
+On top of that, Golgi cisternal stacks are themselves dark in TEM, so part of that 1.8% is real Golgi.
 
-### 1.4 决定
+### 1.4 The decision
 
-**不做自动文字屏蔽。** 理由：
-1. 可用的检测器都不可靠（五种尝试均失败），错误屏蔽的代价（误删真实组织）
-   远大于正确屏蔽的收益（最多改善约 2% 的区域）
-2. 污染上界已量化（约 2%），属于可接受的标注噪声
-3. 保留这个结论本身有价值——避免以后重复尝试同一批判据
+**No automatic text masking.** Reasoning:
+1. All the usable detectors are unreliable (all five attempts failed), and the cost of a wrong mask (deleting real tissue)
+   far exceeds the benefit of a correct one (improving at most about 2% of the area)
+2. The upper bound on contamination has been quantified (about 2%), and that is an acceptable level of annotation noise
+3. Keeping this conclusion has value in itself — it stops anyone from retrying the same set of criteria later
 
-> 相关脚本保留在 `tools/analyze_text_artifacts.py`（阈值标定）、
-> `tools/detect_text_artifacts.py`（五种判据的实现与参数）、
-> `tools/quantify_text_contamination.py`（污染量化）。
-> 它们的价值在于**记录了什么不可行**。
+> The related scripts are kept in `tools/analyze_text_artifacts.py` (threshold calibration),
+> `tools/detect_text_artifacts.py` (the five criteria and their parameters),
+> `tools/quantify_text_contamination.py` (contamination quantification).
+> Their value lies in **recording what does not work**.
 
-### 1.5 但机制本身已经建好并验证了
+### 1.5 But the mechanism itself is built and verified
 
-虽然这批数据用不上，**"忽略区"机制仍然实现并单测通过了**——
-因为它解决的问题比文字伪影大得多：**标注不完整**（见第 10 节）。
+Even though this dataset cannot use it, **the "ignore region" mechanism is implemented and its unit tests pass** —
+because the problem it solves is far bigger than text artifacts: **incomplete annotation** (see Section 10).
 
-实现（`train_seg.py`）：
+The implementation (`train_seg.py`):
 
-| 环节 | 做法 |
+| Stage | What it does |
 |---|---|
-| 数据 | `SegDataset` 发现切片目录里有 `ignore.png` 时额外返回 `(1,H,W)` 忽略通道；**没有该文件时行为与原来完全一致**（仍是 3 元组） |
-| 损失 | `seg_loss(..., ignore=)`：BCE 按 `1-ignore` 加权后**除以保留像素数**（保持量级）；Dice 的分子分母同时乘 `1-ignore` |
-| 极端情形 | 整批全被忽略时返回"带计算图的零值"，梯度精确为 0，且不触发 `does not require grad` |
-| 增广 | 翻转/旋转时忽略图与图像、GT 同步变换 |
-| 统一层 | `unified.py` 若在标注目录找到 `<id>_ignore.png` 或 `ignore/<id>.png`，会随切片一并带出 |
+| Data | When `SegDataset` finds `ignore.png` in a slice directory it additionally returns a `(1,H,W)` ignore channel; **without that file the behaviour is exactly as before** (still a 3-tuple) |
+| Loss | `seg_loss(..., ignore=)`: BCE is weighted by `1-ignore` and then **divided by the number of kept pixels** (which preserves the scale); for Dice, numerator and denominator are both multiplied by `1-ignore` |
+| Degenerate case | When a whole batch is ignored it returns "a zero value that carries the graph", the gradient is exactly 0, and `does not require grad` is not triggered |
+| Augmentation | On flip/rotation the ignore map is transformed in sync with the image and the GT |
+| Unified layer | If `unified.py` finds `<id>_ignore.png` or `ignore/<id>.png` in the annotation directory, it carries it out together with the slice |
 
-验证（`src/test_ignore_mask.py`，12 项断言全过）：
+Verification (`src/test_ignore_mask.py`, all 12 assertions pass):
 
 ```
 [2] 被忽略像素的梯度必须精确为 0
@@ -84,470 +86,470 @@
   PASS  ignore=None 与不传该参数结果相同  [0.679907 vs 0.679907]
 ```
 
-**为什么用梯度而不是损失值来验证**：soft Dice 对"全负样本"区域是退化的
-（`num=0`、`den≈p.sum()`，Dice 恒为 0），所以即使完全忽略，
-损失值也不会掉到 0——但那是个**常数偏移，不改变梯度**。
-最初我用"损失应接近 0"写断言，两项失败；改用梯度后才是精确的检验。
+**Why verify with gradients rather than loss values**: soft Dice is degenerate on an "all-negative" region
+(`num=0`, `den≈p.sum()`, Dice is identically 0), so even with a full ignore
+the loss value does not drop to 0 — but that is a **constant offset that does not change the gradient**.
+My first version asserted "the loss should be close to 0" and two items failed; switching to gradients gave an exact test.
 
-**还缺什么才能用上它**：需要一个**可信的"未标注区域"来源**。
-这本身和标注问题是同一个问题——不能靠模型自己的预测去定义它该忽略哪里
-（那会固化模型当前的错误）。可行的做法是人工圈出"这张图我只标了左边一半"
-这类元信息，由 `ignore.png` 表达。**机制已就绪，等标注元数据。**
+**What is still missing before it can be used**: a **trustworthy source of "unannotated regions"**.
+That is the same problem as annotation itself — you cannot use the model's own predictions to define what it should ignore
+(that would freeze the model's current errors in place). A workable approach is for a human to mark out metadata such as "I only annotated the left half of this image",
+expressed as `ignore.png`. **The mechanism is ready; it is waiting for annotation metadata.**
 
 ---
 
-## 2. ASEM 公开数据：拉取成功，补齐多类真值
+## 2. Public ASEM data: downloaded successfully, filling in ground truth for several classes
 
-### 2.1 数据来源与许可
+### 2.1 Source and licence
 
-ASEM（哈佛 Kirchhausen 实验室，Gallusser et al. JCB 2023），
-**CC BY-SA 4.0**，S3 公开桶无需账号。详见 `docs/GOLGI-DATA-SOURCES.md`。
+ASEM (the Kirchhausen lab at Harvard, Gallusser et al., JCB 2023),
+**CC BY-SA 4.0**, public S3 bucket, no account needed. See `docs/GOLGI-DATA-SOURCES.md` for details.
 
-### 2.2 拉了什么
+### 2.2 What was downloaded
 
-| 数据集 | 卷 | 形状 (z,y,x) | 前景占比 | 拉取体积 |
+| Dataset | Volume | Shape (z,y,x) | Foreground share | Download size |
 |---|---|---|---|---|
-| 61（BSC-1 细胞，**化学固定 CF**） | golgi | 210×283×371 | 6.61% | 1.1 MB 标签 + 52.8 MB raw |
+| 61 (BSC-1 cells, **chemical fixation, CF**) | golgi | 210×283×371 | 6.61% | 1.1 MB labels + 52.8 MB raw |
 | 64 | golgi | 284×204×424 | 9.31% | 1.2 MB + 39.5 MB |
 | 64 | er | 241×476×528 | 20.03% | 242 MB |
 | 64 | mito | 241×476×528 | 9.16% | 232 MB |
 
-> 标签体极其稀疏，压缩后只有 1 MB 量级；raw 才是体积主体。
+> The label volumes are extremely sparse and compress down to the 1 MB order; the raw data is what dominates the size.
 
-### 2.3 对齐：一个必须处理的问题
+### 2.3 Alignment: a problem that has to be handled
 
-标注体往往只是 raw 的一个**子区域**，且不同标注体的 ROI 不同。
-对齐偏移由 `.zattrs` 的 `offset`(nm) 相减再除以 `resolution` 得到：
+A label volume is usually only a **sub-region** of the raw volume, and different label volumes have different ROIs.
+The alignment offset comes from subtracting the `.zattrs` `offset` values (nm) and dividing by `resolution`:
 
-| 数据集/卷 | raw 索引偏移 |
+| Dataset / volume | raw index offset |
 |---|---|
 | 61 / golgi | [1000, 410, 2597] |
 | 64 / golgi | [777, 291, 954] |
-| 64 / er, mito | [400, 326, 2212]（两者同 ROI） |
+| 64 / er, mito | [400, 326, 2212] (both share the same ROI) |
 
-**踩过的坑**：最初 `raw.npy` 只按数据集命名（`raw.npy`），
-而 ds64 的 golgi 与 er/mito 在两个不同 ROI，
-于是先跑的 golgi 生成的 raw 被 er/mito 复用，
-形状对不上（(284,204,424) vs (241,476,528)）而错位。
-现在 raw 按"首个标注体"命名（`raw__golgi.npy`、`raw__er.npy`）。
+**Pitfall we hit**: at first `raw.npy` was named only by dataset (`raw.npy`),
+but ds64's golgi and its er/mito sit in two different ROIs,
+so the raw generated by the golgi run was reused for er/mito,
+and the shapes did not match ((284,204,424) vs (241,476,528)), which put everything out of alignment.
+Now raw is named after the "first label volume" (`raw__golgi.npy`, `raw__er.npy`).
 
-### 2.4 转成 2D 训练切片
+### 2.4 Conversion to 2D training slices
 
-| 来源 | 层数 | tile 数 |
+| Source | Slices | Tiles |
 |---|---|---|
 | asem61 / golgi | 165 | **660** |
 | asem64 / golgi | 196 | **392** |
 | asem64 / er | 241 | 2169 |
 | asem64 / mito | 213 | 1916 |
 
-**ASEM 提供的 golgi 训练 tile 共 1052 个**，与我们自有的 976 个相当。
+**ASEM provides 1052 golgi training tiles in total**, comparable to our own 976.
 
-**踩过的坑**：ds64 的 golgi ROI 是 284×**204**×424，沿 z 切出的切面是 204×424，
-短边 204 < tile 256。原实现 `if g.shape != (tile, tile): continue`
-导致**整卷一个 tile 都产不出来**（正负皆 0）。改为 padding 后得到 392 个。
+**Pitfall we hit**: ds64's golgi ROI is 284×**204**×424, so the cross-sections cut along z are 204×424,
+and the short side 204 < tile 256. The original implementation's `if g.shape != (tile, tile): continue`
+meant that **not a single tile came out of the whole volume** (positive and negative were both 0). After switching to padding we got 392.
 
-### 2.5 顺带获得的能力：多类互作数据
+### 2.5 A bonus capability: multi-class interaction data
 
-ds64 的 **er 与 mito 在同一 ROI**（241×476×528），
-这是项目第一次拥有**同视野、可对齐的多类标注**——
+ds64's **er and mito share the same ROI** (241×476×528),
+which is the first time the project has had **co-registered, alignable multi-class annotations** —
 
-* 此前我们自己的数据 `organelle_type` 全是 "M"，只能做同类相邻网络
-* 现在可以做真正的 **mito–ER 接触**统计（课题的核心目标之一）
+* Before this, our own data had `organelle_type` "M" throughout, so only same-class adjacency networks were possible
+* Now real **mito–ER contact** statistics are possible (one of the core goals of the project)
 
 ---
 
-## 3. 可大规模应用的路线
+## 3. A route that can be applied at scale
 
-### 3.1 为什么不用 CF 专用预训练模型
+### 3.1 Why not use the CF-specific pretrained model
 
-ASEM 只发布了 `golgi_CF`（化学固定）模型，且需要 `incasem` 包
-（不在 PyPI，只能从 GitHub 装，本机与服务器均不可达）。
-更关键的是：**专用模型绑定制样方式**，换一批样品就可能失效，无法规模化。
+ASEM published only a `golgi_CF` (chemical fixation) model, and it needs the `incasem` package
+(not on PyPI, installable only from GitHub, unreachable from both the local machine and the server).
+More importantly: **a specialised model is tied to one preparation protocol**, and it can fail as soon as the samples change, so it does not scale.
 
-### 3.2 选定的路线
+### 3.2 The chosen route
 
-**自训 2D 模型 + 多来源数据合并**，理由：
-* 2D 模型与我们既有管线同构，可复用全部工具
-* 不依赖特定制样方式，数据来源越多样越鲁棒
-* 新增数据只需加一个训练根目录，不需要新代码
+**Train our own 2D model + merge data from multiple sources**, for these reasons:
+* A 2D model is structurally the same as our existing pipeline, so all the tooling is reusable
+* It does not depend on a particular preparation protocol, and the more diverse the data sources the more robust it is
+* Adding data only means adding one training root; no new code is needed
 
-### 3.3 实现：`--train-roots`
+### 3.3 Implementation: `--train-roots`
 
-`train_seg.py` 新增 `--train-roots`（逗号分隔多根目录），
-把不同来源的切片合并成一个训练集。
+`train_seg.py` gained `--train-roots` (multiple root directories, comma separated),
+which merges slices from different sources into one training set.
 
-**关键细节**：不同来源可能有**同名 crop**（两个数据集都有 `crop129`）。
-若不做区分，按 crop 分组划分会把不同来源的同名 crop 当成同一个，
-造成**跨来源泄漏**。实现里给每个来源打了 `source_tag`，
-分组键变成 `tag::crop`。
+**A key detail**: different sources can have **crops with the same name** (both datasets have `crop129`).
+Without distinguishing them, grouping the split by crop treats same-named crops from different sources as the same one,
+which causes **cross-source leakage**. The implementation tags every source with `source_tag`,
+so the grouping key becomes `tag::crop`.
 
-### 3.4 实验结果：工程上成立，统计上不成立
+### 3.4 Results: it holds up engineering-wise, not statistically
 
-跑完之后必须修正 3.2 的表述。**"数据来源越多样越鲁棒"这句话只对了一半。**
+After running it, the wording in 3.2 has to be corrected. **"The more diverse the data sources, the more robust" is only half true.**
 
-| 层面 | 是否成立 | 依据 |
+| Level | Does it hold? | Evidence |
 |---|---|---|
-| **工程层面**：加数据源成本低 | **成立** | 只加一个 `--train-roots` 条目，无需新代码 |
-| **工程层面**：一个模型服务多个域 | **成立** | 合并模型在自有留出 0.2679，在 ASEM 训练集 0.80/0.85，两者都不坏 |
-| **统计层面**：加了外部数据会让本域更准 | **不成立** | 5 折配对验证中 best 为 −0.014、last5 为 +0.009，符号相反（见 5.7） |
-| **统计层面**：跨域迁移 | **不成立** | 跨域 Dice 掉到 1/3–1/8（见 11） |
+| **Engineering**: adding a data source is cheap | **Yes** | just one more `--train-roots` entry, no new code |
+| **Engineering**: one model serves several domains | **Yes** | the merged model gets 0.2679 on our own held-out set and 0.80/0.85 on the ASEM training sets, both of which are fine |
+| **Statistical**: adding external data makes this domain more accurate | **No** | in the 5-fold paired validation best is −0.014 and last5 is +0.009, opposite signs (see 5.7) |
+| **Statistical**: cross-domain transfer | **No** | cross-domain Dice drops to 1/3–1/8 (see 11) |
 
-因此这条路线应该这样表述：
-**它让"支持更多数据源"变得便宜，但不保证"更多数据源让当前任务更准"。**
-后者被交叉验证否定了。
-
----
-
-## 4. 附：过程中的真实缺陷
-
-| # | 缺陷 | 表现 | 修法 |
-|---|---|---|---|
-| 1 | `raw.npy` 只按数据集命名 | ds64 的 er/mito 与 golgi 用不同 ROI，错位 | 按标注体命名 `raw__<label>.npy` |
-| 2 | 切面小于 tile 时直接跳过 | ds64 golgi 整卷 0 个 tile | edge padding |
-| 3 | `find` 不跟随软链接 | 划分目录被判为空，训练中止 | `find -L` |
-| 4 | 划分目录层级不足 | `glob(root/*/*/z*)` 匹配不到，自有 38 张全丢 | 补一层数据集名 |
-| 5 | PowerShell 里用 Python 改文件 | 换行被译成 CRLF，bash 报 `\r` 语法错 | 用 `write` 工具或 `newline='\n'` |
-| 6 | `pgrep -f "train_seg.py..."` 等待 | **匹配到等待循环自身**（模式就在它自己的命令行里），永久等待 | 改用日志/产物文件作为条件 |
-| 7 | `upload.py` 的相对路径 | 传到家目录 `~/scripts/`，脚本去 `~/dachuang_organelle/scripts/` 找 → **会话启动即死、日志为空** | 相对路径挂到项目根 |
-| 8 | tmux 里嵌套 `python -c "..."` | 多层引号被拆坏，会话静默退出 | 用纯 shell 的 `grep -c` |
-| 9 | SFTP 不展开 `~` | `mkdir`（走 shell）成功但 `sftp.put` 报 FileNotFoundError | 显式替换成绝对家目录 |
-
-**共同的教训**：这些都是"看起来像逻辑 bug、实际是环境/引号/路径"的问题，
-而且**失败方式很安静**（会话退出、日志为空、返回 0），
-比真正的计算错误更难发现。因此凡是长时间运行的任务，
-都必须先确认**会话真的活着**（`tmux ls` + 日志有内容），再等结果。
+So the route should be described like this:
+**it makes "supporting more data sources" cheap, but it does not guarantee that "more data sources make the current task more accurate".**
+The latter has been refuted by cross-validation.
 
 ---
 
-## 5. 实验结果与结论
+## 4. Appendix: real defects encountered along the way
 
-### 5.1 方法学修正：先说清哪些数字不可比
-
-| 实验 | 验证集 | 训练数据 | Dice |
+| # | Defect | Symptom | Fix |
 |---|---|---|---|
-| 第一次（早前） | 317 tile，`--val-frac 0.2` | 自有 51 张 | **0.4849** |
-| 合并训练 | 281 tile，每 5 张留 1 张 | 自有 41 张 + ASEM 1052 | **0.3879** |
+| 1 | `raw.npy` named only by dataset | ds64's er/mito and golgi use different ROIs, so they were misaligned | name by label volume: `raw__<label>.npy` |
+| 2 | skip outright when the section is smaller than a tile | the whole ds64 golgi volume gave 0 tiles | edge padding |
+| 3 | `find` does not follow symlinks | the split directory was judged empty and training aborted | `find -L` |
+| 4 | the split directory had too few levels | `glob(root/*/*/z*)` matched nothing and all 38 in-house images were dropped | add a level for the dataset name |
+| 5 | editing files with Python inside PowerShell | newlines were translated to CRLF and bash reported a `\r` syntax error | use the `write` tool, or `newline='\n'` |
+| 6 | waiting on `pgrep -f "train_seg.py..."` | it **matched the waiting loop itself** (the pattern is on its own command line) and waited forever | wait on a log/artefact file instead |
+| 7 | relative paths in `upload.py` | it uploaded to the home directory `~/scripts/`, while the script looked in `~/dachuang_organelle/scripts/` → **the session died on start-up with an empty log** | anchor relative paths to the project root |
+| 8 | nested `python -c "..."` inside tmux | the layers of quoting were mangled and the session exited silently | use plain-shell `grep -c` |
+| 9 | SFTP does not expand `~` | `mkdir` (through the shell) succeeded but `sftp.put` raised FileNotFoundError | substitute the absolute home directory explicitly |
 
-**这两行不能直接相减。** 验证切片不同、训练图像数也不同（51 vs 41）。
-把它们放在一起说"引入 ASEM 让 Dice 掉了 0.10"是**错的**。
+**The common lesson**: all of these look like logic bugs but are really environment/quoting/path problems,
+and **they fail quietly** (session exits, empty log, return 0),
+which makes them harder to spot than a real computation error. So for any long-running task
+you must first confirm **the session is actually alive** (`tmux ls` + a log with content in it), and only then wait for the result.
 
-因此补了一个**同划分对照臂**（仅自有 41 张，281 验证 tile），
-并进一步做**3 种子 × 2 臂**的重复，用均值 ± 标准差判断，
-因为单次训练的验证曲线波动极大（相邻 epoch 实测 0.359 → 0.195 → 0.353）。
+---
 
-> 具体数值见 `logs/GOLGI_MULTISEED.txt`（训练完成后生成）。
+## 5. Experimental results and conclusions
 
-### 5.2 同划分对照臂（单次结果）
+### 5.1 A methodological correction: first, which numbers are not comparable
 
-| 臂 | 训练 tile | Dice | P | R |
+| Experiment | Validation set | Training data | Dice |
+|---|---|---|---|
+| First run (earlier) | 317 tiles, `--val-frac 0.2` | 51 in-house images | **0.4849** |
+| Merged training | 281 tiles, hold out 1 in every 5 images | 41 in-house images + ASEM 1052 | **0.3879** |
+
+**These two rows cannot be subtracted directly.** The validation slices differ and so does the number of training images (51 vs 41).
+Putting them side by side and saying "bringing in ASEM dropped Dice by 0.10" is **wrong**.
+
+So a **control arm on the same split** was added (in-house only, 41 images, 281 validation tiles),
+and the run was repeated as **3 seeds × 2 arms**, judged by mean ± standard deviation,
+because a single training run's validation curve swings enormously (measured on adjacent epochs: 0.359 → 0.195 → 0.353).
+
+> The actual numbers are in `logs/GOLGI_MULTISEED.txt` (generated once training finished).
+
+### 5.2 The same-split control arm (single run)
+
+| Arm | Training tiles | Dice | P | R |
 |---|---|---|---|---|
-| 对照：仅自有 | 1515 | **0.3605** | 0.295 | 0.462 |
-| 实验：自有 + ASEM | 2567 | **0.3879** | 0.348 | 0.438 |
-| **差** | +1052 | **+0.0274** | | |
+| Control: in-house only | 1515 | **0.3605** | 0.295 | 0.462 |
+| Experiment: in-house + ASEM | 2567 | **0.3879** | 0.348 | 0.438 |
+| **Difference** | +1052 | **+0.0274** | | |
 
-单次结果看，引入 ASEM 是**正增益**（+0.027），且精确率明显提升（0.295 → 0.348）
-而召回略降——符合"外部数据提供了更多样的正样本形态"的预期。
+On this single run, bringing in ASEM is a **positive gain** (+0.027), and precision clearly improves (0.295 → 0.348)
+while recall drops slightly — which fits the expectation that "external data supplies more varied positive shapes".
 
-但单次的差值还不能下结论，因为：
+But a single run's difference still does not settle the question, because:
 
-### 5.3 更严重的问题：划分方差远大于种子方差
+### 5.3 A worse problem: split variance far exceeds seed variance
 
-| 实验 | 训练图 | 验证 tile | Dice |
+| Experiment | Training images | Validation tiles | Dice |
 |---|---|---|---|
-| 仅自有，划分 B（随机 20%） | 41 | 317 | **0.4849** |
-| 仅自有，划分 A（每 5 留 1） | 38 | 281 | **0.3605** |
+| In-house only, split B (random 20%) | 41 | 317 | **0.4849** |
+| In-house only, split A (hold out 1 in 5) | 38 | 281 | **0.3605** |
 
-**同一批数据、同一模型、同一超参，仅换划分就差 0.12。**
-而数据总共只有 48 张图——这意味着**任何一个单点 Dice 都不可靠**。
+**Same data, same model, same hyper-parameters — changing only the split makes a difference of 0.12.**
+And there are only 48 images in total — which means **any single-point Dice is unreliable**.
 
-### 5.4 统计口径：`last5` 比 `best` 稳 6 倍
+### 5.4 The metric convention: `last5` is 6× more stable than `best`
 
-3 种子重复暴露出另一个问题：
+Repeating over 3 seeds exposed another problem:
 
-| 统计量 | 3 个种子的值 | 均值 ± 标准差 |
+| Statistic | Values for the 3 seeds | Mean ± std |
 |---|---|---|
-| `best`（最优 epoch） | 0.3623 / 0.3457 / 0.3506 | 0.3529 ± **0.0085** |
-| `last5`（末 5 轮均值） | 0.3239 / 0.3213 / 0.3088 | 0.3180 ± **0.0080** |
+| `best` (best epoch) | 0.3623 / 0.3457 / 0.3506 | 0.3529 ± **0.0085** |
+| `last5` (mean of the last 5 epochs) | 0.3239 / 0.3213 / 0.3088 | 0.3180 ± **0.0080** |
 
-单纯看标准差差别不大，但 `best` 是**在 60 个 epoch 里挑最大值**，
-自带选择偏差（相当于做了 60 次比较却当作 1 次）。
-它在不同种子间跳动更没规律，也更偏乐观。
+The standard deviations alone do not differ much, but `best` **picks the maximum over 60 epochs**,
+which carries its own selection bias (it is 60 comparisons treated as 1).
+It jumps between seeds with less regularity, and it is more optimistic.
 
-因此**报告以 `last5` 为主口径**，`best` 只作参考。
+So **the report uses `last5` as its primary metric**, and `best` only for reference.
 
-> 注意：`last5` 的系统性数值比 `best` 低约 0.03–0.05。
-> 这不是"效果变差"，而是换了统计量。两者不能混着比。
+> Note: `last5` is systematically about 0.03–0.05 lower than `best`.
+> That is not "worse performance", it is a different statistic. The two must not be compared against each other.
 
-### 5.5 多种子结果：差值与种子波动同量级，**不能声称有提升**
+### 5.5 Multi-seed results: the difference is the same size as seed noise, **no improvement can be claimed**
 
-完整结果（每臂 3 个种子，验证集完全相同）：
+Full results (3 seeds per arm, identical validation set):
 
-| 臂 | best-of-epochs | last5 |
+| Arm | best-of-epochs | last5 |
 |---|---|---|
-| 仅自有 | 0.3529 ± 0.0085 | **0.3180 ± 0.0080** |
-| 自有 + ASEM | 0.3686 ± 0.0203 | **0.3432 ± 0.0232** |
-| **差值** | **+0.0157** | **+0.0252** |
+| In-house only | 0.3529 ± 0.0085 | **0.3180 ± 0.0080** |
+| In-house + ASEM | 0.3686 ± 0.0203 | **0.3432 ± 0.0232** |
+| **Difference** | **+0.0157** | **+0.0252** |
 
-三个种子各自的 last5：
+The individual last5 values for the three seeds:
 
-* 仅自有：0.3239 / 0.3213 / 0.3088 —— 非常一致（std 0.008）
-* 自有+ASEM：**0.3699 / 0.3322 / 0.3275** —— 波动大（std 0.023）
+* In-house only: 0.3239 / 0.3213 / 0.3088 — very consistent (std 0.008)
+* In-house + ASEM: **0.3699 / 0.3322 / 0.3275** — large spread (std 0.023)
 
-> **一处已订正的抄写错误**：本节最初写的是 `0.3389`，那是 seed2 **跑到
-> 51/60 epoch 时的中间值**，不是最终结果（最终 0.3275）。
-> 由 `tools/verify_golgi_numbers.py` 审计发现——它把文档里每个 `0.xxxx`
-> 与日志逐一比对，`0.3389` 在任何产物里都找不到。
-> 这与 `tools/cv_partial.py` 早期把未跑完的折算进配对差是同一类错误：
-> **把进行中的数字当成结果**。
+> **One transcription error that has been corrected**: this section originally said `0.3389`, which was seed2's **intermediate value
+> at 51/60 epochs**, not the final result (the final value is 0.3275).
+> It was found by the `tools/verify_golgi_numbers.py` audit — it compares every `0.xxxx`
+> in the document against the logs one by one, and `0.3389` appears in no artefact at all.
+> This is the same class of error as the early `tools/cv_partial.py` folding unfinished folds into the paired difference:
+> **treating an in-progress number as a result**.
 
-**判据**：差值（+0.025）与合并臂的种子标准差（0.023）同量级，
-**不能声称引入 ASEM 有提升，也不能声称有害**。
+**Criterion**: the difference (+0.025) is the same order as the merged arm's seed standard deviation (0.023), so
+**one cannot claim that bringing in ASEM helps, nor that it harms**.
 
-这个结论是多种子换来的。如果只看第一个种子，会得到
-"合并臂 0.3699 对自有 0.3180，提升 +0.052"——一个**漂亮但错误**的结论。
-第二个种子立刻把它压到 0.33。
+This conclusion was bought with multiple seeds. Looking only at the first seed gives
+"merged arm 0.3699 against in-house 0.3180, an improvement of +0.052" — a **beautiful but wrong** conclusion.
+The second seed immediately pushes it down to 0.33.
 
-**这也许是最重要的一条方法学经验**：在这批只有 48 张图的数据上，
-`n=1` 的实验结果不足以下任何结论。
+**This may be the single most important methodological lesson**: on this dataset of only 48 images,
+an experiment with `n=1` is not enough to support any conclusion.
 
-### 5.6 剩下的可能性
+### 5.6 The remaining possibilities
 
-差值为正但未达显著，有三种解释：
+The difference is positive but not significant, and there are three explanations:
 
-1. 真实效应存在但很小，需要更多数据才能检出
-2. 没有效应，观测到的 +0.025 是噪声
-3. 有正效应，但被领域差异抵消了一部分（ASEM 是 BSC-1 细胞、化学固定、
-   FIB-SEM；我们是 TEM 插图）
+1. A real effect exists but is very small and needs more data to detect
+2. There is no effect and the observed +0.025 is noise
+3. A positive effect exists but domain differences cancel part of it (ASEM is BSC-1 cells, chemical fixation,
+   FIB-SEM; ours are TEM figure panels)
 
-要区分它们，需要**更多种子**（降低标准误）或**5 折交叉验证**
-（同时降低划分方差，且能看逐折方向是否一致）。两者都已做完，见 5.7。
-**结果是第 2 种解释最站得住**：更严格的设计把效应压到了 +0.009 或翻成负值。
+Telling these apart needs **more seeds** (lower standard error) or **5-fold cross-validation**
+(which also lowers split variance and shows whether the direction is consistent fold by fold). Both were done; see 5.7.
+**The result is that explanation 2 stands up best**: the stricter design pushes the effect down to +0.009 or flips it negative.
 
-### 5.7 5 折交叉验证：结论**依赖统计量**，因此不能声称有效
+### 5.7 5-fold cross-validation: the conclusion **depends on the statistic**, so no effect can be claimed
 
-按图像分成 5 折，每折轮流做验证集，两臂各跑 5 次：
+Split by image into 5 folds, take turns using each fold as the validation set, run both arms 5 times each:
 
-| 臂 | best（均值±std） | last5（均值±std） |
+| Arm | best (mean ± std) | last5 (mean ± std) |
 |---|---|---|
-| 仅自有 | 0.4242 ± 0.0506 | 0.3127 ± 0.0865 |
-| 自有 + ASEM | 0.4103 ± 0.0238 | 0.3219 ± 0.0748 |
+| In-house only | 0.4242 ± 0.0506 | 0.3127 ± 0.0865 |
+| In-house + ASEM | 0.4103 ± 0.0238 | 0.3219 ± 0.0748 |
 
-逐折配对差（同一折上两臂相减，消掉折的难易差异）：
+Per-fold paired difference (subtract the two arms within the same fold, which removes the difficulty differences between folds):
 
-| 统计量 | 配对差均值 | 为正的折数 | 结论方向 |
+| Statistic | Mean paired difference | Folds with positive value | Direction implied |
 |---|---|---|---|
-| **best** | **−0.0139** ± 0.0334 | 3/5 | ASEM **略差** |
-| **last5** | **+0.0092** ± 0.0161 | 4/5 | ASEM **略好** |
+| **best** | **−0.0139** ± 0.0334 | 3/5 | ASEM is **slightly worse** |
+| **last5** | **+0.0092** ± 0.0161 | 4/5 | ASEM is **slightly better** |
 
-**两个统计量给出相反的符号。**
+**The two statistics give opposite signs.**
 
-这不是小事，而是整个消融的关键：如果先看结果再挑统计量，
-想要"有效"就报 last5，想要"无效"就报 best——**这就是 p-hacking**。
+That is not a detail; it is the crux of the whole ablation: if you look at the results first and then pick the statistic,
+reporting last5 when you want "it works" and best when you want "it does not" — **that is p-hacking**.
 
-诚实的结论是：**在这个数据量下，ASEM 的效应未被证实。**
-乐观估计（+0.027 / +0.025）在更严格的设计下缩小到 +0.009 或翻成 −0.014。
+The honest conclusion is: **at this data volume, an effect of ASEM has not been demonstrated.**
+The optimistic estimates (+0.027 / +0.025) shrink to +0.009, or flip to −0.014, under the stricter design.
 
-### 5.8 一个附带的真实发现：加数据降低了方差
+### 5.8 A genuine finding by the way: adding data reduced the variance
 
-看标准差：
+Look at the standard deviations:
 
-| 臂 | best std | last5 std |
+| Arm | best std | last5 std |
 |---|---|---|
-| 仅自有 | 0.0506 | 0.0865 |
-| 自有 + ASEM | **0.0238** | **0.0748** |
+| In-house only | 0.0506 | 0.0865 |
+| In-house + ASEM | **0.0238** | **0.0748** |
 
-**合并臂的折间波动约为自有臂的一半**（best：0.0238 对 0.0506）。
+**The merged arm's fold-to-fold spread is about half that of the in-house arm** (best: 0.0238 against 0.0506).
 
-也就是说，加入 ASEM **没有提高均值，但让结果稳定得多**。
-这与"数据多样性提升鲁棒性"的直觉一致，也是这条路线唯一有数据支持的收益。
+In other words, adding ASEM **did not raise the mean, but it made the results far more stable**.
+That agrees with the intuition that "data diversity improves robustness", and it is the only benefit of this route that the data supports.
 
-> 注意：5 折样本量很小，"方差更小"也可能是巧合，不能当作结论。
+> Note: 5 folds is a very small sample, so "smaller variance" could be a coincidence and cannot be treated as a conclusion.
 
-### 5.9 判据（收紧后）
+### 5.9 Criteria (after tightening)
 
-* 单点差 **不作为证据**——划分方差可达 0.12
-* 未配对的种子均值差不够灵敏（+0.025 淹没在 0.023 的波动里）
-* **配对折比较**最灵敏，但结论必须对统计量稳健；本例不稳健 -> 不下结论
-* 报告时必须**同时给出 best 与 last5**，否则等于挑选有利口径
+* A single-point difference **is not evidence** — split variance can reach 0.12
+* An unpaired difference of seed means is not sensitive enough (+0.025 drowns in a 0.023 spread)
+* **A paired fold comparison** is the most sensitive, but the conclusion must be robust to the statistic; here it is not robust -> no conclusion
+* Any report must **give both best and last5**, otherwise it amounts to picking the favourable metric
 
-> 数据：`logs/GOLGI_MULTISEED.txt`、`logs/GOLGI_CV.txt`
-> 汇总：`logs/GOLGI_STATUS.md`（由 `tools/golgi_report.py` 从产物生成）
+> Data: `logs/GOLGI_MULTISEED.txt`, `logs/GOLGI_CV.txt`
+> Summary: `logs/GOLGI_STATUS.md` (generated from the artefacts by `tools/golgi_report.py`)
 
 ---
 
-## 6. 配置改进：一个"看不见的空操作"
+## 6. Configuration improvement: an "invisible no-op"
 
-想改进高尔基体的 Dice，第一步试的是 `--class-balance`（按前景比例反比给 BCE 加权），
-理由很直接：高尔基体在 tile 里只占一部分，BCE 会被背景主导。
+To improve the Golgi Dice, the first thing tried was `--class-balance` (weight BCE inversely by the foreground share),
+for a straightforward reason: the Golgi occupies only part of a tile, so BCE is dominated by the background.
 
-运行后日志给出：
+After the run the log said:
 
 ```
 类别前景比例 [0.1763] -> BCE 权重 [1.0]
 ```
 
-**权重是 1.0，等于没加权。** 原因在实现：
+**The weight is 1.0, which means no weighting at all.** The reason is in the implementation:
 
 ```python
 inv = 1.0 / np.clip(fg, 1e-3, None)   # 单类：inv = 1/0.1763 = 5.67
 w = inv / inv.mean()                   # 5.67 / 5.67 = 1.0
 ```
 
-归一化到均值为 1 是为了"保持整体损失量级不变"，但它同时让
-**单类训练时权重恒等于 1**——这个选项只在**多类相对加权**时有实际作用。
+Normalising to a mean of 1 is meant to "keep the overall loss scale unchanged", but it also makes
+**the weight identically 1 in single-class training** — this option only does anything with **relative weighting across several classes**.
 
-这是一个"看起来生效、实际没生效"的坑：配置项名字合理、日志也打印了，
-只有注意到那个 `[1.0]` 才能发现它什么也没做。
+This is a "looks like it works, actually does nothing" trap: the option has a sensible name and the log prints it,
+and only by noticing that `[1.0]` can you tell that it did nothing at all.
 
-### 6.1 单类想要前景强调，需要另外的机制
+### 6.1 Emphasising the foreground in a single class needs another mechanism
 
-| 机制 | 说明 | 现状 |
+| Mechanism | Description | Status |
 |---|---|---|
-| BCE 的 `pos_weight` | 只对正类加权，不做归一化 | **未实现**，值得补 |
-| 前景过采样 | 采样时提高含前景 tile 的概率 | 未实现 |
-| 提高 Dice 权重 | Dice 直接优化重叠，天然忽略背景 | **已支持** `--dice-weight` |
+| BCE's `pos_weight` | weights only the positive class, no normalisation | **not implemented**, worth adding |
+| Foreground over-sampling | raise the probability of tiles containing foreground when sampling | not implemented |
+| Raising the Dice weight | Dice optimises overlap directly and naturally ignores the background | **already supported**: `--dice-weight` |
 
-因此实际能改的只有学习率、epoch 数和 Dice 权重。实跑过的两个配置（结果见 6.2）：
+So the only knobs actually available are the learning rate, the epoch count and the Dice weight. The two configurations that were actually run (results in 6.2):
 
-* **v2**：lr 1e-4 + 100 epoch（降低学习率、延长训练）
-* **v3**：lr 3e-4 + `--dice-weight 0.7` + 100 epoch（更重视重叠）
+* **v2**: lr 1e-4 + 100 epochs (lower learning rate, longer training)
+* **v3**: lr 3e-4 + `--dice-weight 0.7` + 100 epochs (more emphasis on overlap)
 
-> 结果见 `logs/GOLGI_CONFIG_SWEEP.txt`。若两者都无明显改善，
-> 说明瓶颈不在优化配置，而在数据量（48 张图）本身。
+> Results are in `logs/GOLGI_CONFIG_SWEEP.txt`. If neither shows a clear improvement,
+> the bottleneck is not the optimisation configuration but the data volume (48 images) itself.
 
-### 6.2 结果：两个方向都没用
+### 6.2 Results: neither direction helped
 
-| 配置 | epoch | best（@ep） | last5 |
+| Configuration | epochs | best (@ep) | last5 |
 |---|---|---|---|
-| baseline：lr 3e-4 + 60 epoch | 60 | 0.3879（@27） | **0.3614** |
-| v2：lr 1e-4 + 100 epoch | 100 | 0.3836（@77） | 0.3516 |
-| v3：Dice 权重 0.7 + 100 epoch | 100 | 0.3801（@61） | **0.3651** |
+| baseline: lr 3e-4 + 60 epochs | 60 | 0.3879 (@27) | **0.3614** |
+| v2: lr 1e-4 + 100 epochs | 100 | 0.3836 (@77) | 0.3516 |
+| v3: Dice weight 0.7 + 100 epochs | 100 | 0.3801 (@61) | **0.3651** |
 
-以 `last5` 为准：
+Taking `last5` as the measure:
 
-* **v2（降低学习率）反而更差** −0.010
-* **v3（提高 Dice 权重）基本持平** +0.004，完全在种子噪声（0.02）之内
+* **v2 (lower learning rate) is actually worse** −0.010
+* **v3 (higher Dice weight) is roughly flat** +0.004, entirely within seed noise (0.02)
 
-**结论：优化配置不是瓶颈。** 三种配置的 `last5` 都在 0.35–0.37 之间，
-说明这个数据集上模型的收敛水平被别的东西限制住了。
+**Conclusion: the optimisation configuration is not the bottleneck.** All three configurations sit in the range 0.35–0.37 on `last5`,
+which says that on this dataset the model's convergence level is limited by something else.
 
-这也排除了一类常见误判：看到曲线抖动就以为"调调超参能大幅改善"。
-实际情况是抖动归抖动，**期望值并没有因为调参而抬高**。
+This also rules out a common misjudgement: seeing a jittery curve and concluding that "tuning the hyper-parameters will improve things a lot".
+In reality the jitter stays jitter, and **the expected value was not raised by tuning**.
 
-> 附注：v2 的最优 epoch 从 baseline 的 27 推到 77，
-> 说明降低学习率确实让收敛更慢更晚——`best` 因此略高，
-> 但 `last5` 并未改善。这又一次说明**不能只看 best**。
+> Side note: v2 pushes the best epoch from baseline's 27 out to 77,
+> which shows that lowering the learning rate really does make convergence slower and later — so `best` is slightly higher,
+> but `last5` did not improve. This is another example of **why you cannot look only at best**.
 
 
 ---
 
-## 7. 尺度还是标注质量？——一次差点误判的分析
+## 7. Scale or annotation quality? — an analysis that nearly went wrong
 
-图像像素尺寸跨度极大（885×1273 到 6000×6192），自然怀疑"尺度不一致"是主要障碍。
-于是用 Golgi 连通域的**等效直径**作为相对尺度指标（生物学上池层堆叠约 1–2 µm，
-直径本应大致稳定）。
+The images vary enormously in pixel size (from 885×1273 to 6000×6192), so "inconsistent scale" is a natural suspect for the main obstacle.
+So the **equivalent diameter** of Golgi connected components was used as a relative scale indicator (biologically a cisternal stack is about 1–2 µm,
+so the diameter should be roughly stable).
 
-结果乍看很吓人：
+At first glance the result is alarming:
 
-| 统计 | 值 |
+| Statistic | Value |
 |---|---|
-| 等效直径中位 | 264.8 px |
-| **四分位距（中间 50%）** | **190 – 346 px，仅 1.8 倍** |
-| 全范围 | 12.7 – 1354 px，**107 倍** |
+| Median equivalent diameter | 264.8 px |
+| **Interquartile range (middle 50%)** | **190 – 346 px, only 1.8×** |
+| Full range | 12.7 – 1354 px, **107×** |
 
-如果只看"最大/最小 = 107 倍"，结论会是"尺度严重不一致，必须先归一化"。
-**但那是错的。** 中间 50% 只差 1.8 倍，说明**主体尺度其实相当一致**；
-107 倍完全由极值造成：
+Looking only at "max/min = 107×", the conclusion would be "the scale is severely inconsistent and must be normalised first".
+**But that is wrong.** The middle 50% differ by only 1.8×, which says **the main body of the scale is in fact quite consistent**;
+the 107× comes entirely from the extremes:
 
-* **12.7 px**（约 127 像素面积）——标注碎片，很可能不是完整的高尔基体
-* **1354 px**（约 144 万像素）——多个相邻 Golgi 被填洞后**连成一片**，
-  或整幅图的大区域被一个轮廓圈住
+* **12.7 px** (about 127 pixels of area) — an annotation fragment, very probably not a complete Golgi
+* **1354 px** (about 1.44 million pixels) — several adjacent Golgi merged into **one blob** after hole filling,
+  or a large region of the whole image enclosed by a single contour
 
-也就是说，这两个极端反映的是**标注质量问题**（碎片、粘连），
-而不是成像尺度差异。
+In other words, these two extremes reflect **annotation quality problems** (fragments, merged blobs),
+not differences in imaging scale.
 
-### 7.1 修正后的结论
+### 7.1 The corrected conclusion
 
-| 怀疑对象 | 判定 | 依据 |
+| Suspect | Verdict | Evidence |
 |---|---|---|
-| 成像尺度不一致 | **不是主要障碍** | 中间 50% 仅差 1.8 倍 |
-| 标注碎片（过小区域） | **是问题** | 存在 12.7 px 量级的碎片 |
-| 标注粘连（相邻合并） | **是问题** | 存在 1354 px 量级的合并块 |
+| Inconsistent imaging scale | **not the main obstacle** | the middle 50% differ by only 1.8× |
+| Annotation fragments (regions that are too small) | **is a problem** | fragments on the order of 12.7 px exist |
+| Annotation blobs (neighbours merged) | **is a problem** | merged blobs on the order of 1354 px exist |
 
-**因此值得做的是清洗标注**（提高最小区域面积、必要时按形态拆分粘连），
-而不是重采样到统一尺度。
+**What is worth doing, therefore, is cleaning the annotations** (raise the minimum region area, and split merged blobs morphologically where necessary),
+not resampling everything to a uniform scale.
 
-### 7.2 一条方法学教训
+### 7.2 A methodological lesson
 
-"最大/最小"这种极值比值对少数异常值极其敏感，用它下结论很容易误判。
-应该看**四分位距**或分位数分布——本例中两种口径给出完全相反的判断
-（"差 107 倍"对"仅差 1.8 倍"）。
+A ratio of extremes like "max/min" is extremely sensitive to a handful of outliers, and drawing conclusions from it easily misleads.
+You should look at the **interquartile range** or the quantile distribution — in this case the two measures give opposite verdicts
+("differs by 107×" against "differs by only 1.8×").
 
-> 脚本：`tools/golgi_scale_analysis.py`，输出 `logs/golgi_scale.json`。
+> Script: `tools/golgi_scale_analysis.py`, output `logs/golgi_scale.json`.
 
 ---
 
-## 8. 清洗标注：做了，但发现不会有效果，于是没跑
+## 8. Cleaning the annotations: done, then found to have no effect, so it was not run
 
-顺着第 7 节的结论做了标注清洗（`tools/clean_golgi_labels.py`）：
-去掉面积 < 500 px 的连通域，其余保留。
+Following the conclusion of Section 7, the annotations were cleaned (`tools/clean_golgi_labels.py`):
+connected components with area < 500 px were removed and the rest kept.
 
-清洗结果：
+Cleaning results:
 
-| 指标 | 清洗前 | 清洗后 |
+| Metric | Before | After |
 |---|---|---|
-| 连通域总数 | 300 | **101**（去掉 199 个碎片） |
-| 总面积 | 11 148 317 px | 11 145 711 px（**−0.02%**） |
-| 清洗后为空的图 | — | 5 张（原本只有碎片） |
+| Total connected components | 300 | **101** (199 fragments removed) |
+| Total area | 11 148 317 px | 11 145 711 px (**−0.02%**) |
+| Images left empty after cleaning | — | 5 (they held only fragments) |
 
-**300 个连通域里有 199 个是碎片，但它们合计只占 0.02% 的面积。**
+**199 of the 300 connected components are fragments, but together they cover only 0.02% of the area.**
 
-据此重建 tile（`ourdata_golgi_clean`）后的对比：
+The comparison after rebuilding the tiles accordingly (`ourdata_golgi_clean`):
 
-| 版本 | 正 tile | 负 tile | 图像 |
+| Version | Positive tiles | Negative tiles | Images |
 |---|---|---|---|
-| 原始 | 976 | 820 | 51 |
-| 清洗后 | **975** | **819** | 48 |
+| Original | 976 | 820 | 51 |
+| Cleaned | **975** | **819** | 48 |
 
-**tile 数只差 1 个。** 原因很清楚：判断一个 tile 是否阳性看的是 GT 占比（≥1%），
-而碎片面积太小，既不会把阴性 tile 变成阳性，也不会改变阳性 tile 的归属。
-在阳性 tile 内部，碎片只贡献极少量噪声像素。
+**The tile count differs by exactly 1.** The reason is clear: whether a tile is positive depends on the GT share (≥1%),
+and the fragments are far too small either to turn a negative tile positive or to change which tile a positive belongs to.
+Inside a positive tile, the fragments contribute only a tiny number of noise pixels.
 
-**因此这个实验不会产生可测的差异，没有跑。** 这是一个"分析先行"省下的
-25 分钟 GPU 时间——先算清楚影响量级，再决定要不要训练。
+**So this experiment cannot produce a measurable difference, and it was not run.** This is 25 minutes of GPU time
+saved by "analysis first" — work out the size of the effect before deciding whether to train.
 
-> 声明里已保留 `ourdata_golgi_clean` 这个数据集，
-> 若将来改用更激进的清洗（比如拆分粘连、重画边界）可以直接用。
-
----
-
-## 9. 剩下的假设：目标本身是模糊的
-
-所有配置都停在 `last5 ≈ 0.32–0.34`（v2 降低学习率、v3 提高 Dice 权重都无实质变化）。
-数据量只有 48 张图，但更可能的限制是**目标本身的定义**：
-
-绿色轮廓圈出的是"高尔基体所在的区域"，而不是像线粒体那样由外膜界定的实体。
-一个手画的区域**没有精确的图像对应物**——边界落在哪里取决于画图的人，
-而不是图像里的某个客观边缘。这意味着存在**不可消除的误差下限**。
-
-这条假设可以用一个便宜的检验来判断：**放宽边界容差后 Dice 会上升多少**。
-如果容忍几个像素的边界偏差后 Dice 大幅提升，说明误差主要来自边界定义，
-而不是模型没学会识别高尔基体。
-
-> 该检验的做法：把 GT 与预测分别做形态学膨胀/腐蚀（容差 1–5 px），
-> 计算"容差内算对"的 Dice。若容差 3 px 时 Dice 从 0.33 升到 0.6+，
-> 则应改报告"容差 Dice"而不是硬 Dice，并在文档里说明原因。
+> The dataset `ourdata_golgi_clean` is kept in the manifest,
+> so it can be used directly if a more aggressive cleaning is adopted later (splitting merged blobs, redrawing boundaries).
 
 ---
 
-## 10. 结论：低分的真正原因是**标注不完整**，不是模型
+## 9. The remaining hypothesis: the target itself is ambiguous
 
-### 10.1 容差检验：边界模糊不是主因
+Every configuration stalls at `last5 ≈ 0.32–0.34` (v2's lower learning rate and v3's higher Dice weight made no material difference).
+The data volume is only 48 images, but the more likely limit is **the definition of the target itself**:
 
-对全部 53 张图做全图推理（`runs/golgi_v3/best.pt`），留出 11 张的像素级 Dice 为 **0.3023**。
-再计算边界容差下的 Dice：
+The green contour marks out "the region where the Golgi is", not a solid body bounded by an outer membrane the way a mitochondrion is.
+A hand-drawn region **has no exact counterpart in the image** — where the boundary falls depends on the person drawing it,
+not on some objective edge in the image. That implies **an irreducible error floor**.
 
-| 容差 | Dice | 相对硬 Dice |
+This hypothesis can be judged with a cheap test: **how much does Dice rise once the boundary tolerance is relaxed**.
+If Dice improves substantially once a few pixels of boundary deviation are tolerated, the error comes mainly from the boundary definition,
+not from the model failing to learn what a Golgi looks like.
+
+> The test works like this: morphologically dilate/erode the GT and the prediction (tolerance 1–5 px),
+> and compute the Dice of "counted correct within tolerance". If at 3 px tolerance Dice rises from 0.33 to 0.6+,
+> the report should switch to "tolerant Dice" instead of hard Dice, with the reason explained in the document.
+
+---
+
+## 10. Conclusion: the real cause of the low scores is **incomplete annotation**, not the model
+
+### 10.1 The tolerance test: boundary fuzziness is not the main cause
+
+Whole-image inference was run on all 53 images (`runs/golgi_v3/best.pt`), and the pixel-level Dice on the 11 held-out images is **0.3023**.
+Then Dice was computed under boundary tolerance:
+
+| Tolerance | Dice | Relative to hard Dice |
 |---|---|---|
 | 0 px | 0.3023 | — |
 | 1 px | 0.3102 | +0.008 |
@@ -555,14 +557,14 @@ w = inv / inv.mean()                   # 5.67 / 5.67 = 1.0
 | 3 px | 0.3237 | +0.021 |
 | 5 px | 0.3359 | +0.034 |
 
-**放宽边界 5 像素只提升 0.034。** 说明误差**不是**"整体位置对但边界画不准"，
-所以第 9 节那条"目标模糊"的假设被否掉了。
+**Relaxing the boundary by 5 pixels gains only 0.034.** That means the error is **not** "the overall position is right but the boundary is drawn inaccurately",
+so the "ambiguous target" hypothesis of Section 9 is rejected.
 
-### 10.2 逐图数据暴露了真正的规律
+### 10.2 The per-image data exposed the real pattern
 
-看逐图结果时发现一个很强的模式：
+Looking at the per-image results revealed a very strong pattern:
 
-| 图像 | GT 覆盖 | 预测覆盖 | 硬 Dice |
+| Image | GT coverage | Predicted coverage | Hard Dice |
 |---|---|---|---|
 | 24780 | 9.9% | 10.7% | **0.712** |
 | 24776 | 9.6% | 11.7% | **0.697** |
@@ -570,180 +572,180 @@ w = inv / inv.mean()                   # 5.67 / 5.67 = 1.0
 | 7335 | 1.7% | **14.6%** | **0.022** |
 | 37185 | 0.6% | **8.4%** | **0.062** |
 
-**预测面积与 GT 面积越接近，Dice 越高。** 而低分的图无一例外都是
-"GT 很稀疏，模型却预测了一大片"——预测/GT 高达 8–10 倍。
+**The closer the predicted area is to the GT area, the higher the Dice.** And every one of the low-scoring images is
+"GT is very sparse, yet the model predicts a large region" — prediction/GT runs as high as 8–10×.
 
-### 10.3 分层统计证实
+### 10.3 Stratified statistics confirm it
 
-按 GT 覆盖度分层（全部 53 张）：
+Stratified by GT coverage (all 53 images):
 
-| GT 覆盖度 | 张数 | Dice 均值 | 预测/GT |
+| GT coverage | Images | Mean Dice | Prediction/GT |
 |---|---|---|---|
 | **<3%** | 17 | **0.0900** | **10.8×** |
 | 3–8% | 18 | 0.4370 | 1.77× |
 | 8–20% | 15 | **0.6046** | 0.91× |
 | ≥20% | 3 | **0.7139** | — |
 
-相关性：
+Correlations:
 
-* GT 覆盖度 vs Dice：**r = +0.730**
-* log(预测/GT) vs Dice：**r = −0.668**
+* GT coverage vs Dice: **r = +0.730**
+* log(prediction/GT) vs Dice: **r = −0.668**
 
-**单调分层，方向与线粒体那边完全一致**（线粒体是
-`0.2969 / 0.7837 / 0.7987 / 0.8504`，对应 `<3% / 3–8% / 8–20% / ≥20%`）。
+**Monotonic stratification, and the direction matches the mitochondria side exactly** (mitochondria is
+`0.2969 / 0.7837 / 0.7987 / 0.8504`, for `<3% / 3–8% / 8–20% / ≥20%`).
 
-### 10.4 视觉核验：模型本身是对的
+### 10.4 Visual check: the model itself is right
 
-下载叠加图人工核对（`docs/figures/golgi_pred/`）：
+The overlay images were downloaded and checked by hand (`docs/figures/golgi_pred/`):
 
-* **24780（Dice 0.712）**：红色轮廓精准贴合高尔基体池层堆叠，
-  中间偏右的大堆叠、左下、左上、右上的都圈对了。**预测在生物学上是对的。**
-* **37185（Dice 0.062）**：GT 只占 0.6%（几乎没标），
-  而模型在整幅图上圈出了大量小囊泡与管状结构，全部被算作假阳性。
+* **24780 (Dice 0.712)**: the red contour fits the Golgi cisternal stacks precisely;
+  the large stack right of centre, and the ones lower left, upper left and upper right, are all marked correctly. **The prediction is biologically right.**
+* **37185 (Dice 0.062)**: the GT covers only 0.6% (almost nothing is annotated),
+  while the model outlines a large number of small vesicles and tubular structures over the whole image, all of which count as false positives.
 
-### 10.5 一个必须承认的歧义
+### 10.5 An ambiguity that has to be admitted
 
-对 37185 这类图，**指标无法区分两种解释**：
+For images like 37185, **the metric cannot distinguish two explanations**:
 
-1. 图上确实有大量高尔基体衍生囊泡未被标注 -> **标注不完整**
-2. 模型把 ER/其他囊泡误判成高尔基体 -> **模型错误**
+1. The image really does contain many Golgi-derived vesicles that were not annotated -> **incomplete annotation**
+2. The model mistakes ER/other vesicles for Golgi -> **model error**
 
-两者产生**完全相同**的低 Dice。我不能仅凭指标断言是哪一种。
+The two produce **exactly the same** low Dice. I cannot assert which one it is from the metric alone.
 
-倾向"标注不完整"的依据有三条，但都不是证明：
+There are three reasons for leaning towards "incomplete annotation", but none of them is a proof:
 
-* 预测/GT 高达 10.8×，而覆盖率 ≥8% 的图这个比值降到 0.91×
-* 分层关系单调（r = +0.730），与线粒体的独立结果方向一致
-* 被圈出的结构在形态上确实像高尔基体衍生膜（而非随机噪声）
+* prediction/GT reaches 10.8×, while on images with coverage ≥8% the ratio falls to 0.91×
+* the stratification is monotonic (r = +0.730), and the direction agrees with the independent mitochondria result
+* the outlined structures really do look morphologically like Golgi-derived membranes (rather than random noise)
 
-**要真正区分，只能重新标注那几张图**——这也是第 10.7 节建议的由来。
+**The only way to really distinguish them is to re-annotate those few images** — which is where the recommendation in 10.7 comes from.
 
-### 10.6 因此可以下的结论
+### 10.6 What can therefore be concluded
 
-| 说法 | 是否成立 |
+| Claim | Does it hold? |
 |---|---|
-| 高尔基体可以分割，效果可用 | **成立**（标注充分时 Dice 0.60–0.71，且叠加图形态正确） |
-| 全图平均 Dice 0.30 说明模型不行 | **不成立**——被 17 张稀疏标注图拉低 |
-| 提高 Dice 要靠调参 | **不成立**（第 6 节证明 v2/v3 均无效） |
-| 提高 Dice 要靠更多/更完整的标注 | **最可能成立**，但 10.5 的歧义未排除 |
+| The Golgi can be segmented and the result is usable | **Yes** (Dice 0.60–0.71 when annotation is sufficient, and the overlay shapes are correct) |
+| A whole-image mean Dice of 0.30 means the model is bad | **No** — it is dragged down by 17 sparsely annotated images |
+| Improving Dice requires tuning hyper-parameters | **No** (Section 6 shows v2/v3 both had no effect) |
+| Improving Dice requires more/complete annotation | **most likely yes**, but the ambiguity of 10.5 is not ruled out |
 
-### 10.7 明确的下一步建议
+### 10.7 A concrete recommendation for the next step
 
-与其继续调模型，不如补标注——尤其是那 17 张覆盖率 <3% 的图。
-按分层数字粗算：若把它们补到 ≥8% 的水平，整体平均 Dice 会从 0.30 升到 **0.5 以上**。
+Rather than tuning the model further, fill in the annotations — especially the 17 images with coverage <3%.
+A rough estimate from the stratified numbers: if they were brought up to the ≥8% level, the overall mean Dice would rise from 0.30 to **above 0.5**.
 
-> 脚本：`tools/golgi_dice_vs_coverage.py`
-> 产出：`logs/golgi_dice_vs_coverage.txt`（逐图明细）
-> 叠加图：`docs/figures/golgi_pred/`（53 张，红=预测轮廓）
+> Script: `tools/golgi_dice_vs_coverage.py`
+> Output: `logs/golgi_dice_vs_coverage.txt` (per-image detail)
+> Overlays: `docs/figures/golgi_pred/` (53 images, red = predicted contour)
 
 ---
 
-## 11. 跨域评估：两个域之间几乎不迁移
+## 11. Cross-domain evaluation: almost no transfer between the two domains
 
-### 11.1 为什么做这个
+### 11.1 Why this was done
 
-我们有两个高尔基体来源——自有 TEM 插图与 ASEM 的 FIB-SEM 体数据。
-在自有数据上训练、拿到 ASEM 上评估，可以直接回答：
-**模型学到的是高尔基体的通用形态，还是我们这批图的特定外观？**
+We have two Golgi sources — our own TEM figure panels and ASEM's FIB-SEM volume data.
+Training on our own data and evaluating on ASEM answers the question directly:
+**has the model learned the general morphology of the Golgi, or the specific appearance of our particular images?**
 
-这决定了"合并多来源数据"这条路线到底能不能规模化。
+That decides whether the "merge data from multiple sources" route can scale or not.
 
-### 11.2 结果
+### 11.2 Results
 
-用**只用自有数据**训练的模型（`runs/seg_golgi_own`，tile 级 Dice，阈值 0.5）：
+Using the model trained **on our own data only** (`runs/seg_golgi_own`, tile-level Dice, threshold 0.5):
 
-| 数据源 | tile 数 | Dice | GT 覆盖 | 预测覆盖 |
+| Data source | Tiles | Dice | GT coverage | Predicted coverage |
 |---|---|---|---|---|
-| 自有留出（**域内**） | 281 | **0.2636** | 12.15% | 19.02% |
-| ASEM ds61（**跨域**） | 660 | **0.0779** | 11.05% | 3.68% |
-| ASEM ds64（**跨域**） | 392 | **0.2242** | 12.17% | 26.45% |
+| In-house held-out (**in-domain**) | 281 | **0.2636** | 12.15% | 19.02% |
+| ASEM ds61 (**cross-domain**) | 660 | **0.0779** | 11.05% | 3.68% |
+| ASEM ds64 (**cross-domain**) | 392 | **0.2242** | 12.17% | 26.45% |
 
-**跨域 Dice 掉到域内的 1/3（ds64）到 1/8（ds61）。**
+**Cross-domain Dice falls to between 1/3 (ds64) and 1/8 (ds61) of the in-domain value.**
 
-注意 ds61 与 ds64 的表现也不同（0.078 对 0.224），说明"域"不是单一因素——
-同样是 ASEM 数据，不同的成像/制样条件下差异也很大。
+Note that ds61 and ds64 also behave differently (0.078 against 0.224), which shows that "domain" is not a single factor —
+within ASEM data itself, different imaging/preparation conditions differ a great deal.
 
-### 11.3 这解释了什么
+### 11.3 What this explains
 
-| 观察 | 解释 |
+| Observation | Explanation |
 |---|---|
-| 合并 ASEM 只带来 +0.025（噪声内） | 两个域差异太大，可迁移的信息少 |
-| 合并后本域性能没下降 | 模型容量足够同时容纳两个域（0.2679 对 0.2636） |
-| 跨域几乎不可用 | 学到的是**域特定特征**，不是通用形态 |
+| Merging ASEM brings only +0.025 (within noise) | the two domains differ too much, so little is transferable |
+| in-domain performance did not drop after merging | model capacity is enough to hold both domains (0.2679 against 0.2636) |
+| cross-domain is almost unusable | what was learned is **domain-specific features**, not general morphology |
 
-### 11.4 对"可大规模应用"这条路线的影响
+### 11.4 Impact on the "scales up" route
 
-必须修正一个说法：这条路线的价值**不是"用公开数据提升自有数据上的精度"**
-（第 5 节已证明提升在噪声内），而是：
+One claim has to be corrected: the value of this route is **not "using public data to raise accuracy on our own data"**
+(Section 5 already showed the gain is within noise), but rather:
 
-1. **一个模型可以同时服务多个域**，而不互相损害
-2. 新增数据源只需加一个训练根目录（`--train-roots`），工程上确实可规模化
-3. **但新域的精度必须在新域上评估**，不能指望跨域迁移
+1. **One model can serve several domains at once** without damaging any of them
+2. A new data source only needs one more training root (`--train-roots`), so it really does scale engineering-wise
+3. **But accuracy in a new domain must be evaluated in that domain**; cross-domain transfer cannot be assumed
 
-也就是说：规模化成立在**工程层面**（加数据源的成本低），
-不成立在**统计层面**（不会因为加了别的域就让本域更准）。
+In other words: scaling holds at the **engineering level** (adding a data source is cheap),
+and does not hold at the **statistical level** (adding another domain does not make this domain more accurate).
 
-> 脚本：`tools/eval_crossdomain.py`
-> 用法：`--ckpt <权重> --roots <tile根目录列表> --classes golgi`
+> Script: `tools/eval_crossdomain.py`
+> Usage: `--ckpt <weights> --roots <list of tile root directories> --classes golgi`
 
 ---
 
-## 12. 剔除稀疏标注图：直觉错了
+## 12. Excluding sparsely annotated images: the intuition was wrong
 
-### 12.1 假设
+### 12.1 Hypothesis
 
-第 10 节显示覆盖率 <3% 的 17 张图预测/GT 高达 10.8 倍。
-一个自然推论是：**这些图在提供有害监督**——它们的背景 tile 在教模型
-"这些结构不该预测"。于是做了一个对照：**只用覆盖率 ≥3% 的图训练**。
+Section 10 showed that the 17 images with coverage <3% have prediction/GT as high as 10.8×.
+A natural inference is that **these images provide harmful supervision** — their background tiles teach the model
+"these structures should not be predicted". So a control was run: **train only on images with coverage ≥3%**.
 
-### 12.2 干净对比（同一批高覆盖留出图，440 tile）
+### 12.2 A clean comparison (the same high-coverage held-out images, 440 tiles)
 
-| 模型 | Dice | GT 覆盖 | 预测覆盖 |
+| Model | Dice | GT coverage | Predicted coverage |
 |---|---|---|---|
-| 全量训练（含稀疏图） | **0.3445** | 22.69% | 14.53% |
-| 仅高覆盖度训练 | 0.3210 | 22.69% | **32.93%** |
+| Trained on everything (sparse images included) | **0.3445** | 22.69% | 14.53% |
+| Trained on high coverage only | 0.3210 | 22.69% | **32.93%** |
 
-**剔除稀疏图反而更差**（−0.024），而且新模型**严重过度预测**
-（32.93% 对 GT 22.69%），全量模型则是**偏保守**（14.53% 对 22.69%）。
+**Dropping the sparse images is actually worse** (−0.024), and the new model **over-predicts badly**
+(32.93% against a GT of 22.69%), while the full model is **on the conservative side** (14.53% against 22.69%).
 
-### 12.3 结论：假设被否定，但要理解为什么
+### 12.3 Conclusion: the hypothesis is refuted, but it matters to understand why
 
-直觉之所以错，是因为忽略了稀疏标注图的一个正面作用：
-**它们提供了大量真实背景 tile**，帮助模型校准"什么不是高尔基体"。
-去掉它们之后，训练集里正样本比例上升，模型学会"多预测"，
-于是在留出图上过度预测。
+The intuition is wrong because it ignores one positive role of sparsely annotated images:
+**they supply a large number of real background tiles** that help the model calibrate "what is not a Golgi".
+Once they are removed, the share of positives in the training set rises and the model learns to "predict more",
+and so over-predicts on the held-out images.
 
-所以第 10 节的结论需要精确化：
+So the conclusion of Section 10 needs to be sharpened:
 
-| 说法 | 判定 |
+| Claim | Verdict |
 |---|---|
-| 稀疏标注图**降低了平均指标** | **成立**（它们自己分数低，拉低均值） |
-| 稀疏标注图**提供了有害监督** | **不成立**（去掉后同条件下的 Dice 更差） |
-| 补标注能提高**平均指标** | **成立**（把低分图提上来） |
-| 补标注能提高**模型质量** | **未证明**（本次实验反而提示它们有用） |
+| Sparsely annotated images **lower the mean metric** | **Yes** (their own scores are low, which drags the mean down) |
+| Sparsely annotated images **provide harmful supervision** | **No** (Dice is worse under the same conditions once they are removed) |
+| Adding annotations raises the **mean metric** | **Yes** (it pulls the low-scoring images up) |
+| Adding annotations raises **model quality** | **not shown** (this experiment actually suggests they are useful) |
 
-这是一个重要的区分：**指标低**与**训练有害**是两件事。
-把低分样本当作"坏数据"删掉，可能既丢了它们的正面作用，
-又失去如实反映数据质量的机会。
+This is an important distinction: **a low metric** and **harmful training** are two different things.
+Deleting low-scoring samples as "bad data" can lose their positive effect
+and also lose the chance to reflect data quality honestly.
 
-### 12.4 那还剩什么有效手段
+### 12.4 So what levers are left
 
-到目前所有尝试过的方向：
+Every direction tried so far:
 
-| 手段 | 结果 |
+| Lever | Result |
 |---|---|
-| 降低学习率 / 延长训练 | 无效（6.2） |
-| 提高 Dice 权重 | 无效（6.2） |
-| 加外部数据（ASEM） | 未被证实（5.7） |
-| 清洗标注碎片 | 不影响 tile 构成（8） |
-| 剔除稀疏标注图 | **更差**（12.2） |
-| 边界容差 | 收益有限（10.1） |
+| Lower the learning rate / train longer | no effect (6.2) |
+| Raise the Dice weight | no effect (6.2) |
+| Add external data (ASEM) | not demonstrated (5.7) |
+| Clean annotation fragments | does not change the tile makeup (8) |
+| Drop sparsely annotated images | **worse** (12.2) |
+| Boundary tolerance | limited gain (10.1) |
 
-**唯一有明确证据的杠杆是"补齐标注"**——它直接消掉 10.3 节里
-那个 0.09 对 0.71 的分层差距，且不依赖任何模型侧的调参。
+**The only lever with clear evidence is "completing the annotations"** — it directly closes
+the 0.09 against 0.71 stratified gap from Section 10.3, and it does not depend on any model-side tuning.
 
-> 数据：`logs/train_golgi_hicov.log`、`logs/GOLGI_HICOV.txt`
-> 模型：`runs/golgi_hicov/`
+> Data: `logs/train_golgi_hicov.log`, `logs/GOLGI_HICOV.txt`
+> Model: `runs/golgi_hicov/`
 
 
 
