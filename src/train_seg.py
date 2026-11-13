@@ -434,6 +434,19 @@ def main(argv: Optional[List[str]] = None) -> int:
     ap.add_argument("--out", default="runs/seg_unet")
     ap.add_argument("--save-every", type=int, default=20)
     ap.add_argument("--resume", default="none")
+    ap.add_argument("--init", default="none",
+                    help="从外部 checkpoint **只加载模型权重**初始化（迁移学习/少样本微调）。"
+                         "与 --resume auto 不同：不恢复优化器与轮次，训练数据可以完全不同。"
+                         "形状不匹配的层（如输出头类别数不同）会报告后保持随机初始化。")
+    ap.add_argument("--encoder", default="scratch",
+                    choices=("scratch", "resnet50"),
+                    help="编码器。scratch=原有小 U-Net；resnet50=ResNet-50 主干，"
+                         "可配合 --encoder-weights 加载 CEM500K 自监督权重")
+    ap.add_argument("--encoder-weights", default="none",
+                    help="ResNet-50 编码器的初始化权重（CEM500K MoCo v2）")
+    ap.add_argument("--freeze-encoder", action="store_true",
+                    help="冻结编码器 d1..d4，只训练解码器。"
+                         "用于区分'预训练提供通用特征'与'需要适配新域'。")
     args = ap.parse_args(argv)
 
     torch.manual_seed(args.seed)
@@ -564,9 +577,104 @@ def main(argv: Optional[List[str]] = None) -> int:
              if ds_va else None)
 
     dev = "cuda" if torch.cuda.is_available() else "cpu"
-    model = UNet(3, len(classes), args.base).to(dev)
+
+    # ---- 编码器选择 ----
+    #
+    # `scratch`：项目原有的 2.29 M 参数小 U-Net，从零训练。
+    # `resnet50`：以 ResNet-50 为编码器的 U-Net（48.9 M 参数），可加载
+    #             CEM500K 的 MoCo v2 自监督权重。
+    #
+    # 引入后者的理由是一条可检验的假设：此前四条改进路线全部为负，共同机制是
+    # 「OpenOrganelle 的特征与自有 TEM 插图不可通约」——它是单一 FIB-SEM 模态。
+    # CEM500K 在 50 万张**异构**细胞电镜图上自监督训练，目标是通用电镜纹理。
+    # 若瓶颈确实是缺通用特征，它应当优于从零训练；否则说明问题在别处。
+    if args.encoder == "resnet50":
+        # `resnet_unet.py` 在 <root>/tools/，而本脚本在 <root>/scripts/。
+        # 两个目录都要加：早期版本只加了 scripts/ 与 root，于是
+        #   ModuleNotFoundError: No module named 'resnet_unet'
+        _here = os.path.dirname(os.path.abspath(__file__))
+        _root = os.path.dirname(_here)
+        for _p in (_here, _root, os.path.join(_root, "tools"),
+                   os.path.join(_root, "src")):
+            if _p not in sys.path:
+                sys.path.insert(0, _p)
+        from resnet_unet import ResNet50UNet           # noqa: E402
+        w = args.encoder_weights
+        if w and w.lower() not in ("none", "") and not os.path.exists(w):
+            raise SystemExit(f"[错误] --encoder-weights 指向的文件不存在：{w}")
+        model = ResNet50UNet(len(classes),
+                             w if (w and w.lower() not in ("none", "")) else None).to(dev)
+    else:
+        model = UNet(3, len(classes), args.base).to(dev)
     npar = sum(p.numel() for p in model.parameters()) / 1e6
-    print(f"device={dev}  模型 {npar:.2f} M 参数  类别 {classes}")
+    print(f"device={dev}  模型 {npar:.2f} M 参数  类别 {classes}  编码器={args.encoder}")
+
+    # ---- 从外部权重初始化（迁移学习/少样本微调）----
+    #
+    # 与 `--resume auto` 的区别：后者是**同一实验**的续训，会一并恢复优化器状态
+    # 与起始轮次；这里只取模型参数，优化器与轮次全新开始，且训练数据可以完全不同
+    # （典型用法：在公开数据上预训练，再用少量自有数据微调）。
+    #
+    # 用 strict=False 并在结尾报告跳过的键：若类别数不同，输出头形状不匹配，
+    # 需要让那几层保持随机初始化——静默 strict=True 会直接抛异常，
+    # 而静默忽略又可能掩盖"整份权重都没载入"这种更糟的情况。
+    #
+    # **注意：strict=False 只容忍"缺键/多键"，不容忍形状不匹配。**
+    # 多类预训练的权重有 5 个输出通道，微调时是 1 个，直接传进去会抛
+    #   RuntimeError: size mismatch for out.weight:
+    #   copying a param with shape torch.Size([5, 32, 1, 1]) ...
+    # 所以必须自己先按形状筛一遍，把不匹配的键剔出去再交 load_state_dict。
+    init_report = None
+    if args.init and args.init.lower() not in ("none", ""):
+        ip = args.init
+        if not os.path.exists(ip):
+            raise SystemExit(f"[错误] --init 指定的权重不存在：{ip}")
+        ck = torch.load(ip, map_location="cpu", weights_only=False)
+        sd = ck.get("model", ck) if isinstance(ck, dict) else ck
+        if not isinstance(sd, dict):
+            raise SystemExit(f"[错误] {ip} 里读不到 model 状态字典")
+
+        tgt = model.state_dict()
+        skipped = {}
+        for k in list(sd.keys()):
+            if k not in tgt:
+                continue
+            if tuple(sd[k].shape) != tuple(tgt[k].shape):
+                skipped[k] = (tuple(sd[k].shape), tuple(tgt[k].shape))
+                del sd[k]
+        miss, unexp = model.load_state_dict(sd, strict=False)
+        init_report = {
+            "path": ip,
+            "ckpt_classes": (ck.get("classes") if isinstance(ck, dict) else None),
+            "missing": list(miss),
+            "unexpected": list(unexp),
+            "shape_mismatch": {k: list(v) for k, v in skipped.items()},
+            "n_loaded": len(tgt) - len(miss),
+            "n_total": len(tgt),
+        }
+        print(f"从 {ip} 初始化权重"
+              f"（checkpoint 类别={init_report['ckpt_classes']}）")
+        print(f"  载入 {init_report['n_loaded']}/{init_report['n_total']} 个张量")
+        for k, (a, b) in skipped.items():
+            print(f"  形状不匹配，保持随机初始化：{k}  checkpoint{a} -> 模型{b}")
+        if miss:
+            print(f"  未载入（需随机初始化）{len(miss)} 个张量："
+                  + ", ".join(miss[:6]) + ("..." if len(miss) > 6 else ""))
+
+    # ---- 冻结编码器 ----
+    #
+    # 只训练解码器。用于判断"预训练带来的收益有多少来自通用特征、
+    # 多少来自与新域适配"。冻结时编码器权重不更新，BN 也保持 eval 行为。
+    if args.freeze_encoder:
+        n_frozen = 0
+        for name, p in model.named_parameters():
+            # 该 U-Net 的编码器参数名是 d1..d4（见 UNet.__init__）。
+            # 用前缀元组而非 `"down" in name`，避免将来加层时误伤。
+            if name.startswith(("d1.", "d2.", "d3.", "d4.")):
+                p.requires_grad = False
+                n_frozen += 1
+        n_train = sum(1 for p in model.parameters() if p.requires_grad)
+        print(f"冻结编码器：{n_frozen} 个张量不更新，可训练 {n_train} 个")
 
     # 类别权重：按各类前景比例的反比，归一化到均值为 1（保持整体损失量级不变）。
     # 从训练集抽样估计，避免读全量（几百个 256×256 掩码已足够稳定）。
