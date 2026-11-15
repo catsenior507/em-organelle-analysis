@@ -158,16 +158,16 @@ Limitation 4 should be rewritten as:
 ## 6. Reproduction
 
 ```bash
-# enumerate available fields (351)
+# 枚举可用视野（351 个）
 python tools/list_biad2983_fields.py
 
-# pick 20 representative fields
+# 选 20 个代表性视野
 python tools/pick_fields.py --per-group 5
 
-# instance-level interaction network
+# 实例级互作网络
 python tools/instance_network.py --group auto --radius 1 --null 3 \
     --stems $(cat logs/biad2983_sample.txt) --out logs/INSTANCE_20F.json
 
-# aggregate, including per-day and instance counts
+# 汇总（含按分化天与实例数）
 python tools/aggregate_instance.py --json logs/INSTANCE_20F.json
 ```

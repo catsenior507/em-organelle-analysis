@@ -114,13 +114,13 @@ organelle pairs is static interleaving".
 ## 4. Method and implementation
 
 ```bash
-# 1) download all 32 time series (27.1 GB, 6 parallel connections, ~90 min)
+# 1) 下载全部 32 个时序（27.1 GB，并行 6 连接，实际约 90 分钟）
 python tools/fetch_biad712.py --workers 6
 
-# 2) per-file dynamics (~1 min/file, resumable)
+# 2) 逐文件动力学（1 分钟/文件，支持续跑）
 python tools/dynamics_biad712.py --paths "data/biad712/*.czi" --dilate 1
 
-# 3) aggregate
+# 3) 汇总
 python tools/summarise_biad712.py
 ```
 

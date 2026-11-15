@@ -44,8 +44,8 @@ Both numbers are dominated by "does it call the tile empty", not by "how well do
 | 　of which correctly called empty | — | **124 / 129** | 109 / 129 | 71 / 129 |
 | **Ground truth non-empty** | 152 | 0.2174 | 0.2372 | **0.2791** |
 | 　of which Dice = 0 | — | 96 / 152 | 90 / 152 | **66 / 152** |
-| 　coverage > 2% | 129 | 0.2499 | 0.2777 | **0.3285** |
-| 　coverage > 8% (sufficient annotation) | 97 | 0.2891 | 0.3341 | **0.4051** |
+| 　label coverage > 2% | 129 | 0.2499 | 0.2777 | **0.3285** |
+| 　label coverage > 8% (sufficient annotation) | 97 | 0.2891 | 0.3341 | **0.4051** |
 | **Pooled Dice (positive samples only)** | 152 | 0.3912 | 0.4263 | **0.4760** |
 
 ### 3.1 Training to 1000 epochs makes segmentation worse
@@ -58,7 +58,7 @@ But split the same way, the changes go in opposite directions:
 
 * **Empty/non-empty discrimination improves a great deal**: empty tiles 0.8450 → **0.9612**,
   correctly called empty 109 → **124 / 129**
-* **Segmentation gets worse**: positive samples 0.2372 → **0.2174**, coverage >8% 0.3341 →
+* **Segmentation gets worse**: positive samples 0.2372 → **0.2174**, label coverage >8% 0.3341 →
   **0.2891**
 
 That is, **the longer it trains, the more it leans towards "there is no Golgi here".**
@@ -89,9 +89,9 @@ Both reasons point to the nature of this dataset:
 as negatives (which is right, otherwise the model would over-predict). But it also makes "calling
 a tile empty" an ability with a very large weight.
 
-**Second, annotation coverage in the positive samples is extremely low.** Only 97 of the positive
-samples have coverage >8%, and the correlation between coverage and Dice is **+0.730** — the
-sparser the annotation, the harder the task for any model.
+**Second, label coverage in the positive samples is extremely low.** Of the 152 positive tiles only
+97 exceed 8% coverage; the other 55 fall below, and the correlation between label coverage and Dice is
+**+0.730** — the sparser the annotation, the harder the task for any model.
 
 nnU-Net's loss is Dice + CE with `batch_dice=True`. When large numbers of empty patches take part
 in a batch, its decision boundary is pushed towards "more conservative", so it calls more tiles
@@ -128,17 +128,17 @@ tiles with sparsely annotated positive samples.
 ## 7. Reproduction
 
 ```bash
-# nnU-Net: convert -> preprocess -> train -> validate
+# nnU-Net：转换 → 预处理 → 训练 → 验证（见 NNUNET-SETUP 记在本文末）
 bash tools/server/scripts/launch_nnunet.sh
 bash tools/server/scripts/launch_nnunet_final.sh
 
-# like-for-like per-case comparison (runs our model inference)
+# 同口径逐 case 对比（会现算我们的模型推理）
 python scripts/compare_nnunet_vs_ours.py --limit 0
 
-# split by whether ground truth is empty
+# 按真值空/非空切开
 python scripts/split_compare.py
 
-# rule out transpose/flip misalignment (this is what excluded it)
+# 排除转置/翻转错位（重要：本轮就是靠它排除了这个可能）
 python scripts/check_orientation.py --n 4
 ```
 

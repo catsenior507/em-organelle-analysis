@@ -149,14 +149,14 @@ dynamics.
 ## 6. Reproduction
 
 ```bash
-# take the smallest time-series file (236 MB)
+# 取最小的一个时序文件（236 MB）
 curl -sSL -o data/biad712/TS_BR1_N08.czi \
   https://ftp.ebi.ac.uk/biostudies/fire/S-BIAD/712/S-BIAD712/Files/TS_PBTOhNGN2hiPSCs_BR1_N08_Unmixed.czi
 
-# verify dimensions, channels and that the time axis is real
+# 验证维度、通道、时间维真实性
 python tools/validate_biad712.py
 
-# contact dynamics (contact criterion 1 px ~ 80 nm)
+# 接触动力学（接触判据 1 px ≈ 80 nm）
 python tools/dynamics_biad712.py --dilate 1
 ```
 
