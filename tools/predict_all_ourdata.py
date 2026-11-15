@@ -43,11 +43,6 @@ import torch
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, "server", "scripts"))
-# 让 <repo>/src 可被导入（公开版把训练器与数据集读取器放在 src/）。
-_SRC = os.path.join(os.path.dirname(os.path.dirname(
-    os.path.abspath(__file__))), "src")
-if os.path.isdir(_SRC) and _SRC not in sys.path:
-    sys.path.insert(0, _SRC)
 from train_seg import UNet  # noqa: E402
 
 TARGET_NM = 4.0

@@ -158,3 +158,39 @@ python scripts/train_seg.py --train-root data/golgi_split/train \
    `wget -c` + 朴素参数，靠 bash 循环重试，才拿到完整 370 MB。
    **三个失败都没有明显的错误信息**，唯一的判据是文件字节数与服务器的
    `Content-Length` 对不上。
+
+
+---
+
+## 7. 后续：宽度消融否证了容量解释
+
+前面把编码器增益与 CEM500K 的失败并列，但**没有测过是不是参数量**。
+补做的消融把这个解释也否证了。
+
+把同一份小 U-Net 的每层通道加倍（--base 32 → 64），参数从 2.29 M 增至 9.16 M
+（四倍），其余预算完全一致（30 轮、batch 8、同一固定划分的 300 张验证瓦片、三种子）：
+
+| 模型 | 参数量 | best Dice | last5 Dice |
+|---|---|---|---|
+| 小 U-Net base=32 | 2.29 M | 0.3317 ± 0.0089 | **0.3108 ± 0.0157** |
+| 小 U-Net base=64 | 9.16 M | 0.3134 ± 0.0512 | **0.2899 ± 0.0668** |
+| ResNet-50 | 48.94 M | 0.3861 ± 0.0170 | **0.3677 ± 0.0018** |
+
+**加宽四倍不仅没提升，反而低 0.021，且种子间标准差从 0.0157 涨到 0.0668，扩大逾四倍。**
+
+因此可保留的表述是：**换编码器带来约 +0.05 的提升，与任务难度无关，也不是参数量的函数；
+起作用的是架构本身**——残差连接与批归一化带来的优化性质。
+
+这一条同时修正了论文 §3.3 原有的该换的是编码器容量的表述。
+
+复现：
+
+`ash
+bash tools/server/scripts/ablation_width.sh
+
+# 或在本地按臂单独跑
+python scripts/train_seg.py --train-root data/golgi_split/train \
+    --val-root data/golgi_split/val --classes golgi --size 256 \
+    --batch 8 --epochs 30 --lr 3e-4 --base 64 --seed 0 \
+    --out runs/abl_base64_s0
+`

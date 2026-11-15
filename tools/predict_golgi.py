@@ -53,11 +53,6 @@ for _cand in (os.path.join(ROOT, "scripts"),
               os.path.join(ROOT, "tools")):
     if os.path.isdir(_cand) and _cand not in sys.path:
         sys.path.insert(0, _cand)
-# 让 <repo>/src 可被导入（公开版把训练器与数据集读取器放在 src/）。
-_SRC = os.path.join(os.path.dirname(os.path.dirname(
-    os.path.abspath(__file__))), "src")
-if os.path.isdir(_SRC) and _SRC not in sys.path:
-    sys.path.insert(0, _SRC)
 
 import torch  # noqa: E402
 from train_seg import UNet  # noqa: E402

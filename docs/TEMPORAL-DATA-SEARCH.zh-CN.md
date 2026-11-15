@@ -2,6 +2,12 @@
 
 [English](TEMPORAL-DATA-SEARCH.md) ｜ **中文**
 
+> **2026-11-14 更新：本文结论需要修正。**
+> 不存在的是**电镜**时间序列（固定制样，这一点仍然成立）；但**荧光**的多细胞器
+> 时间序列存在、已下载验证、并已跑通初步动力学分析——
+> 见 **`TEMPORAL-DATA-FOUND.zh-CN.md`**（S-BIAD712，7 种细胞器，25–100 帧，CC BY 4.0）。
+> 以下原始检索记录保留，因为它对"电镜时序不存在"的论证依然有效。
+
 > 目标：本项目的动力学分析（李雅普诺夫指数、转移熵）在静态电镜快照上原理上不适用，
 > 这一点已在 `docs/MATLAB-VERIFICATION-STATUS.zh-CN.md` 与
 > `docs/GOLGI-OPENORGANELLE-RESULTS.zh-CN.md` 中记录。要让它成立，唯一出路是拿到

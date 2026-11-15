@@ -88,7 +88,17 @@ class ResNet50UNet(nn.Module):
     def __init__(self, cout: int = 1, pretrained: str | None = None):
         super().__init__()
         import torchvision
-        r = torchvision.models.resnet50(weights=None)
+        # pretrained="imagenet" 用于对照：外部预训练到底有没有用，
+        # 还是只有"电镜域的预训练"没用。ImageNet 与电镜差得最远，
+        # 若它反而有帮助，说明此前的失败是域特定问题而非预训练本身。
+        if pretrained == "imagenet":
+            r = torchvision.models.resnet50(weights="IMAGENET1K_V1")
+            self.load_report = {"path": "imagenet", "matched": -1,
+                                "unmatched": -1, "match_rate": 1.0}
+            self._skip_load = True
+        else:
+            r = torchvision.models.resnet50(weights=None)
+            self._skip_load = False
 
         self.stem = nn.Sequential(r.conv1, r.bn1, r.relu)      # /2,  64
         self.pool = r.maxpool                                  # /4
@@ -109,8 +119,7 @@ class ResNet50UNet(nn.Module):
         self.c0 = double_conv(32, 32)
         self.out = nn.Conv2d(32, cout, 1)
 
-        self.load_report: Dict = {}
-        if pretrained:
+        if not getattr(self, "_skip_load", True) and pretrained:
             sd, info = load_moco_encoder(pretrained)
             own = self.state_dict()
             hit, miss = 0, []

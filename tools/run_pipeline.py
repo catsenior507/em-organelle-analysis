@@ -148,7 +148,7 @@ def step_train(args) -> int:
         print("      python tools/server/push_run.py tools/server/scripts/launch_finetune.sh")
         print("    本机只做数据准备：")
         return sh([PY, "tools/build_empanada_dataset.py"])
-    return sh([PY, "src/train_seg.py",
+    return sh([PY, "tools/server/scripts/train_seg.py",
                "--train-root", os.path.join(args.tiles_out, args.dataset + "_tiles"),
                "--val-root", "none",
                "--classes", args.cls, "--size", "256", "--batch", "16",

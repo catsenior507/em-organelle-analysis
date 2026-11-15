@@ -600,7 +600,10 @@ def main(argv: Optional[List[str]] = None) -> int:
                 sys.path.insert(0, _p)
         from resnet_unet import ResNet50UNet           # noqa: E402
         w = args.encoder_weights
-        if w and w.lower() not in ("none", "") and not os.path.exists(w):
+        # "imagenet" 是保留字：走 torchvision 下载的 ImageNet 权重，
+        # 不是磁盘上的文件，因此不能走下面的存在性检查。
+        _is_kw = str(w).lower() in ("imagenet",)
+        if w and w.lower() not in ("none", "") and not _is_kw and not os.path.exists(w):
             raise SystemExit(f"[错误] --encoder-weights 指向的文件不存在：{w}")
         model = ResNet50UNet(len(classes),
                              w if (w and w.lower() not in ("none", "")) else None).to(dev)
