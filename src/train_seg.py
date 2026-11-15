@@ -423,6 +423,9 @@ def main(argv: Optional[List[str]] = None) -> int:
     ap.add_argument("--epochs", type=int, default=60)
     ap.add_argument("--lr", type=float, default=3e-4)
     ap.add_argument("--base", type=int, default=32)
+    ap.add_argument("--backbone", default="resnet50",
+                    choices=["resnet18", "resnet34", "resnet50"],
+                    help="--encoder resnet50 时使用的骨干")
     ap.add_argument("--class-balance", action="store_true",
                     help="按类别前景比例的反比给 BCE 加权。解决两类联合训练时"
                          "少数类（er，占 4–22%）被多数类（mito，占 17–54%）"
@@ -588,7 +591,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     # 「OpenOrganelle 的特征与自有 TEM 插图不可通约」——它是单一 FIB-SEM 模态。
     # CEM500K 在 50 万张**异构**细胞电镜图上自监督训练，目标是通用电镜纹理。
     # 若瓶颈确实是缺通用特征，它应当优于从零训练；否则说明问题在别处。
-    if args.encoder == "resnet50":
+    if args.encoder in ("resnet50", "resnet"):
         # `resnet_unet.py` 在 <root>/tools/，而本脚本在 <root>/scripts/。
         # 两个目录都要加：早期版本只加了 scripts/ 与 root，于是
         #   ModuleNotFoundError: No module named 'resnet_unet'
@@ -606,7 +609,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         if w and w.lower() not in ("none", "") and not _is_kw and not os.path.exists(w):
             raise SystemExit(f"[错误] --encoder-weights 指向的文件不存在：{w}")
         model = ResNet50UNet(len(classes),
-                             w if (w and w.lower() not in ("none", "")) else None).to(dev)
+                             pretrained=w if (w and w.lower() not in ("none", "")) else None,
+                             backbone=args.backbone).to(dev)
     else:
         model = UNet(3, len(classes), args.base).to(dev)
     npar = sum(p.numel() for p in model.parameters()) / 1e6

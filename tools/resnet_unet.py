@@ -78,6 +78,16 @@ def double_conv(cin: int, cout: int) -> nn.Sequential:
     )
 
 
+# 每个骨干给出：(编码器四尺度通道, 解码器三级宽度)
+# ResNet-50 的解码器宽度取自原始实现，必须与其完全一致，
+# 否则参数量与已发表结果（48.94 M / last5 0.3643）对不上。
+BACKBONES = {
+    "resnet18": ((64, 128, 256, 512), (128, 64, 64)),
+    "resnet34": ((64, 128, 256, 512), (128, 64, 64)),
+    "resnet50": ((256, 512, 1024, 2048), (512, 256, 128)),
+}
+
+
 class ResNet50UNet(nn.Module):
     """ResNet-50 编码器 + 四级 U-Net 解码器。
 
@@ -85,19 +95,24 @@ class ResNet50UNet(nn.Module):
     输入 256×256 时最深层为 8×8。
     """
 
-    def __init__(self, cout: int = 1, pretrained: str | None = None):
+    def __init__(self, cout: int = 1, pretrained: str | None = None,
+                 backbone: str = "resnet50"):
         super().__init__()
         import torchvision
+        if backbone not in BACKBONES:
+            raise ValueError(f"未知骨干 {backbone}，可选 {sorted(BACKBONES)}")
+        (c1, c2, c3, c4), (d4, d3, d2) = BACKBONES[backbone]
+        self.backbone = backbone
         # pretrained="imagenet" 用于对照：外部预训练到底有没有用，
         # 还是只有"电镜域的预训练"没用。ImageNet 与电镜差得最远，
         # 若它反而有帮助，说明此前的失败是域特定问题而非预训练本身。
         if pretrained == "imagenet":
-            r = torchvision.models.resnet50(weights="IMAGENET1K_V1")
+            r = getattr(torchvision.models, backbone)(weights="IMAGENET1K_V1")
             self.load_report = {"path": "imagenet", "matched": -1,
                                 "unmatched": -1, "match_rate": 1.0}
             self._skip_load = True
         else:
-            r = torchvision.models.resnet50(weights=None)
+            r = getattr(torchvision.models, backbone)(weights=None)
             self._skip_load = False
 
         self.stem = nn.Sequential(r.conv1, r.bn1, r.relu)      # /2,  64
@@ -107,14 +122,14 @@ class ResNet50UNet(nn.Module):
         self.layer3 = r.layer3                                 # /16, 1024
         self.layer4 = r.layer4                                 # /32, 2048
 
-        self.up4 = nn.ConvTranspose2d(2048, 1024, 2, stride=2)
-        self.c4 = double_conv(1024 + 1024, 512)
-        self.up3 = nn.ConvTranspose2d(512, 512, 2, stride=2)
-        self.c3 = double_conv(512 + 512, 256)
-        self.up2 = nn.ConvTranspose2d(256, 256, 2, stride=2)
-        self.c2 = double_conv(256 + 256, 128)
-        self.up1 = nn.ConvTranspose2d(128, 128, 2, stride=2)
-        self.c1 = double_conv(128 + 64, 64)
+        self.up4 = nn.ConvTranspose2d(c4, c3, 2, stride=2)
+        self.c4 = double_conv(c3 + c3, d4)
+        self.up3 = nn.ConvTranspose2d(d4, d4, 2, stride=2)
+        self.c3 = double_conv(d4 + c2, d3)
+        self.up2 = nn.ConvTranspose2d(d3, d3, 2, stride=2)
+        self.c2 = double_conv(d3 + c1, d2)
+        self.up1 = nn.ConvTranspose2d(d2, d2, 2, stride=2)
+        self.c1 = double_conv(d2 + 64, 64)
         self.up0 = nn.ConvTranspose2d(64, 32, 2, stride=2)
         self.c0 = double_conv(32, 32)
         self.out = nn.Conv2d(32, cout, 1)

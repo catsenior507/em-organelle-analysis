@@ -177,6 +177,7 @@ Doubling every channel of the same small U-Net (--base 32 -> 64) raises paramete
 | small U-Net base=32 | 2.29 M | 0.3317 +- 0.0089 | **0.3108 +- 0.0157** |
 | small U-Net base=64 | 9.16 M | 0.3134 +- 0.0512 | **0.2975 +- 0.0538** |
 | small U-Net base=128 | 36 M | 0.2746 +- 0.0098 | **0.2633 +- 0.0104** |
+| ResNet-18 | 12.97 M | 0.3579 +- 0.0244 | **0.3546 +- 0.0197** |
 | ResNet-50 | 48.94 M | 0.3861 +- 0.0170 | **0.3677 +- 0.0018** |
 
 Stepping the width up, last5 Dice falls monotonically: 0.3108, 0.2975, 0.2633 across a 16-fold
@@ -185,6 +186,12 @@ increase in parameters. ResNet-50 at a comparable parameter count, 48.94M agains
 
 So spending the same parameters differently is what matters: swapping the encoder gains 0.10,
 merely widening loses 0.048.
+
+A stricter control settles it. **ResNet-18 uses only 12.97M**, essentially the same as base=64's
+9.16M, yet reaches **0.3546** -- 0.057 above a plain U-Net of matched size. Going from 12.97M to
+48.94M inside the ResNet family, a near-quadrupling, adds only 0.013. So at matched parameter
+count the architecture is worth about +0.06; inside the residual family capacity barely helps;
+and on the plain U-Net widening is actively harmful.
 
 What survives is therefore: the encoder swap is worth about +0.05 over the original small U-Net and
 +0.10 over a same-size plain U-Net, independent of task difficulty and not a function of parameter
