@@ -158,3 +158,49 @@ bash tools/server/scripts/mito_arch.sh
    `--retry-all-errors` does not exist in curl 7.29 (rc=2), and `wget --show-progress` does not
    exist in the older wget either. The only tell was the byte count failing to match the
    server's `Content-Length`.
+
+
+---
+
+## 7. Follow-up: a width ablation falsifies the capacity explanation
+
+The sections above place the encoder gain alongside CEM500K's failure, but never tested whether the
+gain is simply more parameters. That ablation was run, and it falsifies the capacity explanation
+too.
+
+Doubling every channel of the same small U-Net (--base 32 -> 64) raises parameters from 2.29M to
+9.16M, four times, under an otherwise identical budget: 30 epochs, batch 8, the same fixed split's
+300 validation tiles, three seeds.
+
+| Model | Parameters | best Dice | last5 Dice |
+|---|---|---|---|
+| small U-Net base=32 | 2.29 M | 0.3317 +- 0.0089 | **0.3108 +- 0.0157** |
+| small U-Net base=64 | 9.16 M | 0.3134 +- 0.0512 | **0.2975 +- 0.0538** |
+| small U-Net base=128 | 36 M | 0.2746 +- 0.0098 | **0.2633 +- 0.0104** |
+| ResNet-50 | 48.94 M | 0.3861 +- 0.0170 | **0.3677 +- 0.0018** |
+
+Stepping the width up, last5 Dice falls monotonically: 0.3108, 0.2975, 0.2633 across a 16-fold
+increase in parameters. ResNet-50 at a comparable parameter count, 48.94M against 36M, reaches
+0.3677 -- 0.104 above the same-size plain U-Net.
+
+So spending the same parameters differently is what matters: swapping the encoder gains 0.10,
+merely widening loses 0.048.
+
+What survives is therefore: the encoder swap is worth about +0.05 over the original small U-Net and
++0.10 over a same-size plain U-Net, independent of task difficulty and not a function of parameter
+count. What does the work is the architecture itself -- residuals and batch normalisation, not
+available capacity.
+
+This also corrects the paper's earlier claim that what should change is encoder capacity.
+
+Reproduction:
+
+`ash
+bash tools/server/scripts/ablation_width.sh
+
+# or a single arm locally
+python scripts/train_seg.py --train-root data/golgi_split/train \
+    --val-root data/golgi_split/val --classes golgi --size 256 \
+    --batch 8 --epochs 30 --lr 3e-4 --base 64 --seed 0 \
+    --out runs/abl_base64_s0
+`
